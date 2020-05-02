@@ -1,0 +1,105 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/Myservices/RequestList">My Reservations</span>
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Request List
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+        <mat-form-field class="example-full-width">
+
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+        </mat-form-field>
+
+
+        <mat-table [dataSource]="dataSource" matSort>
+
+
+          <!--   
+    <ng-container matColumnDef="position">
+      
+      <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+    
+        <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+
+    </ng-container> -->
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="sNo">
+            <mat-header-cell *matHeaderCellDef  > Order Id </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.sNo}}</mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="request_id">
+            <mat-header-cell *matHeaderCellDef  > Request Id </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.request_id}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="project_name">
+            <mat-header-cell *matHeaderCellDef  > Project Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.project_name}} </mat-cell>
+          </ng-container>
+<!--          <ng-container matColumnDef="pm_name">
+            <mat-header-cell *matHeaderCellDef  > Manager </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.pm_name}} </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="admin_name">
+            <mat-header-cell *matHeaderCellDef  > Approver </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.admin_name}} </mat-cell>
+          </ng-container>
+          <!-- <ng-container matColumnDef="location_id">
+            <mat-header-cell *matHeaderCellDef  > Delivary Location </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="start_date">
+            <mat-header-cell *matHeaderCellDef  > Start Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.start_date}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="end_date">
+            <mat-header-cell *matHeaderCellDef  > End date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef  > Status </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span [ngStyle]="{'color': element.status === 'APPROVED' ? 'green':( element.status === 'REJECTED' ? '#e5cb14' : 'black')}">                {{element.status}}</span> </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef  > Price($) </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+          </ng-container>
+        <!-- <ng-container matColumnDef="extend">
+            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+            <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+              <button mat-button style="background-color: #e0e0e0" (click)="extendRequest(row)">Extend</button>
+            </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="cancel">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+           <span>   <button [disabled]="row.cancel==true" mat-button style="background-color: #e0e0e0" (click)="cancelRequest(row)">Cancel</button></span>            </mat-cell>          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row (click)="viewRequest(row.request_id)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,607 @@
+<!-- Latest compiled and minified Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<!-- 
+
+<div class="container">
+  <div class="row">
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+  </div>
+  <div class="row">
+    <div class="col-8">col-8</div>
+    <div class="col-4">col-4</div>
+  </div>
+</div> -->
+
+<div class="overflow-auto" *ngIf="order_details">
+
+  <div class="row" style="padding-top: 10px;">
+    <div class="col-md-6">
+      <h4 class="black" style="margin-left: 18px;">Request ID: {{request_id}} </h4>
+    </div>
+    <div class="col-md-6">
+      <!-- for pm -->
+
+      <div style="float: right; margin-right: 2%" *ngIf="login_data.role.toLowerCase() == 'pm'">
+        <button class="btn" *ngIf="!enable_pm_edit" style="background-color: #313944; color: white;"
+          (click)="back()">CANCEL</button>
+        <button class="btn btn-primary" *ngIf="pm_can_edit && !enable_pm_edit" (click)="release()">RELEASE</button>
+        <button class="btn" *ngIf="enable_pm_edit" style="background-color: #313944; color: white;"
+          (click)="pmEdit(false)">CANCEL</button>
+        <button [disabled]="order_details.expired" class="btn btn-primary" *ngIf="enable_pm_edit"
+          (click)="pmEditSubmit()">SUBMIT REQUEST</button>
+        <button [disabled]="order_details.expired" class="btn btn-primary" *ngIf="pm_can_edit && !enable_pm_edit"
+          (click)="pmEdit(true)">EDIT</button>
+
+        <button [disabled]="order_details.expired || ['APPROVED'].includes(order_details.status.toUpperCase())"
+          class="btn btn-primary" *ngIf="pm_can_cancel_req" (click)="pmCancelReq()">CANCEL REQUEST</button>
+      </div>
+      <!-- for lm and admin -->
+      <div style="float: right;margin-right: 2%" *ngIf="login_data.role.toLowerCase() != 'pm'">
+        <button class="btn btn-primary" *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.expired "
+          [disabled]='order_details.status=="RELEASED"' (click)="release()">RELEASE</button>
+        <button class="btn" style="background-color: #313944; color: white;" (click)="reject()"
+          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'>REJECT</button>
+
+        <button class="btn btn-primary" *ngIf="login_data.role == 'LM' && order_details.status =='REQUESTED'"
+          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
+          (click)="approve()">APPROVE</button>
+
+        <button class="btn btn-primary"
+          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
+          *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.status == 'APPROVED'"
+          (click)="provision()">PROVISION</button>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-md-4">
+    <table class="table">
+      <thead class="thead">
+        <tr>
+          <th scope="col">Total Price</th>
+          <th scope="col">Available Budget</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${{order_details.price.toLocaleString()}}</td>
+          <td *ngIf="order_details.budget.avail_budget-order_details.price > 0" style="color: green;">
+            ${{order_details.budget.avail_budget.toLocaleString()}}</td>
+          <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
+            ${{order_details.budget.avail_budget}}</td>
+        </tr>
+        <tr>
+          <td></td>
+
+          <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
+            (Exceeds budget Limit)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+  <br>
+  <div class="row" *ngIf="login_data.role.toLowerCase() == 'lm'">
+    <div class="price">
+      <label>Available Budget :</label>
+      <span *ngIf="order_details.budget.avail_budget-order_details.price < 0"
+        style="color: red;">${{order_details.budget.avail_budget.toLocaleString()}}</span>
+      <span *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">(Exceeds budget
+        Limit)</span>
+      <span *ngIf="order_details.budget.avail_budget-order_details.price > 0"
+        style="color: green;">${{order_details.budget.avail_budget.toLocaleString()}}</span>
+    </div>
+    <div class="price"><label>Total Price :</label><span>${{order_details.price.toLocaleString()}}</span></div>
+  </div>
+  <hr>
+  <!-- header ends -->
+
+  <!-- that table like view -->
+
+
+  <!-- Default panel contents -->
+  <!-- <div class="panel-heading">Pending Since
+
+    </div> -->
+
+
+  <!-- <div class="row">
+    <div class="col-md-9">
+      <div class="panel">
+        <div class="panel-body">
+          <table class="table">
+            <thead class="thead-dark" style="background-color:#313944; color:white">
+              <tr>
+                <th scope="col">Pending Since</th>
+                <th scope="col">Role</th>
+                <th scope="col">Person</th>
+                <th scope="col">Status</th>
+                <th scope="col">Date Approved</th>
+               
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pending">
+
+                <td>{{data.start_date}}</td>
+                <td>{{data.by}}</td>
+                <td>{{data.to}}</td>
+                <td>{{data.status}}</td>
+                <td>{{data.end_date}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="panel">
+        <div class="panel-body">
+          <table class="table">
+            <thead class="thead-dark" style="background-color:#313944; color:white">
+              <tr>
+                <th scope="col">Total Price</th>
+                <th scope="col">Available Budget</th>
+
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+                <td>${{order_details.price}}</td>
+                <td *ngIf="order_details.budget.avail_budget-order_details.price > 0" style="color: green;">
+                  ${{order_details.budget.avail_budget}}</td>
+                <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
+                  ${{order_details.budget.avail_budget}}</td>
+
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+
+
+  <!-- collapse -->
+
+
+  <div class="container" *ngIf="order_details">
+
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default" *ngFor="let data of order_details.servers_list; let i = index;">
+
+        <div class="panel-heading">
+
+          <h4 class="panel-title" style="text-align: center;">
+
+            <a class="accordion-toggle item-title" data-toggle="collapse" data-parent="#accordion"
+              href="#{{data.server_details_user.service_id}}">
+              {{data.service_name}}
+            </a>
+            <!-- <span style="float: right;  margin-right: 10px; cursor: pointer;" (click)="remove(selected_list, i)"><i
+                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i>Remove</span> -->
+          </h4>
+        </div>
+        <div id="{{data.server_details_user.service_id}}" class="panel-collapse collapse in">
+          <div class="panel-body" style="padding-top: 10px">
+            <div class="row">
+              <div class="col-md-8">
+
+                <form>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <input disabled="true" name="project_name" ngDefaultControl
+                          [(ngModel)]="order_details.project_name" matInput placeholder="Project">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <input disabled="true" name="location" ngDefaultControl [(ngModel)]="order_details.location_id"
+                          matInput placeholder="Location">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <input disabled="true" name="price" ngDefaultControl
+                          [(ngModel)]="data.server_details_user.price_per_hr" matInput
+                          placeholder="Price (Price Per Hr.)">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+
+                  <!-- <div class="form-group"> 
+                      <label for="exampleFormControlInput1">Project</label>
+                      <input name="project_name" ngDefaultControl [(ngModel)]="data.project_name" type="text"
+                        class="form-control form-width" id="exampleFormControlInput1" placeholder="project name">
+                    </div> -->
+
+                  <div class="row">
+                    <div class="col-md-4">
+
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">Start Date</label> -->
+                        <!-- <mat-form-field>
+                          <input [value]="order_details.start_date" placeholder="Choose start date">
+                          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                          <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field> -->
+                        <mat-form-field>
+                          <input disabled="true" name="start_date" ngDefaultControl
+                            [(ngModel)]="order_details.start_date" matInput placeholder="Start Date">
+                        </mat-form-field>
+
+                        <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="project name"> -->
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">End Date</label> -->
+                        <mat-form-field>
+                          <input [ngStyle]="{color: order_details.expired ? 'red' : ''}" disabled="true" name="end_date"
+                            ngDefaultControl [(ngModel)]="order_details.end_date" matInput placeholder="End Date">
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="order_details.expired">
+                      <div style="color: red; font-size: 16px;">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        <span>Reservation expired</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+                  <!--<div class="form-group">
+                       <div class="card">
+                      <div class="card-header">
+                        Featured
+                      </div>
+                      <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div> -->
+                  <div
+                    *ngIf="order_details.instance_type.toLowerCase() =='physical' && data.server_details_user.software"
+                    class="panel panel-default">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Operating System
+                          </div>
+                          <!-- <div class="col-md-6">
+                            <div style="float: right; color:#4775d1;" type="button" data-toggle="modal"
+                              data-target="#exampleModal"
+                              (click)="doModal(data.os_to_select, 'Select Operating System', 'radio', data)">
+                              Change</div>
+                          </div> -->
+                        </div>
+                      </h3>
+                    </div>
+                    <div *ngIf="order_details.instance_type.toLowerCase() !='bare_metal'" class="panel-body">
+                      {{data.server_details.operating_system}}</div>
+                    <div *ngIf="order_details.instance_type.toLowerCase() =='bare_metal'" class="panel-body">
+                      {{data.extra_tools && data.extra_tools.os ? data.extra_tools.os : 'NA'}}
+                      <!-- {{data.server_details_user.software && data.server_details_user.software.os || 'NA'}} -->
+                    </div>
+                  </div>
+
+                  <div class="panel panel-default" *ngIf="data.extra_tools">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Application(s)
+                          </div>
+                          <div class="col-md-6" *ngIf="enable_pm_edit">
+                            <div style="float: right; color:#4775d1; cursor: pointer;" type="button" data-toggle="modal"
+                              data-target="#exampleModal"
+                              (click)="doModal(data.app_to_select, 'Select Application (s)', 'checkbox', data)">
+                              Change</div>
+                          </div>
+                        </div>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <ul *ngIf="data.extra_tools && data.extra_tools.tools">
+                        <li *ngFor="let app of Object.values(data.extra_tools.tools)">{{app}}</li>
+                      </ul>
+
+                      <div *ngIf="data.custom_data && Object.keys(data.custom_data).length">
+                        <hr>
+                        <div *ngFor="let action of Object.keys(data.custom_data)">
+                          <div *ngIf="data.custom_data[action] && data.custom_data[action].length">
+                            <h4 style="    text-decoration: underline;
+                          color: black; font-weight: bold;     font-size: 14px;">
+                              {{action == 'apps' ? "To be Installed" : "To be Uninstalled"}}</h4>
+                            <ul>
+                              <li *ngFor="let app of data.custom_data[action]">{{app.versions}}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group">
+                      <div class="col-md-12" style="border: solid gray 1px;
+                          background-color: lightgray;">
+                        <div class="col-md-6" style="color: black;">
+                          Select Software(s)
+                        </div>
+                        <div class="col-md-6">
+                          <div style="text-align: right; color: #0000FF" type="button" data-toggle="modal"
+                            data-target="#exampleModal">
+                            Add</div>
+                        </div>
+                      </div>
+                      <div style=" border:solid gray 1px">
+                        <ul>
+                          <li>something</li>
+                          <li>something else</li>
+                        </ul>
+                      </div>
+                    </div> -->
+
+
+
+
+                  <!-- </div> -->
+
+                  <!-- <div class="form-group">
+                      <label for="exampleFormControlSelect1">Alert me before expiring in(days)</label>
+                      <select (change)="data.alert_before = $event.target.value" class="form-control form-width"
+                        id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </div> -->
+                  <mat-form-field style="width: 35%;">
+                    <mat-select disabled="true" (selectionChange)="data.custom_data.alert_before = $event.value"
+                      placeholder="Alert me before expiring in(days)">
+                      <mat-option value="1">1</mat-option>
+                      <mat-option value="2">2</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlSelect2">Example multiple select</label>
+                    <select multiple class="form-control" id="exampleFormControlSelect2">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div> -->
+                </form>
+              </div>
+              <div class="col-md-4">
+                <table *ngIf="data.server_details" class="table server-detail" style="border: solid 1px gray">
+                  <!-- <thead> -->
+                  <tr>
+                    <th scope="col">{{ data.service_name.toLowerCase().includes("switch")? 'Switch' :  'Server'}}
+                      Details</th>
+                  </tr>
+                  <!-- </thead> -->
+                  <!-- <tbody > -->
+                  <tr *ngFor="let row of Object.keys(data.server_details)">
+                    <td>{{api.humanize(row)}}</td>
+                    <td>{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                  </tr>
+                  <!-- <tr>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                      </tr>
+                      <tr>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                      </tr>
+                      <tr>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                      </tr> -->
+                  <!-- </tbody> -->
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" *ngIf="modal_data.title">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: 20px;">{{modal_data.title}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- <button>Submit</button> -->
+          </div>
+
+          <div class="modal-body">
+            <div class="row" style="margin-bottom: 10px;">
+              <!-- <div class="col-md-6" style="font-size: 15px;">List of Applications ({{ modal_data.list.length}})</div> -->
+              <div class="col-md-6" style="font-size: 15px;"></div>
+              <div class="col-md-6" style="text-align: right;">
+                <button class="btn" style="margin-right: 10px; background-color: #313944; color: white;"
+                  data-dismiss="modal" (click)="cancelOnUninstallModal(modal_data.row)">CANCEL</button>
+                <button [disabled]="!modal_data.row.edit_modal_enable" class="btn btn-primary" data-dismiss="modal"
+                  (click)="submitOnUninstallModal(modal_data.row)">ADD</button>
+              </div>
+            </div>
+            <h5 style="font-size: 16px;">Applications Running</h5>
+            <!-- Table  for installed applications -->
+            <table class="table table-bordered">
+              <!-- Table head -->
+              <thead>
+                <tr class="tr-heading">
+                  <th>
+                    <!-- Material unchecked -->
+                    <div class="form-check">
+                      <!-- <input type="checkbox" class="form-check-input" id="tableMaterialCheck1"> -->
+                      <label class="form-check-label" for="tableMaterialCheck1">Application Name</label>
+                    </div>
+                  </th>
+                  <td>Version</td>
+                  <th style="width: 30%;"></th>
+                </tr>
+              </thead>
+              <!-- Table head -->
+
+              <!-- Table body -->
+              <tbody>
+                <tr *ngIf="!modal_data.installed_list.length">No Applications Running</tr>
+                <tr *ngFor="let item of modal_data.installed_list">
+                  <!-- <th scope="row">
+                    <div class="form-check">
+                      <input [type]="modal_data.inputType"
+                        (change)="osNappsSelection(modal_data.inputType, $event, modal_data.row, item)"
+                        class="form-radio-input" [checked]="item.checked || item.installed" id="tableMaterialCheck2">
+                      <label class="form-check-label"
+                        for="tableMaterialCheck2">{{api.capitalize(item.service_name)}}</label>
+                    </div>
+                  </th> -->
+                  <td>{{api.capitalize(item.service_name)}}</td>
+                  <td>{{item.versions}}</td>
+                  <td style="cursor: pointer;"><a *ngIf="!item.user_uninstall" style="font-weight: bold;"
+                      (click)="item.user_uninstall = true; pm_uninstall_apps(true, modal_data.row, modal_data.installed_list)">Uninstall</a>
+                    <a *ngIf="item.user_uninstall" style="font-weight: bold;"
+                      (click)="item.user_uninstall = false;">Cancel Uninstall</a></td>
+                </tr>
+
+              </tbody>
+              <!-- Table body -->
+            </table>
+            <!-- Table  for new applications -->
+            <h5 style="font-size: 16px;">Add New Applications</h5>
+            <table class="table table-bordered">
+              <!-- Table head -->
+              <thead>
+                <tr class="tr-heading">
+                  <th>
+                    <!-- Material unchecked -->
+                    <div class="form-check">
+                      <!-- <input type="checkbox" class="form-check-input" id="tableMaterialCheck1"> -->
+                      <label class="form-check-label" for="tableMaterialCheck1">Application Name</label>
+                    </div>
+                  </th>
+                  <th>Version</th>
+                </tr>
+              </thead>
+              <!-- Table head -->
+
+              <!-- Table body -->
+              <tbody>
+                <tr *ngFor="let item of modal_data.list">
+                  <td scope="row">
+                    <!-- Material unchecked -->
+                    <div class="form-check">
+                      <input [type]="modal_data.inputType"
+                        (change)="osNappsSelection(modal_data.inputType, $event, modal_data.row, item)"
+                        class="form-radio-input" [checked]="item.checked" id="tableMaterialCheck2">
+                      <label class="form-check-label" for="tableMaterialCheck2"
+                        style="font-weight: 1;padding-left: 10px;">{{api.capitalize(item.service_name)}}</label>
+                    </div>
+                  </td>
+                  <td>{{item.versions}}</td>
+                </tr>
+
+              </tbody>
+              <!-- Table body -->
+            </table>
+            <!-- Table  -->
+          </div>
+          <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary">Save changes</button>
+    </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- modal ends -->
+
+  </div> <!-- end container -->
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+
+<!-- Button trigger modal -->
+<button style="display: none;" id="edit_server_modal" type="button" class="btn btn-primary" data-toggle="modal"
+  data-target="#exampleModal_edit">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div *ngIf="edit_response" class="modal fade" id="exampleModal_edit" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModal_editLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal_editLabel" style="font-size: 20px;">Server (s) Status after Editing
+        </h5>
+        <button type="button" (click)="ngOnInit()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="border: gray solid 1px;" *ngFor="let server of Object.keys(edit_response)">
+          <h4 style="font-size: 17px; background-color: gainsboro; padding: 5px;">{{server}}</h4>
+          <div style="padding: 5px;
+          font-size: 16px;" *ngFor="let action of Object.keys(edit_response[server])">
+            <h5 style="font-size: 15px; font-weight: bold;">Action Performed: {{api.humanize(action)}}</h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr class="tr-heading">
+                  <th style="width: 50%;">Application</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let app of  Object.keys(edit_response[server][action])">
+                  <td>{{app}}</td>
+                  <td>{{edit_response[server][action][app]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

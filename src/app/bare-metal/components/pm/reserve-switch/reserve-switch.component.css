@@ -1,0 +1,110 @@
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon */
+    content: "\e114";
+    /* adjust as needed, taken from bootstrap.css */
+    float: right;
+    /* adjust as needed */
+    color: white;
+    /* adjust as needed */
+}
+
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+    /* adjust as needed, taken from bootstrap.css */
+}
+
+.next-collapse .panel-title .nocollapse::after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
+  /* to show > */
+ float: right;
+  color:white;
+ }
+
+.next-collapse .panel-title .collapsed::after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon  */
+    
+    content: "\e080";
+   /* adjust as needed, taken from bootstrap.css */
+   float: right;
+   /* adjust as needed */
+    color: white;
+    /* adjust as needed */
+   }
+
+  
+.item-title {
+    color: white !important;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
+.container {
+    overflow-y: auto !important;
+}
+
+.form-width {
+    width: 25%;
+}
+
+.server-detail {
+    border-collapse: unset;
+    background-color: lightgray;
+}
+.cdk-global-overlay-wrapper {
+    z-index: 1000;
+  }
+  .edit-btn{
+    float: right;
+    padding: 3px 12px;
+    background-color: #313944;
+  }
+  .td-last-btn{
+    padding: 2px;
+  }
+  .drp-li{
+    padding: 5px 0px 5px 7px;
+    cursor: pointer;
+  }
+  .drp-li:hover{
+    background-color: lightgray;
+  }
+
+  tr:nth-child(even) {
+    background-color: white;
+}
+
+.mat-input-element:disabled {
+  color:black;
+}
+
+.disabled{
+  cursor: not-allowed;
+  /*pointer-events: none;  */
+    /* cursor: pointer; */
+    
+}
+.disabled span{
+  cursor: not-allowed;
+}
+
+a.btn.disabled{
+  cursor: not-allowed;
+  pointer-events: auto !important;
+}
+
+.nocollapse{
+  color: white;
+}
+
+.next-collapse{
+  background-color: dimgrey;
+  color: white;
+
+    /* background-color: #ddd;
+        color: black; */
+}

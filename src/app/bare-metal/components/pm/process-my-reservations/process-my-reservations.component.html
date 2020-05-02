@@ -1,0 +1,300 @@
+<!-- Latest compiled and minified Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<!-- 
+
+<div class="container">
+  <div class="row">
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+  </div>
+  <div class="row">
+    <div class="col-8">col-8</div>
+    <div class="col-4">col-4</div>
+  </div>
+</div> -->
+
+<div class="overflow-auto">
+
+  <div class="row" style="padding-top: 10px;">
+    <div class="col-md-6">
+      <h4>PROCESS REQUEST (S) </h4>
+    </div>
+    <div class="col-md-6">
+      <div style="float: right;">
+        <button class="btn" style="background-color: #313944; color: white;" (click)="back()">Cancel</button>
+        <!-- Go Back -->
+        <button class="btn btn-primary" (click)=" reserve()">Cancel Request</button>
+      </div>
+    </div>
+  </div>
+  <!-- header ends -->
+
+  <!-- that table like view -->
+
+  <div class="panel" style="margin-top: 2%">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Pending Since
+
+    </div>
+
+    <div class="panel-body">
+      <table class="table">
+        <!-- <thead class="thead-dark" style="background-color:#313944; color:white">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Service Name</th>
+            <th scope="col">Service Type</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">Price</th>
+            <th scope="col">Status</th>
+
+          </tr>
+        </thead> -->
+        <tbody>
+          <tr *ngFor="let data of pending">
+
+            <td>{{data.start_date}}</td>
+            <td>{{data.by}}</td>
+            <td>{{data.to}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.end_date}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <!-- collapse -->
+
+
+  <div class="container">
+    <div class="row" style="padding-top: 10px;">
+      <div class="col-md-6">
+        <h4>Request Details </h4>
+      </div>
+    </div>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default" *ngFor="let data of server_list; let i = index;">
+
+        <div class="panel-heading">
+
+          <h4 class="panel-title">
+
+            <a class="accordion-toggle item-title" data-toggle="collapse" data-parent="#accordion"
+              href="#{{data.serviceid}}">
+              {{data.name}}
+            </a>
+            <span style="float: right;  margin-right: 10px; cursor: pointer;" (click)="remove(selected_list, i)"><i
+                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i>Remove</span>
+          </h4>
+        </div>
+        <div id="{{data.serviceid}}" class="panel-collapse collapse in">
+          <div class="panel-body" style="padding-top: 10px">
+            <div class="row">
+              <div class="col-md-8">
+
+                <form>
+                  <mat-form-field>
+                    <input name="project_name" ngDefaultControl [(ngModel)]="data.custom_data.project_name" matInput
+                      placeholder="Project">
+                  </mat-form-field>
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlInput1">Project</label>
+                    <input name="project_name" ngDefaultControl [(ngModel)]="data.project_name" type="text"
+                      class="form-control form-width" id="exampleFormControlInput1" placeholder="project name">
+                  </div> -->
+
+                  <div class="row">
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">Start Date</label>
+                        <mat-form-field>
+                          <input (dateInput)="data.custom_data.start_date = $event.value" matInput
+                            [matDatepicker]="startDate" placeholder="Choose start date">
+                          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                          <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="project name"> -->
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">End Date</label>
+                        <mat-form-field>
+                          <input (dateInput)="data.custom_data.end_date = $event.value" matInput
+                            [matDatepicker]="endDate" placeholder="Choose end date">
+                          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                          <mat-datepicker #endDate></mat-datepicker>
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <!--<div class="form-group">
+                     <div class="card">
+                    <div class="card-header">
+                      Featured
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">Special title treatment</h5>
+                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div> -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Operating System
+                          </div>
+                          <div class="col-md-6">
+                            <div style="float: right; color:#4775d1;" type="button" data-toggle="modal"
+                              data-target="#exampleModal"
+                              (click)="doModal(data.os_to_select, 'Select Operating System', 'radio', data)">
+                              Change</div>
+                          </div>
+                        </div>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      {{data.custom_data && data.custom_data.os || 'NA'}}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Software (s)
+                          </div>
+                          <div class="col-md-6">
+                            <div style="float: right; color:#4775d1;" type="button" data-toggle="modal"
+                              data-target="#exampleModal"
+                              (click)="doModal(data.app_to_select, 'Select Software (s)', 'checkbox', data)">
+                              Add</div>
+                          </div>
+                        </div>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <ul *ngIf="data.custom_data && data.custom_data.apps && data.custom_data.apps.length">
+                        <li *ngFor="let app of data.custom_data.apps">{{app.service_name}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group">
+                    <div class="col-md-12" style="border: solid gray 1px;
+                        background-color: lightgray;">
+                      <div class="col-md-6" style="color: black;">
+                        Select Software(s)
+                      </div>
+                      <div class="col-md-6">
+                        <div style="text-align: right; color: #0000FF" type="button" data-toggle="modal"
+                          data-target="#exampleModal">
+                          Add</div>
+                      </div>
+                    </div>
+                    <div style=" border:solid gray 1px">
+                      <ul>
+                        <li>something</li>
+                        <li>something else</li>
+                      </ul>
+                    </div>
+                  </div> -->
+
+
+
+
+                  <!-- </div> -->
+
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlSelect1">Alert me before expiring in(days)</label>
+                    <select (change)="data.alert_before = $event.target.value" class="form-control form-width"
+                      id="exampleFormControlSelect1">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div> -->
+                  <mat-form-field>
+                    <mat-select (selectionChange)="data.custom_data.alert_before = $event.value"
+                      placeholder="Alert me before expiring in(days)">
+                      <mat-option value="1">1</mat-option>
+                      <mat-option value="2">2</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <div class="form-group">
+                  <label for="exampleFormControlSelect2">Example multiple select</label>
+                  <select multiple class="form-control" id="exampleFormControlSelect2">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Example textarea</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div> -->
+                </form>
+              </div>
+              <div class="col-md-4">
+                <table class="table server-detail" style="border: solid 1px gray">
+                  <thead>
+                    <tr>
+                      <th scope="col">Server details</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="data.server_details">
+                    <tr *ngFor="let row of Object.keys(data.server_details)">
+                      <td>{{row}}</td>
+                      <td>{{data.server_details[row]}}</td>
+                    </tr>
+                    <!-- <tr>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                    </tr>
+                    <tr>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                    </tr>
+                    <tr>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                    </tr> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div> <!-- end container -->
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->

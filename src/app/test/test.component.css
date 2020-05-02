@@ -1,0 +1,126 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+.panel-title > a:before {
+    float: right !important;
+    font-family: FontAwesome;
+    content:"\f068";
+    padding-right: 5px;
+}
+.panel-title > a.collapsed:before {
+    float: right !important;
+    content:"\f067";
+}
+.panel-title > a:hover, 
+.panel-title > a:active, 
+.panel-title > a:focus  {
+    text-decoration:none;
+} 
+.panel-group{
+  margin:10px;
+} 
+.panel{
+  margin-bottom:15px;
+}
+
+.a1 +.tooltip>.tooltip-inner{
+    background-color:white;
+    color:black;
+    height:30px;
+    line-height:30px;
+    padding:0 10px;
+    font-size:14px;
+    
+    
+    }
+    .a1+ .tooltip> .tooltip-arrow{
+    border-left-color:#fff;
+    
+    }
+#testEnv, #testEnvTopo, #envReq {
+    height: 41px;
+    width: 83%;
+    padding: 8px;
+    text-align: left; 
+    border: solid 1px;
+    color: gray
+ }
+ #testEnvBtn, #testEnvTopoBtn, #envReqBtn{
+     float: right;
+     border: none;
+     background: transparent;
+ }
+ .box1 {
+     width: 200px;
+     min-height: 100px;
+     background-color: #ffffff;/*ECECEC;*/
+     border: 1px solid #C6C6C6;
+     border-radius: 3px;
+     text-align: left;
+     float:left;
+     margin:5px;
+ }
+ .box2 {
+     width: 180px;
+     min-height: 90px;
+     background-color:#ECECEC;
+     border: .1px solid #C6C6C6;
+     border-radius: 3px;
+     text-align: left;
+     float:left;
+     margin:10px;
+ }
+ .box-text{
+     margin-left:10px;
+ }
+
+.connectingConnectorLabel {
+    height: 23px;
+    width: 110px;
+    border-radius: 13px;
+    color: #FFFFFF;
+    text-align: center;
+    z-index:3 !important;
+    left: 50% !important;
+    background-color: #456;
+}
+.title {
+
+    padding: 10px;
+    cursor: move;
+    font-weight: bold;
+    font-size: 120%;
+
+}
+.iconDetails {
+
+    float: left;
+    height: 57px;
+    width: 57px;
+    border-radius: 500px;
+    border: 3px solid black;
+    padding: 6px;
+    margin: 6px;
+
+}
+.item {
+
+    position: absolute;
+    border: 1px solid black;
+    width: 220px;
+    height: 90px;
+    font-size: 80%;
+    background-color: #FFFFFF;
+    text-align: center;
+    -moz-box-shadow: 2px 2px 3px 1px #AAA;
+    -webkit-box-shadow: 2px 2px 3px 1px #AAA;
+    box-shadow: 2px 2px 3px 1px #AAA;
+    margin-bottom: 4px;
+
+}
+svg.redLine path {
+    stroke:red;
+    stroke-width:3;
+  }
+
+.h4, h4 {
+    font-size: 15px;
+}

@@ -1,0 +1,428 @@
+<!-- Latest compiled and minified Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<!-- 
+
+<div class="container">
+  <div class="row">
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+    <div class="col">col</div>
+  </div>
+  <div class="row">
+    <div class="col-8">col-8</div>
+    <div class="col-4">col-4</div>
+  </div>
+</div> -->
+
+<div class="overflow-auto">
+
+  <div class="row" style="padding: 10px 20px 0px 20px;">
+    <div class="col-md-6">
+      <h4 class="black" *ngIf="!req_submitted">RESERVE
+        {{selected_service_type == 'bare_metal' ? 'SERVER(S)' : api.capitalize(selected_service_type).toUpperCase()+'(ES)'}}
+      </h4>
+      <h4 *ngIf="req_submitted">Request has been submitted successfully.</h4>
+    </div>
+    <div class="col-md-6">
+      <div style="float: right;">
+        <button class="btn" style="background-color: #313944; color: white;" (click)="back()">CANCEL</button>
+        <button class="btn btn-primary" (click)=" reserve()">SUBMIT REQUEST</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- header ends -->
+
+
+  <div class="container">
+
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default" *ngFor="let data of selected_list; let i = index;">
+
+        <div class="panel-heading">
+
+          <h4 class="panel-title">
+
+            <a class="accordion-toggle item-title" data-toggle="collapse" data-parent="#accordion"
+              href="#{{data.serviceid}}">
+              {{data.name}}
+            </a>
+            <span style="float: right;  margin-right: 10px; cursor: pointer;" (click)="remove(selected_list, i)"><i
+                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i>Remove</span>
+          </h4>
+        </div>
+        <div id="{{data.serviceid}}" class="panel-collapse collapse in">
+          <div class="panel-body" style="padding-top: 10px">
+            <div class="row">
+              <div style="padding-top:20px"
+                [ngClass]="{'col-md-8': selected_service_type == 'bare_metal', 'col-md-6': selected_service_type == 'switch'}">
+                <!-- this form is for reserving a server -->
+
+                <form *ngIf="selected_service_type && selected_service_type != 'switch'">
+                  <mat-form-field>
+                    <input name="project_name" ngDefaultControl [disabled]="project_name_available"
+                      [(ngModel)]="order_details.project_name" matInput placeholder="Project">
+                  </mat-form-field>
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlInput1">Project</label>
+                    <input name="project_name" ngDefaultControl [(ngModel)]="data.project_name" type="text"
+                      class="form-control form-width" id="exampleFormControlInput1" placeholder="project name">
+                  </div> -->
+
+                  <div class="row">
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+
+                        <!-- <mat-form-field class="col-md-3">
+                              <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly required [min]="webService.currentDate"
+                                [(ngModel)]="webService.todayDateReservation" placeholder="Start Date">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field> -->
+
+                        <!-- <label for="exampleFormControlInput1">Start Date</label> -->
+                        <mat-form-field>
+                          <input (focus)="startDate.open()" [min]="order_details.start_date.value"
+                            [value]="order_details.start_date.value"
+                            (dateInput)="dateChange($event.value, 'start_date')" matInput [matDatepicker]="startDate"
+                            placeholder="Choose start date">
+                          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                          <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="project name"> -->
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">End Date</label> -->
+                        <mat-form-field>
+                          <input (focus)="endDate.open()"
+                            [min]="moment(order_details.start_date.value).add(1, 'days')['_d']"
+                            [value]="order_details.end_date.value" (dateInput)="dateChange($event.value, 'end_date')"
+                            matInput [matDatepicker]="endDate" placeholder="Choose end date">
+                          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                          <mat-datepicker #endDate></mat-datepicker>
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+
+
+
+                  </div>
+
+
+
+                  <!--<div class="form-group">
+                     <div class="card">
+                    <div class="card-header">
+                      Featured
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">Special title treatment</h5>
+                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                  </div> -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Operating System
+                          </div>
+                          <div class="col-md-6">
+                            <div style="float: right; color:#4775d1;     cursor: pointer;" type="button"
+                              data-toggle="modal" data-target="#exampleModal"
+                              (click)="doModal(data.os_to_select, 'Select Operating System', 'radio', data)">
+                              Change</div>
+                          </div>
+                        </div>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      {{data.custom_data && data.custom_data.os || 'NA'}}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: lightgray">
+                      <h3 class="panel-title">
+                        <div class="row">
+                          <div class="col-md-6" style="color: black;">
+                            Select Software (s)
+                          </div>
+                          <div class="col-md-6">
+                            <div style="float: right; color:#4775d1;     cursor: pointer;" type="button"
+                              data-toggle="modal" data-target="#exampleModal"
+                              (click)="doModal(data.app_to_select, 'Select Software (s)', 'checkbox', data)">
+                              Add</div>
+                          </div>
+                        </div>
+                      </h3>
+                    </div>
+                    <div class="panel-body">
+                      <ul *ngIf="data.custom_data && data.custom_data.apps_added && data.custom_data.apps_added.length">
+                        <li *ngFor="let app of data.custom_data.apps_added">{{app.versions}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="form-group">
+                    <div class="col-md-12" style="border: solid gray 1px;
+                        background-color: lightgray;">
+                      <div class="col-md-6" style="color: black;">
+                        Select Software(s)
+                      </div>
+                      <div class="col-md-6">
+                        <div style="text-align: right; color: #0000FF" type="button" data-toggle="modal"
+                          data-target="#exampleModal">
+                          Add</div>
+                      </div>
+                    </div>
+                    <div style=" border:solid gray 1px">
+                      <ul>
+                        <li>something</li>
+                        <li>something else</li>
+                      </ul>
+                    </div>
+                  </div> -->
+
+
+
+
+                  <!-- </div> -->
+
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlSelect1">Alert me before expiring in(days)</label>
+                    <select (change)="data.alert_before = $event.target.value" class="form-control form-width"
+                      id="exampleFormControlSelect1">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div> -->
+                  <mat-form-field style="width: 269px; padding-top: 19px;">
+                    <mat-select [value]="order_details.alert_me_before"
+                      (selectionChange)="order_details.alert_me_before = $event.value"
+                      placeholder="Alert me before expiring in(days)">
+                      <mat-option value="1">1</mat-option>
+                      <mat-option value="2">2</mat-option>
+                      <mat-option value="3">3</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <div class="form-group">
+                  <label for="exampleFormControlSelect2">Example multiple select</label>
+                  <select multiple class="form-control" id="exampleFormControlSelect2">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Example textarea</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div> -->
+                </form>
+
+                <!-- this form is for reserving a switch -->
+                <form *ngIf="selected_service_type && selected_service_type == 'switch'">
+                  <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                      <mat-form-field class="display-size">
+                        <input name="project_name" ngDefaultControl [disabled]="project_name_available"
+                          [(ngModel)]="order_details.project_name" matInput placeholder="Project">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-group">
+                    <label for="exampleFormControlInput1">Project</label>
+                    <input name="project_name" ngDefaultControl [(ngModel)]="data.project_name" type="text"
+                      class="form-control form-width" id="exampleFormControlInput1" placeholder="project name">
+                  </div> -->
+
+                  <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">Start Date</label> -->
+                        <mat-form-field class="display-size">
+                          <input (focus)="startDate.open()" [min]="order_details.start_date.value"
+                            [value]="order_details.start_date.value"
+                            (dateInput)="dateChange($event.value, 'start_date')" matInput [matDatepicker]="startDate"
+                            placeholder="Choose start date">
+                          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                          <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="project name"> -->
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">End Date</label> -->
+                        <mat-form-field class="display-size">
+                          <input (focus)="endDate.open()"
+                            [min]="moment(order_details.start_date.value).add(1, 'days')['_d']"
+                            [value]="order_details.end_date.value" (dateInput)="dateChange($event.value, 'end_date')"
+                            matInput [matDatepicker]="endDate" placeholder="Choose end date">
+                          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                          <mat-datepicker #endDate></mat-datepicker>
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+
+
+              </div>
+              <div
+                [ngClass]="{'col-md-4': selected_service_type == 'bare_metal', 'col-md-6': selected_service_type == 'switch'}">
+
+                <!-- <div class="col-md-4"> -->
+                <table *ngIf="data.server_details" class="table server-detail" style="border: solid 1px gray">
+                  <!-- <thead> -->
+                  <tr>
+                    <th scope="col">
+                      {{selected_service_type == 'bare_metal' ? 'Server Details' : api.capitalize(selected_service_type) + ' Specifications'}}
+                    </th>
+                  </tr>
+                  <!-- </thead>
+                  <tbody > -->
+                  <tr *ngFor="let row of Object.keys(data.server_details)">
+                    <td>{{api.humanize(row)}}</td>
+                    <td>{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                    <!-- <td>{{row}}</td>
+                      <td>{{data.server_details[row]}}</td> -->
+                  </tr>
+
+                  <!-- </tbody> -->
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+            Collapsible Group Item #2
+          </a>
+        </h4>
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse">
+        <div class="panel-body">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
+          officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
+          moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
+          keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur
+          butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably
+          haven't heard of them accusamus labore sustainable VHS.
+        </div>
+      </div>
+    </div> -->
+
+    </div>
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button> -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" *ngIf="modal_data.title">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{modal_data.title}}
+            </h5>
+            <button
+              (click)="cancelOsnApps(modal_data.inputType, modal_data.list, modal_data.row.custom_data.apps_added, modal_data.row)"
+              type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span style="font-size: 15px;" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-md-6" style="font-size: 15px;">List of {{modal_data.title.replace("Select", "")}}
+                ({{ modal_data.list.length}})
+              </div>
+              <div class="col-md-6" style="text-align: right;">
+                <button class="btn" style="margin-right: 10px; background-color: #313944; color: white;"
+                  data-dismiss="modal"
+                  (click)="cancelOsnApps(modal_data.inputType, modal_data.list, modal_data.row.custom_data.apps_added, modal_data.row)">CANCEL</button>
+                <button [disabled]="!modal_data.enable_osapp_add" class="btn btn-primary" data-dismiss="modal"
+                  (click)="addOsnApp_new(modal_data.inputType, modal_data.list, modal_data.row)">ADD</button>
+              </div>
+            </div>
+            <!-- Table  -->
+            <table class="table">
+              <!-- Table head -->
+              <thead>
+                <tr class="tr-heading">
+                  <th>
+                    <!-- Material unchecked -->
+                    <div class="form-check">
+                      <!-- <input type="checkbox" class="form-check-input" id="tableMaterialCheck1"> -->
+                      <label class="form-check-label"
+                        for="tableMaterialCheck1">{{modal_data.title.replace("Select", "")}} Name</label>
+                    </div>
+                  </th>
+                  <th>Version</th>
+                </tr>
+              </thead>
+              <!-- Table head -->
+
+              <!-- Table body -->
+              <tbody>
+                <tr *ngFor="let item of modal_data.list">
+                  <th scope="row">
+                    <!-- Material unchecked -->
+                    <div class="form-check">
+                      <input [type]="modal_data.inputType"
+                        (change)="osNappsSelection(modal_data.inputType, $event, modal_data.row, item, modal_data)"
+                        class="form-radio-input" [checked]="item.checked" id="tableMaterialCheck2">
+                      <label class="form-check-label" for="tableMaterialCheck2"
+                        style="font-weight: 1;padding-left: 10px;">{{api.capitalize(item.service_name)}}</label>
+                    </div>
+                  </th>
+                  <td>{{item.versions}}</td>
+                </tr>
+
+              </tbody>
+              <!-- Table body -->
+            </table>
+            <!-- Table  -->
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- end container -->
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->

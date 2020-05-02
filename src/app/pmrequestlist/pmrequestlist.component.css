@@ -1,0 +1,47 @@
+.mat-header-row, .mat-row {
+
+    border-top-width: 1px; 
+       border-top-style: solid;
+       border-top-color: rgba(0,0,0,.12);
+   }
+   .mat-elevation-z8{
+       padding:25px;
+   }
+   .example-full-width{
+       left: 80%;
+   }
+   input.mat-input-element {
+      
+       padding-bottom: 7px;
+   }
+   .mat-dialog-container {
+     
+       border-radius: 15px !important;
+      
+   }
+   .mat-raised-button[disabled]{
+    cursor:not-allowed;
+  }
+   mat-header-row{
+       background-color: white;
+       border-bottom-width: 0px; 
+      border-bottom-style: none;
+      /* font-weight:bold; */
+      min-height: 40px;
+   
+     }
+     mat-header-cell{
+    
+       font-weight:bold;
+      font-size:13px;
+      text-align: center!important;
+   
+     }
+     mat-row:hover {
+        /* background: #585858!important; */
+        background-color: #d6e8f1!important;
+        cursor:pointer;
+    }
+.mat-button[disabled][disabled]{
+cursor:not-allowed;
+}

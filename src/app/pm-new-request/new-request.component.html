@@ -1,0 +1,1135 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/Myservices/NewRequest">
+      VM Provisioning</span></h5>
+</div>
+
+
+<div class="container-fluid dashboardbody">
+  <div class="panel-group"  role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default" id="accordion">
+      <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+        aria-expanded="true" aria-controls="collapseOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Project Information
+          </a>
+          <span *ngIf="webService.selectedProject==undefined || webService.selectedPlatform == undefined || webService.selectedUserList == undefined || webService.todayDate==undefined || webService.lastDate==undefined && webService.todayDate=='' || webService.lastDate=='' || webService.selectedDelivaryLocation==undefined || webService.lineManger==undefined || webService.admin== undefined"
+            style="font-size: 11px;
+        margin-left: 70%;color:red">All fields are Required</span>
+        </h6>
+
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in accordion-body" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+          <div class="row">
+            <!-- <h5 style="margin-left:20px;">Project Information</h5> -->
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Project Name" #mySelect [(ngModel)]="webService.selectedProject" (change)="userList(webService.selectedProject);" required>
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search"  [(ngModel)]="searchProjectName" [ngModelOptions]="{standalone: true}"
+                      class="searchInput" placeholder="Search" />
+                  </div>
+
+                  <mat-option *ngFor="let name of project_names| search: searchProjectName: 'projectNames'" [value]="name">{{name}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+              </mat-form-field>
+            </div>
+            <!-- <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="users" [(ngModel)]="webService.selectedUserList" multiple>
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search" [(ngModel)]="searchusers" [ngModelOptions]="{standalone: true}" class="searchInput"
+                      placeholder="Search" />
+                  </div>
+                  <mat-checkbox style="margin-left:15px" class="example-margin" [(ngModel)]="checked" (change)="checkAllUsers(checked)">check
+                    All</mat-checkbox>
+
+                  <mat-option *ngFor="let user of webService.userslist| search: searchusers: 'users'" [value]="user">{{user}}</mat-option>
+                </mat-select>
+         <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> 
+              </mat-form-field>
+            </div> -->
+            <div class="col-md-3">
+              <!-- <mat-form-field>
+                <div style="display:flex">
+                  <span ><input matInput [owlDateTime]="dt1" [min]="webService.currentDate" 
+                      placeholder="Start Date" [(ngModel)]="webService.todayDate" (dateTimeChange)="changeStartDate($event)"></span>
+                  <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span></div>
+                <owl-date-time #dt1></owl-date-time>
+              </mat-form-field> -->
+              <!-- [(ngModel)]="webService.todayDate" -->
+
+              <mat-form-field >
+                <input matInput [matDatepicker]="picker" readonly  (focus)="picker.open()" [formControl]="date"  [min]="webService.currentDate" [(ngModel)]="webService.todayDate"
+                  placeholder="Start Date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            <!--   <mat-form-field style='width:100px'>
+                <input matInput type="time" [(ngModel)]="webService.todayTimeReservation">
+              </mat-form-field> -->
+              <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <!-- <mat-form-field >
+                  <div style="display:flex">
+                    <span><input matInput [(ngModel)]="webService.lastDate" [owlDateTime]="dt2" [min]="webService.todayDate || webService.currentDate"
+                      [max]="webService.toDateLimit" placeholder="End Date" (ngModelChange)="changeEndDate($event)"
+                      ></span>
+                    <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span></div>
+                    <owl-date-time #dt2></owl-date-time>
+                  </mat-form-field> -->
+              <!-- [(ngModel)]="webService.lastDate" -->
+
+              <!-- <angular2-date-picker [(ngModel)]="date" [settings]="settings"></angular2-date-picker> -->
+              <mat-form-field  >
+                <input matInput [matDatepicker]="picker1" [formControl]="date"  (focus)="picker1.open()" readonly  [disabled]="!webService.todayDate" [min]="webService.todayDate || webService.currentDate" [max]="webService.toDateLimit"
+                  placeholder="End Date" [(ngModel)]="webService.lastDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 ></mat-datepicker>
+              </mat-form-field>
+              <!-- <mat-form-field style='width:100px'>
+                <input matInput type="time" [(ngModel)]="webService.lastTimeReservation">
+              </mat-form-field> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Delivery Location"  required [disabled]="true" [(ngModel)]="webService.selectedDelivaryLocation">
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search" [(ngModel)]="searchDeliveryLocation" [ngModelOptions]="{standalone: true}"
+                      class="searchInput" placeholder="Search" />
+                  </div>
+                  <mat-option *ngFor="let location of delivary_locations| search: searchDeliveryLocation: 'location'"
+                    [value]="location">{{location}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+           
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Platform" required [disabled]="true" (change)="opensubtype()" [(ngModel)]="webService.selectedPlatform">
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search" [(ngModel)]="searchplatform" [ngModelOptions]="{standalone: true}"
+                      class="searchInput" placeholder="Search" />
+                  </div>
+                  <mat-option *ngFor="let platform of platform_name| search: searchplatform: 'platforms'" [value]="platform">{{platform}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+
+              <mat-form-field>
+                <input matInput type="text" required placeholder="Line Manager" readonly [(ngModel)]="webService.lineManger">
+              </mat-form-field>
+              <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <input matInput type="text" readonly required placeholder="Admin" [(ngModel)]="webService.admin">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3" style="float: right;">
+              <button mat-raised-button class="pro" (click)="getFilteredData()" *ngIf="webService.selectedPlatform=='Physical'"
+                style="float: right;margin-right: 15%;border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white"
+                [disabled]="webService.selectedProject==undefined || webService.selectedPlatform == undefined || webService.selectedUserList == undefined || webService.todayDate==undefined || webService.lastDate==undefined && webService.todayDate=='' || webService.lastDate==''">Filter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" *ngIf="webService.selectedPlatform=='Container'||webService.selectedPlatform=='Virtual Machine'">
+      <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion"
+        aria-expanded="true" href="#collapseTwo" aria-controls="collapseTwo">
+        <h6 class="panel-title">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#collapseTwo"
+            aria-controls="collapseTwo">
+            Services
+          </a>
+        </h6>
+
+      </div>
+      <!-- <div *ngIf="selectedProject!=undefined && selectedPlatform != undefined selectedUserList!=undefined && todayDate!=undefined && lastDate!=undefined && selectedDelivaryLocation!=undefined && lineManger!=undefined && admin!= undefined"> -->
+      <div id="collapseTwo" class="panel-collapse collapse in accordion-body" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="panel-body">
+          <div id="paneltab" class="panel with-nav-tabs">
+            <div class="panel-heading panel_header">
+<!--              <ul class="nav nav-tabs" id="tabs">
+                <li id="Developer" class="active" *ngIf="webService.selectedPlatform=='Container' || webService.selectedPlatform=='Virtual Machine'">
+                  <a class="tab-color" href="#DeveloperWs" data-toggle="tab">Virtual Machines</a>
+                </li>
+                <li id="Analytics" *ngIf="webService.selectedPlatform=='Container' ">
+                  <a class="tab-color" href="#AnalyticsService" data-toggle="tab">Analytics Services</a>
+                </li>
+                <li id="MLDL" *ngIf="webService.selectedPlatform=='Container' ">
+                  <a class="tab-color" href="#MLorDL" data-toggle="tab">ML/DL Framework</a>
+                </li>
+                <li id="Application" *ngIf="webService.selectedPlatform=='Container' || webService.selectedPlatform=='Virtual Machine'">
+                  <a class="tab-color" href="#ApplicationService" data-toggle="tab">Application Services</a>
+                </li>
+                <li class="tab-color" id="Dev" *ngIf="webService.selectedPlatform=='Container' || webService.selectedPlatform=='Virtual Machine'">
+                  <a class="tab-color" href="#DevOps" data-toggle="tab">DevOps Tools</a>
+                </li> 
+
+
+              </ul>-->
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              <div class="tab-content">
+
+                <div class="tab-pane active" id="DeveloperWs">
+                  <div class="row">
+                    <!-- <h5 style="margin-left:20px;">Developer Workstation</h5> -->
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" name="ubuntu"  (change)="check()" id="ubuntu1604" value="ubuntu16">
+                        <label for="ubuntu1604">
+                          <img src="./assets/images/DeveloperWorkStation/ubuntu-16.png" (click)="saveProjectInformation('Ubuntu-16.04')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Ubuntu 16</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="ubuntu" class="sjji" id="ubuntu1404" value="ubuntu14">
+                        <label for="ubuntu1404">
+                          <img src="./assets/images/DeveloperWorkStation/ubuntu-14.png" (click)="saveProjectInformation('Ubuntu-14.04')"
+                            height="140px" width="182px" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Ubuntu 14</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" name="ubuntu" (change)="check()" id="ubuntu14server" value="ubuntu14server"
+                          [(ngModel)]="python_vde">
+                        <label for="ubuntu14server">
+                          <img src="./assets/newimages/centos.png" (click)="saveProjectInformation('ubuntu 14 server')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>CentOS</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                  <button mat-raised-button color="primary" (click)="submit()" style="background:#072f61;font-weight:bold">Create New Request</button>
+              
+              </div> -->
+                </div>
+                <div class="tab-pane" id="AnalyticsService">
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Ingestion:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Ingestion" id="kafka">
+                        <label for="kafka">
+                          <img src="./assets/images/Icons/kafka_175x131.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Kafka</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Ingestion" class="sjji" id="flume">
+                        <label for="flume">
+                          <img src="./assets/images/Icons/Flume_175x131.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Flume</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Ingestion" id="sqoop">
+                        <label for="sqoop">
+                          <img src="./assets/images/Icons/apache-sqoop.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Sqoop</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Processing:</h6>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Processing" id="spark">
+                        <label for="spark">
+                          <img src="./assets/images/Icons/spark.png" (click)="saveProjectInformation('spark')" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Spark</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Processing" id="storm">
+                        <label for="storm">
+                          <img src="./assets/images/Icons/STROM.png" (click)="saveProjectInformation('Storm')" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Storm</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Processing" id="hue">
+                        <label for="hue">
+                          <img src="./assets/images/Icons/hue.png" (click)="saveProjectInformation('nothing')" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Hue</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Processing" id="hbase">
+                        <label for="hbase">
+                          <img src="./assets/images/Icons/apacheHBASE.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Hbase</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+
+
+                    <!-- <h5 style="margin-left:20px;">Developer Workstation</h5> -->
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Processing" id="hive">
+                        <label for="hive">
+                          <img src="./assets/images/Icons/HIVE.png" (click)="saveProjectInformation('nothing')" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Hive</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Processing" class="sjji" id="zookeeper">
+                        <label for="zookeeper">
+                          <img src="./assets/images/Icons/ApacheZooKeeper.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>ZooKeeper</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Storage:</h6>
+
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Storage" id="cassandra">
+                        <label for="cassandra">
+                          <img src="./assets/images/Icons/cassandra.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Cassandra</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+
+
+
+
+                    <!-- <h5 style="margin-left:20px;">Developer Workstation</h5> -->
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Storage" id="mongodb">
+                        <label for="mongodb">
+                          <img src="./assets/images/Icons/mongoDB.png" (click)="saveProjectInformation('Mongodb')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Mongodb</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Storage" class="sjji" id="mysql">
+                        <label for="mysql">
+                          <img src="./assets/images/Icons/MySQL.png" (click)="saveProjectInformation('Mysql')" class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Mysql</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Visualization:</h6>
+
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Visualization" id="jupyter">
+                        <label for="jupyter">
+                          <img src="./assets/images/Icons/Juoyler.png" (click)="saveProjectInformation('Jupyter')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Jupyter</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Visualization" id="grafana">
+                        <label for="grafana">
+                          <img src="./assets/images/Icons/Grafana.png" (click)="saveProjectInformation('Grafana')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Grafana</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                          <button mat-raised-button color="primary" (click)="submit()"  style="background:#072f61;font-weight:bold">Create New Request</button>
+                      
+                      </div> -->
+                </div>
+
+                <div class="tab-pane" id="MLorDL">
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">ML/DL Frame work:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="MLorDL" id="mxnet">
+                        <label for="mxnet">
+                          <img src="./assets/images/MLDLFramework/mxnet.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>mxnet</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="MLorDL" class="sjji" id="paddlepaddle">
+                        <label for="paddlepaddle">
+                          <img src="./assets/images/MLDLFramework/paddlepaddle.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>PaddlePaddle</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="MLorDL" id="tensorflow">
+                        <label for="tensorflow">
+                          <img src="./assets/images/MLDLFramework/tensorflow.png" (click)="saveProjectInformation('Tensorflow')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>TensorFlow</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Deployment Platform:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Deployment" id="amdfirepro">
+                        <label for="amdfirepro">
+                          <img src="./assets/images/AMDFirePro.png" (click)="saveProjectInformation('Kafka')" class="img-thumbnail bordercolor imgheight">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>AMDFirePro</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="Deployment" class="sjji" id="amdvega">
+                        <label for="amdvega">
+                          <img src="./assets/images/AMDVega.jpg" (click)="saveProjectInformation('nothing')" class="img-thumbnail bordercolor imgheight">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>AMDVega</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="Deployment" id="nvidiageforce">
+                        <label for="nvidiageforce">
+                          <img src="./assets/images/NvidiaGeforce.jpg" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor imgheight">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>NvidiaGeforce</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row">
+                              <button mat-raised-button color="primary" (click)="submit()"  style="background:#072f61;font-weight:bold">Create New Request</button>
+                          
+                          </div>     -->
+                </div>
+                <div class="tab-pane" id="ApplicationService">
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Database Services:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="dbSolutions" id="dbmysql">
+                        <label for="dbmysql">
+                          <img src="./assets/images/ApplicationServices/mysql.png" (click)="saveProjectInformation('MySql')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>MySql</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="dbSolutions" class="sjji" id="Mongodb">
+                        <label for="Mongodb">
+                          <img src="./assets/images/ApplicationServices/mongodb.png" (click)="saveProjectInformation('Mongodb')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Mongo DB</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="dbSolutions" id="postgresql">
+                        <label for="postgresql">
+                          <img src="./assets/images/ApplicationServices/postgresql.png" (click)="saveProjectInformation('nothing')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>PostgreSQL</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Web Servers:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="WebServers" id="nginx">
+                        <label for="nginx">
+                          <img src="./assets/images/ApplicationServices/nginx.png" (click)="saveProjectInformation('Nginx')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Nginx</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="WebServers" class="sjji" id="apache">
+                        <label for="apache">
+                          <img src="./assets/images/ApplicationServices/apache.png" (click)="saveProjectInformation('Apache2')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Apache server</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="imageandtext image_grid">
+                        <input type="checkbox" (change)="check()" name="WebServers" id="tomcat">
+                        <label for="tomcat">
+                          <img src="./assets/images/ApplicationServices/apachetomcat.png" (click)="saveProjectInformation('Tomcat')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+                            <p>Tomcat</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                              <button mat-raised-button color="primary" (click)="submit()" style="background-color: #3c763d">Create New Request</button>
+                          
+                          </div> -->
+                </div>
+                <div class="tab-pane" id="DevOps">
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Code Review:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="codeReview" id="gerrit">
+                        <label for="gerrit">
+                          <img src="./assets/images/DevOpsTools/gerrit.png" (click)="saveProjectInformation('Gerrit')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Gerrit</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold"> Source Code Management:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="sourceCode" id="gitlab">
+                        <label for="gitlab">
+                          <img src="./assets/images/DevOpsTools/gitlab.png" (click)="saveProjectInformation('GitLab')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>GitLab</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="sourceCode" id="svn">
+                        <label for="svn">
+                          <img src="./assets/images/DevOpsTools/svn.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Subversion</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;;font-weight:bold"> Continuous Integration:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousIntegration" id="jenkins">
+                        <label for="jenkins">
+                          <img src="./assets/images/DevOpsTools/jenkins.png" (click)="saveProjectInformation('Jenkins')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Jenkins</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousIntegration" id="travis">
+                        <label for="travis">
+                          <img src="./assets/images/DevOpsTools/travis.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Travis</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousIntegration" id="bamboo">
+                        <label for="bamboo">
+                          <img src="./assets/images/DevOpsTools/bamboo.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Bamboo</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Project Management:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="projectManagement" id="redmine">
+                        <label for="redmine">
+                          <img src="./assets/images/DevOpsTools/redmine.png" (click)="saveProjectInformation('Redmine')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Redmine</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="projectManagement" id="openproject">
+                        <label for="openproject">
+                          <img src="./assets/images/DevOpsTools/openproject-logo.jpg" (click)="saveProjectInformation('Kafka')"
+                            width="96px" class="img-thumbnail bordercolor imgheight">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>OpenProject</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Configuration Tools:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousTools" id="ansible">
+                        <label for="ansible">
+                          <img src="./assets/images/DevOpsTools/ansible.png" (click)="saveProjectInformation('Ansible')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Ansible</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousTools" id="chef">
+                        <label for="chef">
+                          <img src="./assets/images/DevOpsTools/chef.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Chef</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="continuousTools" id="puppet">
+                        <label for="puppet">
+                          <img src="./assets/images/DevOpsTools/puppet.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Puppet</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <h6 style="text-align:left;    margin-left: 20px;font-weight:bold">Monitoring Tools:</h6>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="monitoringTools" id="zabbix">
+                        <label for="zabbix">
+                          <img src="./assets/images/DevOpsTools/zabbix.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Zabbix</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="monitoringTools" id="prometheus">
+                        <label for="prometheus">
+                          <img src="./assets/images/DevOpsTools/prometheus.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Prometheus</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+
+
+                      <div class="imageandtext image_grid">
+
+                        <input type="checkbox" (change)="check()" name="monitoringTools" id="nagios">
+                        <label for="nagios">
+                          <img src="./assets/images/DevOpsTools/nagios.png" (click)="saveProjectInformation('Kafka')"
+                            class="img-thumbnail bordercolor">
+                          <div class="overlay"></div>
+                          <div class="caption">
+
+                            <p>Nagios</p>
+                          </div>
+                        </label>
+
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- </div> -->
+    </div>
+    <div class="panel panel-default" *ngIf="webService.selectedPlatform=='Physical'">
+      <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+        aria-expanded="true" aria-controls="collapseThree">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            Bare metal Services
+          </a>
+
+        </h6>
+
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse in accordion-body" role="tabpanel" aria-labelledby="headingThree">
+        <div class="panel-body">
+          <!-- <mat-form-field>
+            <input matInput [matDatepicker]="pickerFilter" [min]="webService.currentDate" [(ngModel)]="webService.todayDate"
+              placeholder="Start Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerFilter"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFilter></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="time" [(ngModel)]="webService.todayTimeReservation">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="pickerFilter1" [min]="webService.todayDate || webService.currentDate"
+              placeholder="End Date" [(ngModel)]="webService.lastDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerFilter1"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFilter1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="time" [(ngModel)]="webService.lastTimeReservation">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+          </mat-form-field> -->
+
+          <!-- <button (click)="getFilteredData()">Filter</button> -->
+
+          <mat-table id="bareMetalTable" [dataSource]="bareMetalDataSource" matSort>
+
+
+            <!--   
+        <ng-container matColumnDef="position">
+          
+          <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+        
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+    
+        </ng-container> -->
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="checked">
+              <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <mat-checkbox [(ngModel)]="element.checked" (change)="addBareMetal(element)"></mat-checkbox>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceid">
+              <mat-header-cell *matHeaderCellDef  >Service Id</mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)">{{element.serviceid}}</mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef  > Name</mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <!--ng-container matColumnDef="startDate">
+                <mat-header-cell *matHeaderCellDef  > Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.startDate}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="endDate">
+                <mat-header-cell *matHeaderCellDef  > End Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.endDate}} </mat-cell>
+              </ng-container-->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef  > Status </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.status}}
+              </mat-cell>
+            </ng-container>
+            <!--ng-container matColumnDef="location_id">
+                <mat-header-cell *matHeaderCellDef  > Delivary Location </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+              </ng-container> -->
+            <ng-container matColumnDef="reservedBy">
+              <mat-header-cell *matHeaderCellDef  > Reserved By </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.reservedBy}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="allocatedTo">
+              <mat-header-cell *matHeaderCellDef  > Allocated To </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.allocatedTo}}
+              </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef  > Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-raised-button class="pro" [disabled]="" style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="openDialog()" >Reserve</button>
+                </mat-cell>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef  > Price($) </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+              </ng-container>
+     -->
+            <ng-container matColumnDef="pricePerHr">
+              <mat-header-cell *matHeaderCellDef  > Price per Hr($) </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)">
+                 {{element.pricePerHr}}
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="row" style="text-align:center;">
+      <button mat-raised-button class="cancel" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"
+        (click)="cancle()">Cancel</button>
+      <button mat-raised-button class="pro" [disabled]="webService.selectedProject==undefined || webService.selectedPlatform == undefined || webService.selectedUserList == undefined || webService.todayDate==undefined || webService.lastDate==undefined && webService.todayDate=='' || webService.lastDate=='' || webService.selectedDelivaryLocation==undefined || webService.lineManger==undefined || webService.admin== undefined || ((webService.selectedPlatform=='Container'||webService.selectedPlatform=='Virtual Machine') && (webService.imageArray.length==0 && imageArray.length==0 && disablecheck()))"
+        style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="submit()">Continue</button>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<!-- <div class="dashboardhead">
+
+    <h5 class="dashboardBody_Heading"><span style="font-weight: bold;" routerLink="/lmdashboard">Dashboard</span></h5>
+</div> -->
+
+<div class="container-fluid dashboardbody" style="overflow: hidden; overflow-y: auto;">
+
+    <h4>BUDGET OVERVIEW</h4>
+    <hr>
+    <h5 style="text-align: center;
+    font-size: 20px;">Budget Usage</h5>
+    <div id="chartdiv_bar" style="height: 50%; width: 100%"></div>
+
+    
+    <h4>USAGE</h4>
+    <hr>
+
+    <div>
+        <app-carousel [data]="data_pie"></app-carousel>
+    </div>
+
+</div>

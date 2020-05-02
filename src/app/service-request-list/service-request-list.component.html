@@ -1,0 +1,99 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/catalogue">Catalogue</span>
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Catalogue List
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+        <mat-form-field class="example-full-width">
+
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+        </mat-form-field>
+        
+
+        <mat-table [dataSource]="dataSource" matSort>
+
+
+          <!--   
+    <ng-container matColumnDef="position">
+      
+      <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+    
+        <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+
+    </ng-container> -->
+ <!-- Symbol Column -->
+ <ng-container matColumnDef="serviceId">
+  <mat-header-cell *matHeaderCellDef  >Service Id</mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.serviceId}} </mat-cell>
+</ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="serviceName">
+            <mat-header-cell *matHeaderCellDef  >Service Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.serviceName}}</mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="serviceType">
+            <mat-header-cell *matHeaderCellDef  > Service Type</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.serviceType}} </mat-cell>
+          </ng-container>
+
+         
+          <ng-container matColumnDef="imageType">
+            <mat-header-cell *matHeaderCellDef  >Image Type</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.imageType}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="versions">
+            <mat-header-cell *matHeaderCellDef  > Versions </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.versions}} </mat-cell>
+          </ng-container>
+          <!-- <ng-container matColumnDef="location_id">
+            <mat-header-cell *matHeaderCellDef  > Delivary Location </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef  >Description</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="pricePerHr">
+            <mat-header-cell *matHeaderCellDef  > Price per Hour($)</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.pricePerHr}} </mat-cell>
+          </ng-container>
+         
+          <!-- <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef  > Price($) </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+          </ng-container>
+ -->
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row (click)="viewRequest(row.request_id)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+
+
+        <!--BareMetal Table start-->
+
+        <!--BareMetal Table end-->
+
+
+      </div>
+    </div>
+
+</div>
+</div>

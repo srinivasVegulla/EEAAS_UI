@@ -1,0 +1,526 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <!-- <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/reservationSystem">
+      Reservation System</span> -->
+      <span *ngIf="auth.role == 'PM'">
+        <span routerLink="/dashboard">Dashboard</span>/
+        <span style="font-weight: bold;">Services</span>
+        </span>
+    
+        <span *ngIf="auth.role == 'Admin'">
+        <span routerLink="/AdminDashboard">Dashboard</span>/
+        <span style="font-weight: bold;" >Services</span>
+        </span>
+      <span *ngIf="auth.role == 'LM'">
+        <span routerLink="/lmdashboard">Dashboard</span>/
+        <span style="font-weight: bold;">Services</span>
+        </span>
+  </h5>
+</div>
+
+
+<div class="container-fluid dashboardbody">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <table style="width:100%">
+      <tr>
+        <td style="padding: 3%">
+          <table style="width:100%" class="innerTable">
+            <tr>
+              <td>
+                <div class="panel panel-default" style="margin-bottom:15px">
+                  <div class="panel-heading" id="headingOne">
+                    <h6 class="panel-title">
+                      Server Details
+                    </h6>
+
+                  </div>
+                  <div class="panel-body" style="padding-left: 30px;">
+
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td>Name</td>
+                          <td>:</td>
+                          <td>{{serverDetails.name}}</td>
+                        </tr>
+                        <tr>
+                          <td>Reserved By</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Reserved_By}}</td>
+                        </tr>
+                        <tr>
+                          <td>Description</td>
+                          <td>:</td>
+                          <td>{{serverDetails.description}}</td>
+                        </tr>
+                        <tr>
+                          <td>Hostname</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Hostname}}</td>
+                        </tr>
+                        <tr>
+                          <td>Password</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Password}}</td>
+                        </tr>
+                        <tr>
+                          <td>Username</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Username}}</td>
+                        </tr>
+                        <tr>
+                          <td>Memory</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Memory}}</td>
+                        </tr>
+                        <tr>
+                          <td>Tags</td>
+                          <td>:</td>
+                          <td>{{serverDetails.tags}}</td>
+                        </tr>
+                        <tr>
+                          <td>Console URLs</td>
+                          <td>:</td>
+                          <td>{{serverDetails.console_urls}}</td>
+                        </tr>
+                        <tr>
+                          <td>License </td>
+                          <td>:</td>
+                          <td>{{serverDetails.License}}</td>
+                        </tr>
+                        <tr>
+                          <td>FIPS Card</td>
+                          <td>:</td>
+                          <td>{{serverDetails.FIPS_Card}}</td>
+                        </tr>
+                        <tr>
+                          <td>Lab Location </td>
+                          <td>:</td>
+                          <td>{{serverDetails.Lab_location}}</td>
+                        </tr>
+                        <tr>
+                          <td>Make</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Make}}</td>
+                        </tr>
+                        <tr>
+                          <td>Model</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Model}}</td>
+                        </tr>
+                        <tr>
+                          <td>Network Mask</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Network_Mask}}</td>
+                        </tr>
+                        <tr>
+                          <td>Reserved</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Reserved}}</td>
+                        </tr>
+                        <tr>
+                          <td>Template</td>
+                          <td>:</td>
+                          <td>{{serverDetails.template}}</td>
+                        </tr>
+                        <tr>
+                          <td>Driver</td>
+                          <td>:</td>
+                          <td>{{serverDetails.driver}}</td>
+                        </tr>
+                        <tr>
+                          <td>Out of Service</td>
+                          <td>:</td>
+                          <td>{{serverDetails.out_of_service}}</td>
+                        </tr>
+                        <tr>
+                          <td>Default Gateway </td>
+                          <td>:</td>
+                          <td>{{serverDetails.Default_Gateway}}</td>
+                        </tr>
+                        <tr>
+                          <td>Facility</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Facility}}</td>
+                        </tr>
+                        <tr>
+                          <td>Facility Location </td>
+                          <td>:</td>
+                          <td>{{serverDetails.Facility_Location}}</td>
+                        </tr>
+                        <tr>
+                          <td>Prototype</td>
+                          <td>:</td>
+                          <td>{{serverDetails.Prototype}}</td>
+                        </tr>
+                        <tr>
+                          <td>SSL Card</td>
+                          <td>:</td>
+                          <td>{{serverDetails.SSL_Card}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <!-- <mat-table id="bareMetalTable" [dataSource]="dataSource" matSort>
+          
+                      <ng-container matColumnDef="FIPS_Card">
+                        <mat-header-cell *matHeaderCellDef  >FIPS Card</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.FIPS_Card}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Facility">
+                        <mat-header-cell *matHeaderCellDef  >Facility</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Facility}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Facility_Location">
+                        <mat-header-cell *matHeaderCellDef  >Facility Location</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Facility_Location}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Lab_location">
+                        <mat-header-cell *matHeaderCellDef  >Lab Location</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Lab_location}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="License">
+                        <mat-header-cell *matHeaderCellDef  >License</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.License}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Make">
+                        <mat-header-cell *matHeaderCellDef  >Make</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Make}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Memory">
+                        <mat-header-cell *matHeaderCellDef  >Memory</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Memory}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Model">
+                        <mat-header-cell *matHeaderCellDef  >Model</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Model}}</mat-cell>
+                      </ng-container>
+          
+                      <mat-header-row *matHeaderRowDef="serverDetailsCol1"></mat-header-row>
+          
+                      <mat-row *matRowDef="let row; columns: serverDetailsCol1;"></mat-row>
+                    </mat-table> -->
+                    <!-- <mat-table id="bareMetalTable" [dataSource]="dataSource" matSort>
+          
+                      <ng-container matColumnDef="Network_Mask">
+                        <mat-header-cell *matHeaderCellDef  >Network Mask</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Network_Mask}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Password">
+                        <mat-header-cell *matHeaderCellDef  >Password</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Password}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Prototype">
+                        <mat-header-cell *matHeaderCellDef  >Prototype</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Prototype}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Reserved">
+                        <mat-header-cell *matHeaderCellDef  >Reserved</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Reserved}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Reserved_By">
+                        <mat-header-cell *matHeaderCellDef  >Reserved By</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Reserved_By}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="SSL_Card">
+                        <mat-header-cell *matHeaderCellDef  >SSL Card</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.SSL_Card}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="Username">
+                        <mat-header-cell *matHeaderCellDef  >Username</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Username}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="console_urls">
+                        <mat-header-cell *matHeaderCellDef  >Console URLs</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.console_urls}}</mat-cell>
+                      </ng-container>
+          
+                      <mat-header-row *matHeaderRowDef="serverDetailsCol2"></mat-header-row>
+          
+                      <mat-row *matRowDef="let row; columns: serverDetailsCol2;"></mat-row>
+                    </mat-table>
+                    <mat-table id="bareMetalTable" [dataSource]="dataSource" matSort>
+          
+                      <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef  >Description</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.description}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="driver">
+                        <mat-header-cell *matHeaderCellDef  >Driver</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.driver}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef  >Name</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="out_of_service">
+                        <mat-header-cell *matHeaderCellDef  >Out of Service</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.out_of_service}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="service_id">
+                        <mat-header-cell *matHeaderCellDef  >Service ID</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.service_id}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="tags">
+                        <mat-header-cell *matHeaderCellDef  >tags</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.tags}}</mat-cell>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="template">
+                        <mat-header-cell *matHeaderCellDef  >template</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.template}}</mat-cell>
+                      </ng-container>
+          
+                      <mat-header-row *matHeaderRowDef="serverDetailsCol3"></mat-header-row>
+          
+                      <mat-row *matRowDef="let row; columns: serverDetailsCol3;"></mat-row>
+                    </mat-table> -->
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="panel panel-default" style="margin-bottom:15px">
+                  <div class="panel-heading" id="headingTwo">
+                    <!-- role="tab" data-toggle="collapse" data-parent="#accordion"
+                    href="#collapseOne" aria-expanded="true" aria-controls="collapseTwo"> -->
+                    <h6 class="panel-title">
+                      <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                        aria-controls="collapseOne"> -->
+                      Assets
+                      <!-- </a> -->
+                    </h6>
+
+                  </div>
+                  <!-- <div id="collapseTwo" class="panel-collapse collapse in accordion-body" role="tabpanel"
+                    aria-labelledby="headingThree"> -->
+                  <div class="panel-body" style="padding-left: 30px;">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td>Asset Tag Blade 1</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_1}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 2</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 3</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_3}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 4</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_4}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 5</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_5}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 6</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_6}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 7</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_7}}</td>
+                        </tr>
+                        <tr>
+                          <td>Asset Tag Blade 8</td>
+                          <td>:</td>
+                          <td>{{assets.Asset_Tag_Blade_8}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- </div> -->
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td style="padding: 3%;vertical-align:top;">
+          <table style="width:100%" class="innerTable">
+            <tr>
+              <td>
+                <div class="panel panel-default" style="margin-bottom:15px">
+                  <div class="panel-heading" id="headingThree">
+                    <h6 class="panel-title">
+                      <!-- <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                        aria-controls="collapseOne"> -->
+                      Chassis 1
+                      <!-- </a> -->
+                    </h6>
+
+                  </div>
+                  <div class="panel-body" style="padding-left: 30px;">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td>Chassis </td>
+                          <td>:</td>
+                          <td>{{chassis.Chassis}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address</td>
+                          <td>:</td>
+                          <td>{{chassis.ip_Address}}</td>
+                        </tr>
+                        <tr>
+                          <td>Serial Number</td>
+                          <td>:</td>
+                          <td>{{chassis.Serial_Number}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 1</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_1}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 2</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 3</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_3}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 4</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_4}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 5</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_5}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 6</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_6}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 7</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_7}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 8</td>
+                          <td>:</td>
+                          <td>{{iP_address_blade.IP_Address_Blade_8}}</td>
+                        </tr>
+                        <tr>
+                          <td>Floor Position </td>
+                          <td>:</td>
+                          <td>{{chassis.Floor_Position}}</td>
+                        </tr>
+                        <tr>
+                          <td>Console to AOM</td>
+                          <td>:</td>
+                          <td>{{chassis.Console_to_AOM}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="panel panel-default" style="margin-bottom:15px">
+                  <div class="panel-heading" id="headingFour">
+                    <h6 class="panel-title">
+                      Chassis 2
+                    </h6>
+
+                  </div>
+                  <div class="panel-body" style="padding-left: 30px;">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td>Chassis </td>
+                          <td>:</td>
+                          <td>{{chassis2.Chassis_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address</td>
+                          <td>:</td>
+                          <td>{{chassis2.ip_Address_Chassis_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>Serial Number</td>
+                          <td>:</td>
+                          <td>{{chassis2.Serial_Number_Chassis_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 1</td>
+                          <td>:</td>
+                          <td>{{iP_address_chassis_2_blade.IP_Address_Chassis_2_Blade_1}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 2</td>
+                          <td>:</td>
+                          <td>{{iP_address_chassis_2_blade.IP_Address_Chassis_2_Blade_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 3</td>
+                          <td>:</td>
+                          <td>{{iP_address_chassis_2_blade.IP_Address_Chassis_2_Blade_3}}</td>
+                        </tr>
+                        <tr>
+                          <td>IP Address Blade 4</td>
+                          <td>:</td>
+                          <td>{{iP_address_chassis_2_blade.IP_Address_Chassis_2_Blade_4}}</td>
+                        </tr>
+                        <tr>
+                          <td>Floor Position </td>
+                          <td>:</td>
+                          <td>{{chassis2.Floor_Position_Chassis_2}}</td>
+                        </tr>
+                        <tr>
+                          <td>Console to AOM</td>
+                          <td>:</td>
+                          <td>{{chassis2.Console_to_AOM_Chassis_2}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

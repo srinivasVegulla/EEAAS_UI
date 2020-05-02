@@ -1,0 +1,127 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]=true hideToggle="true"  style="background: rgba(0,0,0,.04); overflow: auto;margin-left: 2%;
+  margin-right: 2%;    margin-top: 2%;" #example1>
+     <mat-expansion-panel-header>
+        <mat-panel-title>
+           Test Environment
+        </mat-panel-title>
+        <mat-panel-description>
+            <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="!example1.expanded">+</mat-icon>
+            <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="example1.expanded">-</mat-icon>
+        </mat-panel-description>
+     </mat-expansion-panel-header>
+     <div clas="row" >
+        <div  *ngFor="let image of images">
+           <div class="col-xs-3 col-md-3 col-lg-3 ">
+              <div class="box1">
+                 <div class="box2">
+                    <div class="row">
+                       <div class="col-xs-12" >
+                          <img src={{image.source}} alt="image" style="height:110px;width:150px;margin:9%">
+                       </div>
+                    </div>
+                 </div>
+                 <div class="box-text">
+                    <div class="row">
+                       <div class="col-xs-8">
+                          <h4 style="text-transform: lowercase;">v<span style="text-transform: uppercase;color:rgb(79, 174, 229)">{{image.name}}</span></h4>
+                       </div>
+                       <div class="col-xs-4">
+                          <span data-toggle="tooltip" style="cursor: pointer;" data-placement="left" title="View Topology" class="a1" (click)="showConnectOnClick(image.name)">
+                         
+                          <i class="fa fa-th-list" aria-hidden="true"></i>
+                          
+                          </span>
+                       </div>
+                       <div class="col-xs-12">
+                          <p style="font-size:8px">This allows you to deploy {{image.target}} with pre defined configurations</p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="webService.panelOpenStateTwo" hideToggle="true" (closed)="onCollapseTwo()" (opened)="onExpandTwo()" style="overflow: auto; background: rgba(0,0,0,.04); margin-left: 2%;margin-right: 2%;margin-top: 2%;" #example2>
+     <mat-expansion-panel-header>
+        <mat-panel-title>
+           Test Environment - Topology
+        </mat-panel-title>
+        <mat-panel-description>
+            <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="!example2.expanded">+</mat-icon>
+            <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="example2.expanded">-</mat-icon>
+        </mat-panel-description>
+     </mat-expansion-panel-header>
+     <div  id="accodianTopology" class="content">
+      <div class="box-tools pull-right">
+             <button type="button" id="launchbutton" class="btn btn-success" (click)="reserveFunc()" data-toggle="modal">Reserve{{3+3}}
+               <i class="fa"></i></button>
+             <button type="button" class="btn btn-primary">Execute
+               <i class="fa fa-forward"></i></button>
+             <label style="color:green">{{status}}</label>
+      </div>
+      <br>
+      <div>
+       <div id="{{module.blockId}}" class="item" *ngFor="let module of webService.components" [ngStyle]="{ 'left':module.positionX+'px', 'top':module.positionY+'px' }">
+       
+        <div class="row">
+              <div class="col-xs-4"><img src='../assets/testerImages/{{module.title}}.png' class='iconDetails' ></div>
+       <div class="col-xs-8">
+                 <div class="title">{{module.title}}</div>
+                 <div class="row" *ngIf="spin"><i class="fa fa-spinner fa-pulse" style="font-size:24px"></i></div>
+                  <div *ngIf="module.title != 'Network' ">
+       <div class="row" *ngIf="stat"><div class="col-xs-4">Status:&nbsp;</div><div class="col-xs-8"><div id="{{module.blockId}}_{{module.title}}" style="font-size:1.2em; padding:4%;color:green;"></div></div></div>
+       <div class="row" *ngIf="stat"><div class="col-xs-2">ip:&nbsp;</div><div class="col-xs-8"><div id="{{module.blockId}}_ip"></div></div></div></div>
+     <div  *ngIf="module.title == 'Network' ">
+       <div class="row" >
+                 <div class="col-xs-4" *ngIf="stat">cidr:&nbsp;</div><div class="col-xs-8"><div id="{{module.title}}_{{module.blockId}}"></div></div></div></div>
+     </div></div>
+       
+ </div>
+</div>
+ </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel  [expanded]="webService.panelOpenStateThree" hideToggle="true" (closed)="onCollapseThree()" (opened)="onExpandThree()" style="background: rgba(0,0,0,.04); margin-left: 2%;margin-right: 2%;margin-top: 2%;" #example3>
+  <mat-expansion-panel-header>
+     <mat-panel-title>
+        Environment Request
+     </mat-panel-title>
+     <mat-panel-description>
+        <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="!example3.expanded">+</mat-icon>
+        <mat-icon style="position: relative; left: 100%; bottom: 14%;" *ngIf="example3.expanded">-</mat-icon>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+   <div style="height: 117px;">
+  <mat-form-field>
+     <input matInput #nameValue placeholder="Name" [(ngModel)]="webService.envnameValue">
+  </mat-form-field>
+  <mat-form-field>
+     <mat-select #versionValue placeholder="Build Versions" [(ngModel)]="webService.versionValue">
+        <mat-option *ngFor="let version of versions" [value]="version.value">{{version.value}}</mat-option>
+     </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+     <input matInput [matDatepicker]="picker1" placeholder="Start Date" [(ngModel)]="webService.startDateValue">
+     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+     <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+     <input matInput [matDatepicker]="picker2" placeholder="End Date" [(ngModel)]="webService.endDateValue">
+     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+     <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+     <mat-select #templateValue placeholder="Templates" [(ngModel)]="webService.templateValue">
+            <mat-option *ngFor="let template of templates" [value]="template.value" >{{template.value}}</mat-option>
+     </mat-select>
+  </mat-form-field>
+  <br>
+      <!--<input type="file" placeholder="Name">-->
+   <div style="float: right;">
+  <button type="button" class="btn btn-primary" style=" width:88px ;border-radius: 20px; color: red; background-color: white; border-color:#ddd;" (click)="panelOpenStateTwo = true">Cancel</button>
+  <button type="button" class="btn btn-primary" style=" width:88px ;border-radius: 20px; color:white; background-color:#009cff;; border-color:#ddd;" (click)="reserve(nameValue.value, picker1._datepickerInput._value, picker2._datepickerInput._value)">Submit</button>
+</div>
+</div>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,116 @@
+<!-- <div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span *ngIf="auth.role=='Admin'"><span routerLink="/AdminDashboard">Dashboard/</span>
+      <span style="font-weight: bold;" routerLink="/AdminDashboard/orders">Request List</span>
+    </span>
+    <span *ngIf="auth.role=='LM'"><span routerLink="/lmdashboard">Dashboard/</span>
+      <span style="font-weight: bold;" routerLink="/lmdashboard/orders">Request List</span>
+    </span>
+  </h5>
+</div> -->
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard">
+    <div class="panel panel-default">
+      <!-- <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            Request List
+          </a>
+        </h6>
+
+      </div> -->
+      <div class="panel-body">
+        <!-- <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6" style="text-align: right;">
+            <mat-form-field style="left: 0%;" class="example-full-width">
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+            </mat-form-field>
+          </div>
+        </div> -->
+        <div class="row">
+          <div class="col-md-6">
+            <button class="btn btn-default btn-custom" [ngClass]="{'active': tab == 1}"
+              (click)="lmtab(JSON.parse(auth.data).role.toLowerCase() == 'admin' ? 'APPROVED' : 'REQUESTED',1)">PENDING
+              REQUESTS</button>
+            <button class="btn btn-default btn-custom" [ngClass]="{'active': tab == 2}"
+              (click)="lmtab(JSON.parse(auth.data).role.toLowerCase() == 'admin' ? 'PROVISIONED' : 'APPROVED',2)">REQUESTS
+              HISTORY</button>
+          </div>
+        </div>
+        <mat-table [dataSource]="dataSource" matSort>
+
+
+          <!--   
+            <ng-container matColumnDef="position">
+              
+              <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+            
+                <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+
+            </ng-container> -->
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="sNo">
+            <mat-header-cell *matHeaderCellDef> S.No </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.sNo}} </mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="request_id">
+            <mat-header-cell *matHeaderCellDef> Request ID </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.request_id}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <!-- <ng-container matColumnDef="service_name">
+            <mat-header-cell *matHeaderCellDef> Service Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.service_name}} </mat-cell>
+          </ng-container> -->
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="project_name">
+            <mat-header-cell *matHeaderCellDef> Project Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.project_name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="location_id">
+            <mat-header-cell *matHeaderCellDef> Delivary Location </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="start_date">
+            <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.start_date}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="end_date">
+            <mat-header-cell *matHeaderCellDef> End date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status}}
+              <!-- <img src={{element.status}} class="logo" width="35px" /> -->
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> Price($) </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+          </ng-container>
+
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row (click)="getDetails_more(row)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <!-- <mat-row (click)="viewRequest(row.sNo)" *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+        </mat-table>
+        <mat-paginator (page)="pageChangeEvent($event, tab)" [length]="pageLength" [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions" style="padding-left:50px;"></mat-paginator>
+
+      </div>
+      <!-- panel body ends here -->
+    </div>
+  </div>
+</div>

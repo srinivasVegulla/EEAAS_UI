@@ -1,0 +1,97 @@
+<div class="dashboardhead">
+    <h5 class="dashboardBody_Heading">
+      <span routerLink="/AdminDashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/AdminDashboard/holidays">Holidays</span>
+    </h5>
+  </div>
+  
+  <div class="container-fluid dashboardbody">
+    <div class=" bodyCard" id="listtable">
+      <div class="panel panel-default">
+        <div class="panel-heading" >
+          <h6 class="panel-title">
+            <a  >
+          List of Holidays
+            </a>
+          </h6>
+  
+        </div>
+        <div class="panel-body">
+            <button mat-raised-button class="pro" 
+    style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="addRow()">Add Row</button>
+    <mat-form-field class="example-full-width">
+
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+      </mat-form-field>
+
+
+            <mat-table [dataSource]="dataSource">
+
+                <ng-container matColumnDef="s_No">
+                  <mat-header-cell *matHeaderCellDef >S.No
+            
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element let i=index" >
+                    <span *ngIf="i.toString().length==1">0{{ i+1}}</span>
+                    <span *ngIf="i.toString().length!=1">{{ i+1}}</span>
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="holiday_date">
+                  <mat-header-cell *matHeaderCellDef > HOLIDAY DATE
+            
+                  </mat-header-cell>
+            
+            
+                  <mat-cell *matCellDef="let element let i = index;" >{{element.holiday_date | date: 'dd/MM/yyyy'}}
+                    <!-- <mat-form-field >
+                      <input matInput [matDatepicker]="picker" [(ngModel)]="element.holiday_date"
+                        placeholder="Choose a date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+             -->
+                  </mat-cell>
+                </ng-container>
+            
+            
+                <ng-container matColumnDef="holiday_reason">
+                  <mat-header-cell *matHeaderCellDef > HOLIDAY DESCRIPTION
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element" >{{element.holiday_reason}}
+                      <!-- <mat-form-field >
+                      <input matInput type="text" [(ngModel)]="element.holiday_reason"
+                      placeholder="Choose a date">
+              
+                  </mat-form-field>  -->
+                  </mat-cell>
+                </ng-container>
+            
+            
+            
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef>
+            
+                  </mat-header-cell>
+            
+                  <mat-cell *matCellDef="let element; let i=index" style="text-align: center;">
+                      <span (click)="Edit(i)"><i class="material-icons">
+                          edit
+                          </i></span>
+            <span (click)="delete(i);"><i class="material-icons">
+                delete
+                </i></span>
+                  
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns" class="mainHeader"></mat-header-row>
+            
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            
+                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  -->
+              </mat-table>
+          </div>
+          </div>
+          </div></div>
+

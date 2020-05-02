@@ -1,0 +1,620 @@
+
+
+
+/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+ //@import '~font-awesome/css/font-awesome.css';
+html, body { height: 100%; }
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+
+
+menu {
+  padding-left: 0px;
+  margin: 0px;
+}
+
+body {
+  /* background: #eeeeee */
+  margin: 0;
+  font-family: Arial !important;
+  overflow-x: hidden;
+  /* background-image: url("assets/images/ui_bg1.jpg") !important; */
+  background: #d7d9ee;
+  
+
+}
+
+.body-overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+
+.amChartsLegend.amcharts-legend-div {
+  overflow: unset !important;
+  margin-top: -60px !important;
+  margin-left: 93px;
+}
+
+text {
+  font-family: "Arial" !important;
+}
+
+.right-inner-addon {
+  position: relative;
+}
+
+.right-inner-addon input {
+  padding-right: 30px;
+  padding-left: 20px;
+  background-color: #d2d2e8;
+}
+
+.right-inner-addon i {
+  position: absolute;
+  right: 0px;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+
+.dashboardhead {
+  /* margin-left:10%; */
+  background-color: #efecec;
+  padding: 10px
+}
+
+.dashboardBody_Heading {
+  margin: 0px;
+  margin-left: 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+.dashboardBody_Heading span {
+  outline: none;
+}
+
+.dashboardbody {
+  /* margin-left:10%; */
+  padding: 0px;
+  margin: 10px 38px;
+  height: 85vh;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+div.wc-message-from.wc-message-from-bot span:before {
+  float: left;
+  clear: none;
+  content: url('./assets/newimages/conversationbot.png');
+  position: absolute;
+  transform: scale(.7);
+  top: 0%;
+  left: 0%;
+  /*background: linear-gradient(-141deg, rgba(25, 73, 147, 1) 0%, rgba(25, 73, 147, 1) 51%, rgba(25, 73, 147, 1) 75%);*/
+}
+
+div.wc-message-from.wc-message-from-me span:after {
+  float: left;
+  clear: none;
+  content: url('./assets/newimages/user.png');
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0;
+  right: 15px;
+}
+
+/* .mat-paginator-range-actions {
+      display: none !important;
+  } */
+
+.mat-dialog-container {
+
+  border-radius: 4px !important;
+  padding: 0px !important;
+  background: white !important;
+  border: 1px solid #555d6a;
+  color: black;
+}
+
+.headerNum {
+  margin-top: 15px;
+  margin-right: 10px;
+  text-align: -webkit-right;
+  text-align: -moz-right;
+  color: #315ae4;
+  font-size: 52px;
+  border-bottom: -5px
+    /* margin-bottom:0px; */
+}
+
+.positionRelative>path {
+  stroke-width: "50";
+}
+
+.headerText {
+  float: left;
+  width: 10px;
+
+  margin-left: 10px;
+
+  margin-top: -20px;
+
+}
+
+.headerTextInner {
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.paginator .mat-form-field-infix {
+
+  border: 1px solid !important;
+  border-radius: 13px !important;
+}
+
+.paginator .mat-form-field-underline {
+
+  height: 0px !important;
+  width: 0% !important;
+
+}
+
+/* .successpopup .mat-dialog-container{
+    width:420px !important;
+  
+} */
+/* div.wc-message-from.wc-message-from-bot span:before{
+  float:left;
+  clear: none;
+  content:url('./assets/images/chatbot_icon2_68x68.png');
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  
+  }
+  div.wc-message-from.wc-message-from-me span:after{
+    float:left;
+    clear: none;
+    content:url('./assets/images/chatbot/user-icon_35.png');
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    right: 15px;
+    } */
+.login-page ::placeholder {
+  color: #fff;
+  opacity: 1;
+}
+
+.login-page .mat-form-field-underline {
+  background-color: rgba(256, 256, 256, .42) !important;
+}
+
+.login-page .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.login-page .mat-form-field-empty.mat-form-field-label {
+  display: block;
+  color: #fff;
+  font-weight: bold;
+}
+
+.login-page .mat-form-field-label-wrapper.mat-input-placeholder-wrapper.mat-form-field-placeholder-wrapper {
+  text-indent: 23px;
+}
+
+.login-page .mat-form-field-label.mat-input-placeholder.mat-form-field-placeholder.ng-tns-c1-0.mat-empty.mat-form-field-empty.ng-star-inserted {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.login-page .mat-input-underline .mat-form-field-underline {
+  background-color: white !important;
+}
+
+router-link {
+  padding: 5px;
+  text-decoration: none;
+}
+
+.router-link:visited {
+  color: #444;
+}
+
+.router-link.router-link-active {
+  color: red;
+  background-color: #52b9e9;
+  text-decoration: none;
+}
+
+
+#accodianTopology {
+  height: 450px !important;
+  margin: 20px !important;
+}
+
+.mat-raised-button[disabled] {
+  cursor: not-allowed !important;
+
+  opacity: 0.7 !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
+
+}
+
+.amcharts-chart-div a[title='JavaScript charts'] {
+  display: none !important
+}
+
+.login-page .mat-form-field-infix {
+  margin-bottom: -15px !important;
+}
+
+.panel .panel-heading {
+  color: #ffffff;
+  background-color: #313944;
+  border-color: #ddd;
+
+}
+
+.panel .panel-tittle {
+  font-weight: bold;
+}
+
+.panel .panel-body {
+  background: white;
+  color: #313944;
+  padding-top: 0px;
+
+}
+
+.panel.panel-default>.panel-heading+.panel-collapse>.panel-body {
+  border-top-color: #232720 !important;
+}
+
+.panel .panel-heading {
+  border-bottom: 1px;
+}
+
+.panel .mat-form-field-underline {
+  background-color: #313944;
+}
+
+.panel mat-form-field span.mat-form-field-label-wrapper label {
+  color: #313944 !important;
+
+}
+
+/* mat-form-field{
+  border-bottom: 1px solid #313944;
+
+} */
+hr {
+  border-bottom: 1px solid #555d6a;
+  margin-left: 0%;
+  margin-top: 3px;
+  margin-bottom: 11px;
+  border-top: 11px
+}
+
+.panel mat-form-field.mat-focused span.mat-form-field-label-wrapper label {
+  color: #313944 !important;
+}
+
+.panel .mat-select-value-text {
+
+  color: #313944;
+}
+
+.panel .mat-select-arrow {
+  color: #313944;
+}
+
+mat-header-row {
+  margin: 0px !important;
+  background: #555d6a !important;
+}
+
+mat-header-cell {
+  color: #313944 !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  text-align: center !important;
+}
+
+mat-row {
+  margin: 0px !important;
+  border-bottom: 1px solid #555d6a !important;
+  min-height: 40px !important;
+
+}
+
+/* mat-table{
+  border-bottom:1px solid #555d6a !important;
+} */
+/* mat-row:nth-child(even){
+  background-color:#232730!important;
+  }
+
+mat-row:nth-child(odd){
+  background-color:black!important;
+  } */
+mat-cell {
+  color: #313944 !important;
+  text-align: center !important;
+}
+
+.tick {
+  content: '\2713';
+
+  top: 90%;
+  left: 100%;
+  width: 25px;
+  height: 25px;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid;
+  border-radius: 50%;
+
+  background: #f2a74c;
+  background: -moz-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, #f2a74c), color-stop(100%, #c259dc));
+  background: -webkit-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+  background: -o-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+  background: -ms-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+  background: linear-gradient(to right, #f2a74c 0%, #c259dc 100%);
+}
+
+.cancel.mat-raised-button:hover {
+  background: red !important;
+  color: white !important;
+}
+
+.pro.mat-raised-button:hover {
+  background: #0e65d3 !important;
+  color: white !important;
+}
+
+.req.mat-raised-button:hover {
+  background: white !important;
+  color: #072f61 !important;
+}
+
+mat-header-cell {
+
+
+  color: white !important;
+
+}
+
+/* .mat-paginator-container{
+    background:#232730 !important;
+    color:white;
+      }
+      .mat-paginator{
+        background: #232730 !important;
+      } */
+
+
+/* .mat-expansion-panel-body{
+      background: white !important;
+  } */
+/* .mat-paginator-page-size {
+      display: none !important;
+  } */
+
+/* .login-page.mat-form-field-underline {
+  background-color: rgba(256,256,256,.42)!important;
+}
+.login-page.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-label,
+login-page.mat-form-field-empty.mat-form-field-label {
+  display: block;
+  color: #fff;
+  font-weight: bold;
+}
+.login-page.mat-form-field-label-wrapper.mat-input-placeholder-wrapper.mat-form-field-placeholder-wrapper {
+  text-indent: 23px;
+}
+.login-page.mat-form-field-label.mat-input-placeholder.mat-form-field-placeholder.ng-tns-c1-0.mat-empty.mat-form-field-empty.ng-star-inserted {
+  color: #fff !important;
+  font-weight: bold;
+}
+.login-page.mat-input-underline.mat-form-field-underline {
+  background-color: white!important;
+} */
+/* 
+.card {
+  margin-top: 8px;
+}
+.dashboardBody{
+  margin-left: 30px;
+}
+
+/* Quiz CSS */
+
+/* .btn{
+  border-radius: 0;
+}
+
+.option{
+  background-color:#cadaee;
+  font-size:20px;
+  padding:10px;
+  margin:3px;
+}
+  #quiz .options input[type=checkbox] {
+      height:22px;
+      width:22px;
+  }
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.result-question{
+  background-color:#eee;
+  margin:4px;
+  padding:6px;
+}
+
+  
+/* Create Quiz Styles */
+/* .create-quiz .question {
+  text-align:left;
+}
+.create-quiz input[type=text]{
+  border:1px solid #ddd;
+  width:95%;
+}
+.create-quiz .tb-quiz-name{
+  background-color:#ccffcc;
+  text-align:center;
+}
+
+.create-quiz .tb-desc{
+  background-color:#fff;
+}
+
+.create-quiz .options > div{
+  margin-left:20px;
+}
+.create-quiz .options input[type=checkbox]{
+  border: 1px solid #262626;
+  display: inline-block;
+  height:20px;
+  margin-top:10px;
+  margin-bottom:0;
+  padding:0;
+  width:20px;
+  -webkit-appearance:checkbox;    
+} */
+/* 
+@media only screen and (max-width: 480px) {
+  h1,.h1{
+      font-size:22px;
+  }
+  h2,.h2{
+      font-size:20px;
+  }
+  h3,.h3{
+      font-size:18px;
+  }
+  .option {
+      font-size: 16px;
+      padding: 6px;
+  }
+}  */
+
+/* Quiz CSS Ends */
+@media only screen and (max-width: 972px) {
+  .dashboardhead {
+    margin-left: 8%;
+    background-color: #efecec;
+    padding: 10px;
+  }
+
+  .dashboardbody {
+
+    padding: 0px;
+    margin: 10px 38px;
+    height: 75vh;
+    overflow: auto;
+    overflow-x: hidden;
+    margin: 3% 12%;
+  }
+}
+
+.mat-form-field-disabled .mat-form-field-underline {
+
+  background-position: 0;
+  background-color: #313944;
+
+}
+/* .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: white !important;
+}
+.mat-checkbox-mixedmark {
+  background-color: #3366cc !important;
+} */
+
+.mat-select-disabled .mat-select-arrow {
+
+  visibility: hidden !important;
+
+}
+
+.mat-button[disabled][disabled] {
+  cursor: not-allowed !important;
+}
+/* for bare metal */
+.modal-header{
+  background-color: lightgray;
+  padding-bottom: 10px;
+  font-weight: bold;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px
+}
+.modal-header h5 {
+  font-size: 18px; 
+  float: left;
+}
+.modal-header button span{
+  font-size:30px !important;
+}
+
+.modal-header button {
+  font-size:30px !important;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+.tr-heading{
+  background-color: #313944 !important; 
+  color:white;
+}
+
+.no-btn{
+  background-color: #313944 !important;
+  border-color: #313944 !important;
+}
+
+.yes-btn{
+  background-color: #337ab7 !important;
+  border-color: #2e6da4 !important;
+}
+
+.black{
+  color: black;
+}
+
+.popover{
+  max-width: 100% !important;
+  width: 50% !important;
+}
+
+.suresh-underline {
+    color: midnightblue !important;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}

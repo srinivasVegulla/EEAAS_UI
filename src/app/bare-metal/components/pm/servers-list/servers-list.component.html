@@ -1,0 +1,379 @@
+<!--  content after filter-->
+<div class="row" style="padding: 10px 30px 5px 28px;">
+  <div class="col-md-6">
+    <h4 class="black">RESERVATION SYSTEM</h4>
+  </div>
+  <div class="col-md-6">
+
+    <div style="float: right;">
+      <div style="    float: left;
+      padding: 8px 20px;
+      color: seagreen;
+      font-weight: bold;">{{Object.keys(selected_servers).length || '0'}}
+        {{current_tab == 'bare_metal' ? 'Servers' : current_tab == 'switch' ? api.humanize(current_tab)+'es' : api.humanize(current_tab)+'s' }}
+        selected</div>
+      <!-- <button class="btn" style="background-color: #313944; color: white;">Cancel</button> -->
+      <button class="btn btn-primary" [disabled]="enableReserveBtn" (click)="reserve()">RESERVE</button>
+    </div>
+  </div>
+</div>
+<hr>
+<!-- header ends -->
+<div class="col-md-12">
+  <div class="row" style="padding: 12px">
+    <!-- <mat-form-field class="col-md-2">
+      <mat-label style="color: black;">Select a Project</mat-label>
+      <mat-select [(value)]="webService.project_name">
+       
+        <mat-option [value]="webService.project_name">{{webService.project_name}}</mat-option>
+
+      </mat-select>
+     
+    </mat-form-field> -->
+
+    <mat-form-field class="col-md-5">
+      <mat-label style="color: black; ">Start Date</mat-label>
+
+      <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly required [min]="webService.currentDate"
+        [(ngModel)]="webService.todayDateReservation" placeholder="Start Date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-5">
+      <mat-label style="color: black; ">End Date</mat-label>
+      <input matInput [matDatepicker]="picker1" [disabled]="!webService.todayDateReservation" (focus)="picker1.open()"
+        readonly required [min]="webService.todayDateReservation || webService.currentDate" placeholder="End Date"
+        [(ngModel)]="webService.lastDateReservation">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="col-md-2">
+      <input matInput placeholder="Location" type="text" [(ngModel)]="webService.selectedDelivaryLocation">
+    </mat-form-field> -->
+    <!-- <mat-form-field class="col-md-2">
+      <mat-label style="color: black;">Select a Location</mat-label>
+      <mat-select [(value)]="webService.selectedDelivaryLocation">
+      
+        <mat-option value="hyderabad">Hyderabad</mat-option>
+        <mat-option value="bangalore">Bangalore</mat-option>
+        <mat-option value="pune">Pune</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <div class="col-md-2">
+      <button class="btn btn-primary" style="z-index:4;font-weight:bold;color:white;margin-right: 2%;     float: left;
+        margin-left: 10px;" (click)="getFilteredData()"><i class="glyphicon glyphicon-filter"></i></button>
+    </div>
+
+  </div>
+</div>
+<!-- filter ends -->
+<div class="container contain">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li *ngFor="let tab of tabdata; let j = index;" (click)="selectTab(tab.id)" class="nav-item col-md-3"
+          style="padding: 0px" [ngClass]="{active: j==0}">
+          <!-- <a class="nav-link" id="home-tab" *ngIf="tab.id === 'bare_metal'" data-toggle="tab" href="#{{tab.id}}"
+            role="tab" aria-controls="home" aria-selected="true">{{tab.tab}}<br>List of Servers</a> -->
+          <!-- *ngIf="tab.id !== 'bare_metal'" -->
+          <a class="nav-link" id="home-tab" data-toggle="tab" href="#{{tab.id}}" role="tab" aria-controls="home"
+            aria-selected="true">{{tab.tab}}</a>
+        </li>
+      </ul>
+      <div class="col-md-12 tab-content" id="myTabContent">
+        <div class="tab-pane fade" *ngFor="let tab of tabdata; let i = index;" [ngClass]="{'active in': i==0}"
+          id="{{tab.id}}" role="tabpanel" aria-labelledby="home-tab">
+
+          <mat-table class="mat-layout" id="bareMetalTable" [dataSource]="tab.data_4_tbl_filtr" matSort>
+
+
+            <!--   
+        <ng-container matColumnDef="position">
+          
+          <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+        
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+    
+        </ng-container> -->
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="checked" style="z-index: 1000;">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <!-- <mat-cell *matCellDef="let element"><input type="text" /></mat-cell> -->
+              <mat-cell *matCellDef="let element">
+                <mat-checkbox [id]="element.serviceid" [(ngModel)]="element.checked"
+                  (click)="addBareMetal($event, element)"></mat-checkbox>
+              </mat-cell>
+            </ng-container>
+
+
+            <!-- (click)="getRecord($event, element)" (mouseover)="cellMover($event, element)" -->
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Server Name</mat-header-cell>
+              <mat-cell *matCellDef="let element" [id]="'popover'+element.serviceid"
+                (click)="getRecord($event, element)" data-toggle="popover" data-html="true" data-container="body"
+                style="font-weight: bolder; text-decoration:underline; color: #002080 !important;cursor: pointer;">
+                <!-- <mat-cell *matCellDef="let element" [id]="'popover'+element.serviceid" data-toggle="popover"
+                data-html="true" data-container="body"
+                style="font-weight: bolder; text-decoration:underline; color: #002080 !important;cursor: pointer;"> -->
+                {{element.name}}
+
+                <ng-container>
+                  <div style="display: none;" [id]="'popover-content'+element.serviceid">
+                    <div>
+                      <h5 style="font-size: 20px; ">{{element.name}}</h5>
+
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 *ngIf="!element.raw_data.hover_details">Info Not Available</h5>
+
+                          <table *ngIf="element.raw_data.hover_details" class="table ng-star-inserted">
+                            <tbody>
+                              <tr *ngFor="let row of Object.keys(element.raw_data.hover_details)">
+                                <!-- <td>{{api.capitalize(row)}}</td>
+                                      <td>{{modal_data[row]}}</td> -->
+                                <td>{{api.humanize(row)}}</td>
+                                <td>{{api.add_units_to_server_details(element.raw_data.hover_details[row], row)}}</td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </ng-container>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="location">
+              <mat-header-cell *matHeaderCellDef> Location</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.location}}
+              </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="os">
+              <mat-header-cell *matHeaderCellDef> OS Type</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.os}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <!--ng-container matColumnDef="startDate">
+                <mat-header-cell *matHeaderCellDef  > Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.startDate}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="endDate">
+                <mat-header-cell *matHeaderCellDef  > End Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.endDate}} </mat-cell>
+              </ng-container-->
+            <ng-container matColumnDef="available_from">
+              <mat-header-cell *matHeaderCellDef> Available From </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.available_from}}
+              </mat-cell>
+            </ng-container>
+            <!--ng-container matColumnDef="location_id">
+                <mat-header-cell *matHeaderCellDef  > Delivary Location </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+              </ng-container> -->
+            <ng-container matColumnDef="available_till">
+              <mat-header-cell *matHeaderCellDef> Available Until </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.available_till}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="reservedBy">
+              <mat-header-cell *matHeaderCellDef> Reserved By </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.reservedBy}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="softwares">
+              <mat-header-cell *matHeaderCellDef> Softwares </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.softwares}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="model">
+              <mat-header-cell *matHeaderCellDef> Model </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.model}}
+              </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef  > Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-raised-button class="pro" [disabled]="" style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="openDialog()" >Reserve</button>
+                </mat-cell>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef  > Price($) </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+              </ng-container>
+     -->
+            <ng-container matColumnDef="allocatedTo">
+              <mat-header-cell *matHeaderCellDef> Allocated To</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.allocatedTo}}
+              </mat-cell>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="pricePerHr">
+              <mat-header-cell *matHeaderCellDef> Price per Hr($) </mat-header-cell>
+              <mat-cell style="text-align: center !important;" *matCellDef="let element">
+                {{element.pricePerHr}}
+              </mat-cell>
+            </ng-container>
+
+            <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+            <ng-container *matHeaderRowDef="tab.displayedColumns">
+              <mat-header-row class="mainHeader"></mat-header-row>
+              <div class="mat-header-row header-group-row secondHeader">
+                <!-- <div class="mat-header-cell" role="columnheader" style="flex: 0.5;">
+                  <img src="../assets/Images/admin-filter.png">
+                </div> -->
+                <div class="mat-header-cell" role="columnheader" style="text-align: left;">
+                  <img src="assets/bare/admin-filter.png">
+                </div>
+                <div class="mat-header-cell" role="columnheader" *ngFor="let field of tab.filterColumns">
+                  <input type="text" style="width:70%" (keyup)="applyFilter($event.target.value, field, current_tab); ">
+
+                </div>
+                <!-- style="background-color: transparent; border: 0px; margin-left: 5px;" -->
+                <!-- <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value, 'name', current_tab); ">
+                </div>
+
+                <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value,'bus_Id'); ">
+                </div>
+
+                <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value,'bus_Id'); ">
+                </div>
+
+                <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value,'bus_Id'); ">
+                </div>
+
+                <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value,'allocatedTo', current_tab); ">
+                </div>
+                <div class="mat-header-cell" role="columnheader">
+                  <input type="text" [(ngModel)]="bus_Id" style="width:70%"
+                    (keyup)="applyFilter($event.target.value, 'pricePerHr', current_tab); ">
+                </div> -->
+              </div>
+            </ng-container>
+            <!-- (click)="getRecord($event, row)"    (click)="addBareMetal($event, row)" -->
+            <mat-row class="hover-row" style="z-index: 0;"
+              [ngStyle]="{'background-color':row.checked ? '#d6e8f1' : '' }"
+              *matRowDef="let row; columns: tab.displayedColumns;" id="row.serviceid"></mat-row>
+          </mat-table>
+          <!-- <mat-paginator [pageSizeOptions]="[2, 5, 10, 25, 100]">
+          </mat-paginator> -->
+          <mat-paginator (page)="pageChangeEvent($event, tab.data_pg, tab)" [length]="tab.pageLength"
+            [pageSize]="tab.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button style="display: none;" id="show_modal" data-toggle="modal" data-target="#exampleModal">
+  show modal
+</button>
+<!-- data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?" -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document" *ngIf="modal_data">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{modal_data.server_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div [ngClass]="{'col-md-12': !modal_data_inv, 'col-md-6': modal_data_inv}">
+            <table class="table" *ngIf="modal_data">
+              <tr *ngFor="let row of Object.keys(modal_data)">
+                <!-- <td>{{api.capitalize(row)}}</td>
+                <td>{{modal_data[row]}}</td> -->
+                <td>{{api.humanize(row)}}</td>
+                <td>{{api.add_units_to_server_details(modal_data[row], row)}}</td>
+              </tr>
+              <!-- <tr>
+                <td>Model No</td>
+                <td>two</td>
+              </tr>
+              <tr>
+                <td>Processo</td>
+                <td>two</td>
+              </tr> -->
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table" *ngIf="modal_data_inv">
+              <tr *ngFor="let row of Object.keys(modal_data_inv)">
+                <!-- <td>{{api.capitalize(row)}}</td>
+                    <td>{{modal_data[row]}}</td> -->
+                <td>{{api.humanize(row)}}</td>
+                <td>
+                  {{ isArray(modal_data_inv[row]) ?  api.add_units_to_server_details(modal_data_inv[row][0], row) :api.add_units_to_server_details(modal_data_inv[row], row)}}
+                </td>
+              </tr>
+              <!-- <tr>
+                    <td>Model No</td>
+                    <td>two</td>
+                  </tr>
+                  <tr>
+                    <td>Processo</td>
+                    <td>two</td>
+                  </tr> -->
+            </table>
+            <!-- <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default panel-whole">
+                  <div class="panel-heading panel-head">
+                    <h3 class="panel-title">Operating System</h3>
+                  </div>
+                  <div class="panel-body">
+                    {{modal_data.operating_system}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="panel panel-default panel-whole">
+                  <div class="panel-heading panel-head">
+                    <h3 class="panel-title">Application(s) installed</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div *ngFor="let item of modal_data.apps">{{item}}</div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container-fluid" style="padding-right:0px;padding-left:0px;">
+    <div class="row" style="margin-right:0px;margin-left:0px;"><nav-app></nav-app>
+</div>
+<div class="row " style="margin-right:0px;margin-left:0px;margin-top: 46px;">
+    <div class="col-md-3" style="width:8.5%">
+<nav class="main-menu" id="sidebar" style="width:8.5%">
+    
+      
+    <ul>
+     
+        <li class="has-subnav" routerLink="/dashboard/mocktest">
+            <a>
+                <span class="icon"><img src="./assets/images/services.png" id="logo" /></span>
+                <span class="nav-text"><br/>
+                    Services
+                </span>
+            </a>
+            
+        </li>
+       
+    
+       
+        <li routerLink="/dashboard/user">
+            <a>
+                <span class="icon"><img src="./assets/images/vdes.png" id="logo" /></span>
+                <span class="nav-text"><br/>
+                  VDEs
+                </span>
+            </a>
+        </li>
+        <li routerLink="/dashboard/user">
+            <a>
+                <span class="icon"><img src="./assets/images/catalogue.png" id="logo" /></span>
+                <span class="nav-text"><br/>
+               Catalogue
+                </span>
+            </a>
+        </li>
+        <li routerLink="/dashboard/user">
+            <a>
+                <span class="icon"><img src="./assets/images/issues.svg" id="logo" width=30px;/></span>
+                <span class="nav-text"><br/>
+               Issues
+                </span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- <ul class="logout">
+        <li>
+            <a> <span class="copy"></span>
+                <span class="nav-text" style="font-size: 8px">
+                    &copy; CREDO | Tata Consultancy Services 
+                </span></a>
+            
+        </li>  
+    </ul> -->
+  
+</nav>
+
+</div>
+<div class="col-md-9" style="padding: 0px;width:91.5%"> 
+                 
+        <router-outlet></router-outlet>
+     
+        <footer class="logout"><span class="copy"></span>
+            <span class="nav-text" style="font-size: 10px">
+                &copy; CREDO | Tata Consultancy Services 
+            </span></footer>
+          </div>
+
+    
+    
+</div>
+
+</div>

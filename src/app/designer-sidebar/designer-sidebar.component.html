@@ -1,0 +1,90 @@
+<div class="container-fluid" style="padding-right:0px;padding-left:0px;">
+  <div class="row" style="margin-right:0px;margin-left:0px;"><nav-app></nav-app>
+</div>
+<div class="row " style="margin-right:0px;margin-left:0px;margin-top: 46px;">
+  <div class="col-md-3" style="width:8.5%">
+<nav class="main-menu" id="sidebar" style="width:8.5%">
+      <!-- <div style="text-align: right"><button type="button" id="sidebarCollapse1" (click)="menuClose()" class="btn btn-info" style="background-color:black;border-color:black;text-align:right;">
+          
+              <span class="glyphicon glyphicon-arrow-left"></span>
+          </button></div> -->
+    
+  <ul class="navr">
+      <li routerLink="/DesignerDashboard"  [ngClass]="{'active': webService.designerDashboard==true}">
+          <a  routerLink="/DesignerDashboard">
+              <span class="icon"><img src="./assets/images/dashboard.png" width="28px" id="logo" /></span>
+              <span class="nav-text"><br/>
+                  Dashboard
+              </span>
+          </a>
+        
+      </li>
+      <li routerLink="/DesignerDashboard/serviceRequestList"  [ngClass]="{'active': webService.serviceRequestList==true}">
+          <a  routerLink="/DesignerDashboard/serviceRequestList">
+              <span class="icon"><img src="./assets/images/dashboard.png" width="28px" id="logo" /></span>
+              <span class="nav-text"><br/>
+                  Service Request
+              </span>
+          </a>
+        
+      </li>
+     
+      <li class="dropdown"  [ngClass]="{'active': webService.issues==true}" >
+            <a >
+                  <span class="icon"><img src="./assets/images/services.png" width="28px" id="logo" /></span>
+                  <span class="nav-text" ><br/>
+                     Issues
+                  </span>
+                  <i class="right"></i>
+              </a>
+     
+              <ul class="dropdown-menu" >
+                  <li   routerLink="/DesignerDashboard/Issues/Activites" class="dropCell" >
+                      <a style="text-align: -webkit-left;">Activites</a>
+                  </li>
+                  <li   routerLink="/DesignerDashboard/Issues/NewIssue" class="dropCell" >
+                          <a style="text-align: -webkit-left;">New Issue</a>
+                      </li>
+              </ul>
+      </li>
+     
+  </ul>
+
+  <!-- <ul class="logout">
+      <li>
+          <a> <span class="copy"></span>
+              <span class="nav-text" style="font-size: 8px">
+                  &copy; CREDO | Tata Consultancy Services 
+              </span></a>
+          
+      </li>  
+  </ul> -->
+
+</nav>
+
+
+
+
+</div>
+<div class="col-md-9" style="padding: 0px;width:91.5%;"> 
+               
+      <router-outlet></router-outlet>
+      <!-- <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/dashboard/Myservices/RequestList">Jim</a>
+          <a routerLink="/dashboard/Myservices/NewRequest">Bob</a>
+        </div> -->
+      <footer class="logout"><span class="copy"></span>
+          <span class="nav-text" style="font-size: 10px; ">
+              &copy; 2019 | Tata Consultancy Services Limited.All Rights Reserved.
+          </span></footer>
+        </div>
+<!-- <div> <button type="button" id="sidebarCollapse" (click)="menuOpen()" class="btn btn-info" style="background-color:black">
+  
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+  </button></div>    -->
+  
+  
+</div>
+
+</div>
+

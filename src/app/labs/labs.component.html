@@ -1,0 +1,97 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span *ngIf="auth.role == 'PM'">
+    <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/dashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    </span>
+
+    <span *ngIf="auth.role == 'Admin'">
+    <span routerLink="/AdminDashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/AdminDashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/AdminDashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    </span>
+  <span *ngIf="auth.role == 'LM'">
+    <span routerLink="/lmdashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/lmdashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/lmdashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    </span>
+
+
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Labs
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+        <!-- <button type="button" (click)="openAdd()">Add</button>
+        <button type="button" (click)="delete()">Delete</button> -->
+
+        <mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="S_No">
+            <mat-header-cell *matHeaderCellDef  >S.No </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.S_No}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="asset_id">
+            <mat-header-cell *matHeaderCellDef  > Server_ID </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.asset_id}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="model">
+            <mat-header-cell *matHeaderCellDef  > Model </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.model}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="ram">
+            <mat-header-cell *matHeaderCellDef  > RAM </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ram}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cpu">
+            <mat-header-cell *matHeaderCellDef  > CPU </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.cpu}} </mat-cell>
+          </ng-container>
+          <!--<ng-container matColumnDef="storage">
+            <mat-header-cell *matHeaderCellDef  > HDD </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.storage}} </mat-cell>
+          </ng-container>-->
+          <ng-container matColumnDef="allocation_type">
+            <mat-header-cell *matHeaderCellDef  > Allocation Type </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.allocation_type}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="ip_address">
+            <mat-header-cell *matHeaderCellDef  > IP_Address </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ip_address}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="team">
+            <mat-header-cell *matHeaderCellDef  > Team </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.team}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="start_date">
+            <mat-header-cell *matHeaderCellDef  > Allocation Start_Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.start_date}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="end_date">
+            <mat-header-cell *matHeaderCellDef  > Allocation End_Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.end_date}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row (click)="viewRequest(row.serviceId)" 
+          *matRowDef="let row; columns: displayedColumns;"
+          ></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,167 @@
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .login-wrapper{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  
+  }
+  login-wrapper{
+      overflow:hidden !important;
+  }
+  .login-page{
+    background-image: url(/assets/newimages/login_base.jpg);
+    /* background-image: url(/assets/newimages/loginpage.jpg);
+/*    background-image: url(/assets/images/loginbgr.jpg);*/
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position: center center; */
+    
+  }
+  .login-image img{
+    position: relative;
+    background-repeat: no-repeat;
+    width: 175px;
+    top: 294px;
+    left: 142px;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+  .button-row button,
+  .button-row a {
+    margin-right: 8px;
+  }
+  .alert{
+      color: red;
+  }
+h3{
+color:#fff	;
+font-size:22px;
+font-weight:bold;   
+margin-bottom: 58px;
+}
+
+.mat-raised-button{
+    background-color: #fff;
+    color: #1398ec;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 40px;
+    height: 44px;
+}
+
+.button-row[_ngcontent-c0][_ngcontent-c0] button[_ngcontent-c0][_ngcontent-c0] {
+    width: 100%;
+}
+
+.login-details{
+    width: 50%;
+    float: right;
+    margin: 7% auto;
+    color: #fff;
+}
+.example-container{
+    margin: 5% 25%;
+}
+.example-container.mat-form-field-infix{
+width:350%;
+color:red;
+}
+.mat-form-field{
+    display:block;
+    margin-bottom: 16px;
+
+}
+.mat-form-field-wrapper {
+    margin-top: 32px;
+}
+/* img{
+width:100%;
+} */
+.d-none{
+    display:none;
+}
+.text-danger{
+    color:red;
+}
+mat-form-field.ng-invalid.mat-form-field-invalid.ng-touched{
+    margin-bottom: -17px;
+}
+.mat-form-field-label-wrapper label {
+    color: #f44336;
+    font-size: 90%;
+}
+.font-small span label{
+    font-size: 90%;
+}
+.mat-form-field-wrapper{
+    margin-bottom: 6%;
+}
+mat-form-field.ng-invalid.mat-form-field-invalid.ng-touched{
+    margin-bottom:3%;  
+}
+.button-row button{
+    width:100%;
+}
+
+.mat-input-wrapper.mat-form-field-underline ,
+.mat-input-wrapper .mat-form-field-label{
+    background-color: #fff;
+}
+
+.mat-form-field-empty.mat-form-field-label,
+.mat-input-infix.mat-form-field-infix,
+ .font-small {
+    color:#fff;
+}
+.mat-input-flex .mat-form-field-flex .mat-form-field-underline {
+    background-color: #fff;
+}
+ .mat-input-flex .mat-form-field-flex .mat-form-field-label{
+color:#fff;
+}
+::placeholder{
+    color:#fff;
+    opacity:1;
+}.mat-form-field-underline {
+    background-color: rgba(256,256,256,.42)!important;
+}
+.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-empty.mat-form-field-label {
+    display: block;
+    color: #fff;
+    font-weight: bold;
+}
+.mat-form-field-label-wrapper.mat-input-placeholder-wrapper.mat-form-field-placeholder-wrapper {
+    text-indent: 23px;
+}
+.mat-form-field-label.mat-input-placeholder.mat-form-field-placeholder.ng-tns-c1-0.mat-empty.mat-form-field-empty.ng-star-inserted {
+    color: #fff !important;
+    font-weight: bold;
+}
+.mat-input-underline .mat-form-field-underline {
+    background-color: white!important;
+}
+button[disabled][disabled] {
+    background-color: white;
+}
+
+/* for text on image */
+.box{
+    position: relative;
+    display: inline-block; /* Make the width of box same as image */
+}
+.box .text{
+    position: absolute;
+    z-index: 999;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 40%; /* Adjust this value to move the positioned div up and down */
+    text-align: center;
+    width: 60%; /* Set the width of the positioned div */
+}

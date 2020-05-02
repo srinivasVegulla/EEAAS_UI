@@ -1,0 +1,243 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span routerLink="/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/dashboard/reservationSystem">Reservation System</span>
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+
+    <div class="panel panel-default" id="accordion">
+      <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion"
+        href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            Reservation System
+          </a>
+        </h6>
+
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in accordion-body" role="tabpanel"
+        aria-labelledby="headingOne">
+
+        <div class="panel-body">
+          <!-- <mat-form-field>
+                <div style="display:flex">
+                  <span><input matInput [owlDateTime]="dt1" [min]="webService.currentDate" 
+                      placeholder="Start Date"  [(ngModel)]="webService.todayDateReservation" (dateTimeChange)="changeStartDate($event)"></span>
+                  <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span></div>
+                <owl-date-time #dt1></owl-date-time>
+              </mat-form-field>
+              <mat-form-field >
+                  <div style="display:flex">
+                    <span><input matInput [owlDateTime]="dt2" [(ngModel)]="webService.lastDateReservation" [min]="webService.todayDate || webService.currentDate"
+                      [max]="webService.toDateLimit" placeholder="End Date" (dateTimeChange)="changeEndDate($event)"
+                      ></span>
+                    <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span></div>
+                    <owl-date-time #dt2></owl-date-time>
+                  </mat-form-field>-->
+
+          <mat-form-field>
+            <mat-select placeholder="Project Name" required #mySelect [(ngModel)]="webService.selectedProject"
+              (change)="userList(webService.selectedProject);">
+
+              <div class="right-inner-addon">
+
+                <i class="glyphicon glyphicon-search"></i>
+
+                <input matInput type="search" [(ngModel)]="searchProjectName" [ngModelOptions]="{standalone: true}"
+                  class="searchInput" placeholder="Search" />
+              </div>
+
+              <mat-option *ngFor="let name of project_names| search: searchProjectName: 'projectNames'" [value]="name">
+                {{name}}</mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly required
+              [min]="webService.currentDate" [(ngModel)]="webService.todayDateReservation" placeholder="Start Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <!--   <mat-form-field>
+          <input matInput type="time" [(ngModel)]="webService.todayTimeReservation">
+        </mat-form-field> -->
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker1" [disabled]="!webService.todayDateReservation"
+              (focus)="picker1.open()" readonly required
+              [min]="webService.todayDateReservation || webService.currentDate" placeholder="End Date"
+              [(ngModel)]="webService.lastDateReservation">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <!--<mat-form-field>
+          <input matInput type="time" [(ngModel)]="webService.lastTimeReservation">
+        </mat-form-field> -->
+          <mat-form-field>
+            <input matInput placeholder="Location" type="text" [(ngModel)]="webService.selectedDelivaryLocation"
+              readonly>
+          </mat-form-field>
+
+          <!-- <mat-form-field class="example-full-width">
+
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+        </mat-form-field>
+         -->
+          <!-- <button (click)="getFilteredData()">Filter</button> -->
+          <button mat-raised-button class="pro"
+            [disabled]="webService.todayDateReservation==undefined || webService.lastDateReservation==undefined && webService.todayDateReservation=='' || webService.lastDateReservation=='' || webService.selectedDelivaryLocation==undefined || webService.selectedProject==undefined "
+            style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white"
+            (click)="getFilteredData()">Filter</button>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion"
+        href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"
+            aria-controls="collapseThree">
+            Bare metal Services
+          </a>
+
+        </h6>
+
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse in accordion-body" role="tabpanel"
+        aria-labelledby="headingThree">
+        <div class="panel-body">
+          <!-- <mat-form-field>
+            <input matInput [matDatepicker]="pickerFilter" [min]="webService.currentDate" [(ngModel)]="webService.todayDate"
+              placeholder="Start Date">
+            <mat-datepicker-toggle matSuffix [for]="pickerFilter"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFilter></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="time" [(ngModel)]="webService.todayTimeReservation">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="pickerFilter1" [min]="webService.todayDate || webService.currentDate"
+              placeholder="End Date" [(ngModel)]="webService.lastDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerFilter1"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFilter1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="time" [(ngModel)]="webService.lastTimeReservation">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+          </mat-form-field> -->
+
+          <!-- <button (click)="getFilteredData()">Filter</button> -->
+
+          <mat-table id="bareMetalTable" [dataSource]="bareMetalDataSource" matSort>
+
+
+            <!--   
+        <ng-container matColumnDef="position">
+          
+          <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+        
+            <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+    
+        </ng-container> -->
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="checked">
+              <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <mat-checkbox [(ngModel)]="element.checked" (change)="addBareMetal(element)"></mat-checkbox>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceid">
+              <mat-header-cell *matHeaderCellDef>Service Id</mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)">{{element.serviceid}}
+              </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <!--ng-container matColumnDef="startDate">
+                <mat-header-cell *matHeaderCellDef  > Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.startDate}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="endDate">
+                <mat-header-cell *matHeaderCellDef  > End Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.endDate}} </mat-cell>
+              </ng-container-->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.status}}
+              </mat-cell>
+            </ng-container>
+            <!--ng-container matColumnDef="location_id">
+                <mat-header-cell *matHeaderCellDef  > Delivary Location </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+              </ng-container> -->
+            <ng-container matColumnDef="reservedBy">
+              <mat-header-cell *matHeaderCellDef> Reserved By </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.reservedBy}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="allocatedTo">
+              <mat-header-cell *matHeaderCellDef> Allocated To </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)"> {{element.allocatedTo}}
+              </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef  > Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-raised-button class="pro" [disabled]="" style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="openDialog()" >Reserve</button>
+                </mat-cell>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef  > Price($) </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.price}} </mat-cell>
+              </ng-container>
+     -->
+            <ng-container matColumnDef="pricePerHr">
+              <mat-header-cell *matHeaderCellDef> Price per Hr($) </mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewService(element.serviceid)">
+                {{element.pricePerHr}}
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]"
+            style="padding-left:50px;"></mat-paginator>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="row" style="text-align:center;">
+      <button mat-raised-button class="cancel"
+        style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"
+        (click)="cancle()">Cancel</button>
+      <button mat-raised-button class="pro"
+        [disabled]="webService.todayDateReservation==undefined || webService.lastDateReservation==undefined && webService.todayDateReservation=='' || webService.lastDateReservation=='' || webService.selectedDelivaryLocation==undefined || this.bareMetalData.length==0"
+        style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white"
+        (click)="submit()">Continue</button>
+
+    </div>
+  </div>
+</div>

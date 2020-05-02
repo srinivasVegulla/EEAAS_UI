@@ -1,0 +1,202 @@
+                             
+<div class="dashboardhead">
+    
+  <h5 class="dashboardBody_Heading" >Dashboard</h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <h4 stryle="fortweight:bold">Virual Development Environment</h4>
+  <div id="displayDiv">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-5">
+      <div class="img-rounded" style="background-image:url('./assets/images/linux.jpg');height: 303px;;width:550px" alt="Cinque Terre" id="img1">
+          <h4 style="text-align:left; color:white;padding:10px" id="operate"> Linux Operating System ({{developerInfo.state}})</h4>
+          <div class="box-tools pull-right dropdown" style="top: -16%;
+                                                            left: -17%;">
+              <button type="button" class="btn dropdown-toggle" style="padding: 0%;
+                                                                       font-size: 2em;
+                                                                       background: transparent;
+                                                                       color: white;" data-toggle="dropdown"  (click)="hideVm(developerInfo.instance_type)" >
+                                                                       <div class="glyphicon glyphicon-option-horizontal"></div>
+
+              </button>
+              <ul class="dropdown-menu" style="min-width:80px">
+                  <li><a href="#" data-toggle="modal" data-target="#create">Create Snapshot</a></li>
+                 
+                  <li id="sus"><a (click)="suspendubun()">Suspend</a></li>
+                  <li id="rsm"><a (click)="resumeubun()">Resume</a></li>
+                  <li id="rbt"><a (click)="rebootubun()">Reboot</a></li>
+                  <li id="pwr"><a (click)="poweronubun()">Power On</a></li>
+                  <li id="pof"><a (click)="poweroffubun()">Power Off</a></li>
+                  <li id="windows" [(ngModel)]="windows"><a href="#" data-toggle="modal" data-target="#linux" (click)="details()">Details</a></li>
+
+              </ul>
+          </div>
+       
+
+          <div class= "text-center" id="button1">
+              <button class="btn btn-success btn-md round " [disabled]="developerInfo.instance_id!=''"  type="button" id="pylaunch" (click)="launch()">Launch</button>
+              <button class="btn btn-info btn-md round"  [disabled]="true" type="button"id="pyupdate" data-toggle="modal" data-target="#update"  (click)="ubuntuupdate">Upgrade</button>
+              <button class="btn btn-danger btn-md round"  [disabled]="developerInfo.instance_id ==''" type="button" id="pyconsole"
+                     (click)="consoleurl()">Console</button>
+          </div>
+      </div>
+  </div></div>
+  <div class="row" *ngIf="showVde">
+      <iframe id="myIframe" src="" height="1000px" width="100%"></iframe>
+  </div>
+  </div>
+  <div class="modal fade" id="create" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header text-center">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Ubuntu Snapshot</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="container">
+                      <form>
+                          <div class="row"> 
+                              <div class="col-sm-2">
+                                  <label class="form-group">Name of Snapshot:</label></div>
+                              <div class="col-sm-1">
+                                  <label class="text"><input type="text" [(ngModel)]="snapshot" placeholder="Name of Snapshot"></label>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-sm-2">
+                                  <label class="form-group">Description:</label></div>
+                              <div class="col-sm-1">
+                                  <label class="text"><input type="text" [(ngModel)]="decription" placeholder="Description"></label>
+                              </div>
+                          </div>
+                      </form>      
+                  </div>        
+              </div>
+              <div class="row">
+                  <div class="modal-footer ">
+                      <div class="col-sm-offset-4 col-sm-1 text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ubuntusnapshot()">Submit</button></div>
+                      <div class="col-sm-offset-1 col-sm-1">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div id="suspend" class="modal fade" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog" > 
+          <div class="modal-content" style=" width: 56%; position: relative;left: 29%; top: 11em; ">
+        
+
+              <div class="modal-body" style="background-color:#b5f29f;">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button><br>
+                  <div class="container text-center">
+                      <form>
+                          <div class="row">{{testvalue}}</div>
+                      </form>
+                  </div> 
+              </div>
+
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="update" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header text-center">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Update Existing tools</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="container">
+                      <form>
+                          <div class="row">
+                              <label class="form-group">Git available Versions</label>
+                              <label class="radio-inline"><input type="radio" name="optradio">2.10</label>
+                              <label class="radio-inline"><input type="radio" name="optradio">2.10.2</label>
+                              <label class="radio-inline"><input type="radio" name="optradio">2.9</label>
+                          </div>
+                          <div class="row">
+                              <label class="form-form-group"> Python Availble Versions 
+                                  <label class="radio-inline"><input type="radio" name="py">2.7</label>
+                                  <label class="radio-inline"><input type="radio" name="py">3.4</label>
+                              </label>
+                          </div>
+                      </form>      
+                  </div>        
+              </div>
+              <div class="modal-footer text-center">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="windowsupdate()">Update</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  
+  <div class="modal fade" id="linux" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content" style="width: 115%;">
+              <div class="modal-header text-center">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Ubuntu Details</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-xs-5">
+                              <h4 class="box-title"><label>Information</label></h4>
+                              <div class="form-group" spellcheck="false">
+                                  <table cellspacing="6" cellpadding="5">
+                                      <tr>
+                                          <td>Name</td>
+                                          <td contenteditable="true" >{{vdename}}</td></tr> 
+                                      <tr>
+                                          <td>Id</td>
+                                          <td contenteditable="true" >{{vde_id}}</td></tr> 
+                                      <tr>
+                                          <td>Status</td>
+                                          <td contenteditable="true" >{{vde_status}}</td></tr> 
+                                      <tr>
+                                          <td>Availability Zone</td>
+                                          <td contenteditable="true" >{{vde_zone}}</td></tr> 
+                                      <tr>
+                                          <td>IP Addresses</td>
+                                          <td contenteditable="true">{{vde_addr}}</td></tr>
+
+
+                                  </table>
+                              </div><!--form group-->
+                          </div><!-- col-->
+
+                          <div class="col-xs-5">
+                              <h4 class="box-title"><label>Specs</label></h4>
+                              <div class="form-group">
+                                  <table cellspacing="6" cellpadding="5">
+                                      <tr>
+                                          <td>Flavor</td>
+                                          <td >{{Flavor}}</td></tr>
+                                      <tr>
+                                          <td>RAM</td>
+                                          <td >{{ram}}</td></tr>
+                                      <tr>
+                                          <td>CPUs</td>
+                                          <td >{{cpu}}</td></tr>
+
+                                      <tr>
+                                          <td>Disk</td>
+                                          <td>{{disk}}</td></tr>
+
+                                  </table>
+                              </div><!--form group-->
+                          </div><!-- col -->
+                      </div><!-- row -->     
+                  </div>        
+              </div>
+
+          </div>
+      </div>
+  </div>

@@ -1,0 +1,37 @@
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+  display: flex;
+}
+
+.carousel-inner .carousel-item-right.active,
+.carousel-inner .carousel-item-next {
+  transform: translateX(33%);
+}
+
+.carousel-inner .carousel-item-left.active, 
+.carousel-inner .carousel-item-prev {
+  transform: translateX(-33%);
+}
+  
+.carousel-inner .carousel-item-right,
+.carousel-inner .carousel-item-left{ 
+  transform: translateX(0);
+  
+}
+.carousel {
+  position: relative;
+  background: #333333;
+}
+.carousel-head{
+  text-align: center;
+  margin-bottom: -52px;
+  padding-top: 5px;
+  padding-bottom: 24px;
+  color: white;
+  font-size: 18px;
+}
+
+.item {
+  display: inline-block;
+}

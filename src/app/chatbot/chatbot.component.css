@@ -1,0 +1,105 @@
+
+
+.wc-header{
+    /*background: linear-gradient(-141deg, #05bfcb 0%, #04b3d6 51%, #029aea 75%);*/
+    background: linear-gradient(-141deg, rgba(25, 73, 147, 1) 0%, rgba(25, 73, 147, 1) 51%, rgba(25, 73, 147, 1) 75%);
+    height: 40px;
+    padding-top: 4%;
+    padding-bottom: 0%;
+}
+.wc-chatview-panel{
+/*border-radius: 12px !important;*/
+width: 39%;
+height: 80%;
+background: white;
+border: 1px solid grey;
+margin-left: 60%;
+margin-top: 11%;
+z-index:1500;
+}
+.showDiv{
+display:none;
+}
+.wc-message-from-bot {
+float: left;
+margin-left: 58px;
+}
+
+#buttonClick {
+position: fixed;
+bottom: 20px;
+right: 20px;
+border: none;
+margin: 4px 2px;
+border-radius: 50%;
+color: rgba(0, 201, 255, 1);
+background: #444;
+/* border: solid rgba(0, 201, 255, 1); */
+padding: 40px;
+display: block;
+cursor: pointer;
+box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.minimizeOpt{
+margin-left: 92%;
+margin-top: -10%;
+cursor: pointer;
+}
+
+.minimizeOpt img{
+width: 30px;
+margin: 17px 0;
+}
+
+.wc-message-groups{
+margin-top: -4%;
+background: lightgrey;
+}
+.wc-console{
+border: 1px solid lightgrey;
+background: #dbdee1;
+}
+/* .wc-console svg {
+fill: rgba(0, 201, 255, 1);
+margin: 15px;
+} */
+
+.wc-console.has-text .wc-send svg {
+fill: #000;
+}
+
+.wc-message-content{
+border-radius: 10px;
+}
+
+.wc-message-from-bot svg.wc-message-callout path {
+fill: #eceff1;
+}
+svg.wc-message-callout{
+    fill: #eceff1;
+
+}
+.wc-message-from-me .wc-message-content{
+    background-color: #eceff1;
+color: #000000;
+}
+.wc-card button{
+border-radius: 10px;
+}
+.wc-message-from-me svg.wc-message-callout path{
+fill: #eceff1;
+}
+.headingChat{
+margin-left: 5%;
+font-size: 20px;
+}
+.wc-message-groups{
+top: 75px !important;
+}
+
+
+.wc-message-from-me {
+float: right;
+margin-right: 35px;
+}

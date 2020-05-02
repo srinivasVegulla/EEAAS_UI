@@ -1,0 +1,29 @@
+<div class="panel panel-default" style="border-color:#232730;background-color:#232720;height:100%;margin-bottom:0px">
+  <div class="panel-heading">
+    <h4 class="text-left">Order Summary</h4>
+
+    <button type="button" mat-dialog-close class="text-right close" style="opacity:1.2;margin-top:-30px;outline:none;color:white">
+      &times;
+    </button>
+  </div>
+  <div class="panel-body" style="padding:10px">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker2" [min]="webService.todayDate || webService.currentDate" [max]="webService.toDateLimit"
+              placeholder="End Date" [(ngModel)]="webService.extendDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="time" [(ngModel)]="webService.extendTimeReservation">
+          </mat-form-field>
+        </div>
+      </div>
+      <div style="float:right;margin:10px;">
+        <button mat-raised-button class="submit" color="primary" (click)="confirmExtend()" [disabled]='' style="background-color:#ffffff;color:#072f61">Extend</button>
+      </div>
+    </div>
+  </div>
+</div>

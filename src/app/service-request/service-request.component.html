@@ -1,0 +1,166 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span style="font-weight: bold;" routerLink="/DesignerDashboard">Catalogue</span>/
+    <span routerLink="/DesignerDashboard/serviceRequest">New Service</span>
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            New Service
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+        <form (ngSubmit)="onSubmit()" #serviceForm="ngForm">
+          <div class="row">
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Name"  [(ngModel)]="serviceName" name="name" #name="ngModel">
+                  </mat-form-field>
+              <!-- <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" required [(ngModel)]="serviceName" name="name" #name="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Name is required
+            </div> -->
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Description"  [(ngModel)]="serviceDescription" name="description" #description="ngModel">
+                  </mat-form-field>
+              <!-- <label for="description">Description</label>
+              <input type="text" class="form-control" id="description" required [(ngModel)]="serviceDescription" name="description"
+                #description="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Description is required
+            </div> -->
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Service Type" #mySelect [(ngModel)]="webService.selectedServiceType" name="servT">
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search" [(ngModel)]="searchServiceType" [ngModelOptions]="{standalone: true}"
+                      class="searchInput" placeholder="Search" />
+                  </div>
+
+                  <mat-option *ngFor="let name of webService.service_Types| search: searchServiceType: 'serviceTypes'"
+                    [value]="name">{{name}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Versions"  [(ngModel)]="versions" name="versions" #version="ngModel">
+                  </mat-form-field>
+              <!-- <label for="versions">Versions</label>
+              <input type="text" class="form-control" id="versions" required [(ngModel)]="versions" name="versions"
+                #version="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Version is required
+            </div> -->
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Format" #mySelect [(ngModel)]="webService.selectedFormat" name="formt">
+
+                  <div class="right-inner-addon">
+
+                    <i class="glyphicon glyphicon-search"></i>
+
+                    <input matInput type="search" [(ngModel)]="searchFormat" [ngModelOptions]="{standalone: true}"
+                      class="searchInput" placeholder="Search" />
+                  </div>
+
+                  <mat-option *ngFor="let name of webService.formats| search: searchFormat: 'format'" [value]="name">{{name}}</mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="toppings.hasError">You must select atleast two Accounts</mat-error> -->
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Price Per Hour"  [(ngModel)]="pricePerHour" name="pricePerHour" #price="ngModel">
+                  </mat-form-field>
+              <!-- <label for="pricePerHour">Price Per Hour</label>
+              <input type="text" class="form-control" id="pricePerHour" required [(ngModel)]="pricePerHour" name="pricePerHour"
+                #price="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Price Per Hour is required
+            </div> -->
+            </div>
+            <div class="col-sm-3">
+              <label for="template">Upload Template</label>
+              <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">
+            </div>
+            <div class="col-sm-3">
+
+              <label for="imageFile">Image File</label>
+              <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Minimum RAM"  [(ngModel)]="ram" name="ram" #minram="ngModel">
+                  </mat-form-field>
+              <!-- <label for="ram">Minimum RAM</label>
+              <input type="text" class="form-control" id="ram" required [(ngModel)]="ram" name="ram" #minram="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                Name is required
+              </div> -->
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="Minimum HardDisk"  [(ngModel)]="hardDisk" name="hardDisk" #harddisk="ngModel">
+                  </mat-form-field>
+              <!-- <label for="hardDisk">Minimum HardDisk</label>
+              <input type="text" class="form-control" id="hardDisk" required [(ngModel)]="hardDisk" name="hardDisk"
+                #harddisk="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                  Name is required
+                </div> -->
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="No. of CPU"  [(ngModel)]="cpu" name="cpu" #mincpu="ngModel">
+                  </mat-form-field>
+              <!-- <label for="cpu">No. of CPU</label>
+              <input type="text" class="form-control" id="cpu" required [(ngModel)]="cpu" name="cpuVal" #mincpu="ngModel"> -->
+              <!-- <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                    Name is required
+                  </div> -->
+            </div>
+          </div>
+
+
+          <button type="submit" class="btn btn-success" [disabled]="!serviceForm.form.valid" (click)="createService(serviceForm)">Confirm</button>
+          <button type="submit" class="btn btn-error"  routerLink="/DesignerDashboard">Cancel</button>
+
+          <div>
+            <hr>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

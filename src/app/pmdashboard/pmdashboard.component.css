@@ -1,0 +1,91 @@
+
+  /* .dashboardbody{
+    margin: 32px;
+   
+  } */
+
+  .logo{
+      border-right:1px solid lightgrey;
+      padding-right:50%;
+      margin-top:13px;
+      width:28px;
+  }
+  .well1{
+    background-color: #232720;
+     margin-bottom: 0px;
+     padding:10px;
+     border-color:#232730;
+     color:#ffffff;
+     height: 125px;
+  }
+  .well{
+    background-color: #232720;
+     margin-bottom: 0px;
+     padding:10px;
+     border-color:#232730;
+     color:#ffffff;
+     height: auto;
+  }
+  hr{
+      border-bottom: 1px solid #555d6a;
+      margin-left:0%;
+      margin-top:3px;
+      margin-bottom:11px;
+      border-top:11px
+  }
+
+  .circle{
+    
+    
+        height: 50px;
+        width: 50px;
+        background-color: #e4e6ed;
+        border-radius: 50%;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+  
+  }
+  /* .amChartsLegend.amcharts-legend-div{
+    overflow: unset !important;
+    margin-top: -35px !important;
+  } */
+  .circle_text{
+      padding:13px;
+      font-weight:bold;
+  }
+  .cicle_border{
+    height: 60px;
+    width: 60px;
+    background-color:white;
+    border-radius: 50%;
+    display: inline-block;
+    border:1px solid #282c24;
+    padding:4px;
+  }
+  .pad_align{
+padding-left:0px;
+padding-right:0px;
+padding-top:30px;
+
+  }
+  .positionRelative{
+    position: relative;
+    stroke-width: 50;
+
+}
+
+.percentageValue {
+    left: 23%;
+    top: 31%;
+    position: absolute;
+    /* width: 100%; */
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.topborder{
+    border-top:4px solid;
+    border-radius: 4px;
+}

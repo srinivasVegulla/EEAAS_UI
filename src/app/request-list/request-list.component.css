@@ -1,0 +1,26 @@
+mat-row:nth-child(even){
+  background-color:white;
+  }
+
+mat-row:nth-child(odd){
+  background-color:#d6e8f1;
+  }
+  mat-header-row{
+    background-color: lightgrey;
+    border-bottom-width: 0px; 
+   border-bottom-style: none;
+   font-weight:bold;
+   min-height: 40px;
+
+  }
+  mat-header-cell{
+ 
+   
+   font-size:16px;
+
+  }
+  mat-row{
+    border-bottom-width: 0px; 
+    border-bottom-style: none;
+    min-height: 40px;
+  }

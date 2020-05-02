@@ -1,0 +1,148 @@
+<!-- <div class="dashboardhead">
+
+    <h5 class="dashboardBody_Heading"><span style="font-weight: bold;" routerLink="/dashboard">Dashboard</span></h5>
+</div> -->
+
+<div class="container-fluid dashboardbody">
+    <div *ngIf="servicesInfo.length!=0">
+        <div class="row">
+            <div class="col-md-3" *ngFor="let info of servicesInfo">
+                <div class="topborder" [ngStyle]="{'border-top-color': info.bordercolor}">
+                    <div class="well1" style="padding-bottom: 0px">
+                        <div class="row">
+                            <!-- <div class="col-md-6"><img src={{info.imagePath}} class="logo" />
+               </div> -->
+                            <div class="col-md-6">
+                                <h5 class="headerTextInner">{{info.name}}</h5>
+                                <span style="font-size: 12px;" *ngIf="info.tag_line">{{info.tag_line}}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span style="margin-bottom: 0px;">
+                                    <h1 class="headerNum" style="
+                    font-weight: bold;" [style.color]="info.color">{{info.num_of_services}}</h1>
+                                </span>
+                            </div>
+                            <div class="col-md-12" style="margin-left: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-6">
+                <div style="border:1px solid #313944;background: #313944;color:white;border-top-left-radius: 4px;
+                              border-top-right-radius: 4px; margin-top:38px;height:52px;">
+                    <h4 style='margin-left: 22px;
+                        margin-top: 15px;
+                        font-weight: bold;font-size:20px'>Reservations</h4>
+                </div>
+                <div class="well" style='border-top-left-radius: 0px;
+                                border-top-right-radius: 0px;'>
+
+                    <div style="display:flex;margin-bottom:20px ">
+
+
+                        <div id="chartdiv" style="width:100%; height: 300px">
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="border:1px solid #313944;background: #313944;color:white;border-top-left-radius: 4px;
+                                    border-top-right-radius: 4px; margin-top:38px;height:52px">
+                    <h4 style="margin-left: 22px;
+    margin-top: 15px;
+    font-weight: bold;font-size:20px">Notifications</h4>
+                </div>
+
+                <div class="well" style='border-top-left-radius: 0px;
+                                  border-top-right-radius: 0px;padding-left:4%; height: 342px; overflow-y: auto;
+    overflow-x: hidden;'>
+
+                    <div class="row" *ngFor="let item of notis;">
+                        <!-- <div class="col-md-3"><img src="./assets/newimages/redmine.png" width=50px height=50px
+                                class="logoimg" /></div> -->
+                        <!-- style="width: 78.333%" for row of table -->
+                        <div class="col-md-12">
+                            <!-- <h5 style="color:#ffffff;font-weight: bold;font-size:18px;margin-top:7px;margin-bottom:5px">
+                                Redmine</h5> -->
+                            <h5 style="font-size:16px;margin-top:5px;margin-bottom:10px">{{item.message}}</h5>
+                        </div>
+                        <!-- <div class="col-md-2"><button class="btn btn-primary" style=" color: white;">RENEW</button> 
+                    </div>-->
+                    </div>
+
+
+                    <!-- <div class="row">
+
+                        <div class="col-md-3"><img src="./assets/newimages/java.png" width=50px height=50px
+                                class="logoimg" /></div>
+                        <div class="col-md-9">
+                            <h5 style="color:#ffffff;font-weight: bold;font-size:18px;margin-top:7px;margin-bottom:5px">
+                                VDE-Java</h5>
+                            <h5 style="font-size:16px;margin-top:5px;margin-bottom:7px">Java software Development
+                                Environments</h5>
+
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+
+                        <div class="col-md-3"><img src="./assets/newimages/gerrit.png" width=50px height=50px
+                                class="logoimg" /></div>
+                        <div class="col-md-9">
+                            <h5 style="color:#ffffff;font-weight: bold;font-size:18px;margin-top:7px;margin-bottom:5px">
+                                Gerrit</h5>
+                            <h5 style="font-size:16px;margin-top:5px;margin-bottom:5px">Code Review</h5>
+
+                        </div>
+                        <button style="border:0px;background:white;float:right">more....</button>
+                    </div> -->
+
+                    <!-- show = 5;
+                                                 <li *ngFor="let searchResult of searchResults|slice:0:show let i=index">
+                                                    {{searchResult.name}}
+                                                    <button *ngIf="i==4 && show == 5" (click)="show = searchResults.length">More</button>
+                                                  </li> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- </mat-card> -->
+</div>
+
+<!-- <mat-card class="row bodyCard">
+          <h4 class="dashboardBody_Heading">Upload New Ticket</h4>
+          <form class="col-md-12" [formGroup]="uploadTicketForm" id="uploadForm">
+              <mat-input-container class="col-md-6">
+                  <input class="manageInput" matInput placeholder="Account name" type="text" formControlName="accountName">
+              </mat-input-container>
+      
+              <mat-input-container class="col-md-6">
+                  <input class="manageInput" matInput placeholder="Ticket name" type="text" formControlName="ticketName">
+              </mat-input-container>
+              
+              <mat-input-container class="col-md-6">           
+                  <input #file1 type="file" [hidden]="true"   accept ="csv"  (change)="uploadTicket($event)" class="uploadFile">
+                  <input matInput placeholder="Ticket dump (.csv)" type="text" [readonly]="true" formControlName="ticketDumpName">          
+              </mat-input-container>
+              <button class="col-md-1 browseBtn" mat-raised-button  (click)="file1.click()" >Browse</button>
+            
+              <mat-input-container class="col-md-6">    
+                  <input #file2 type="file" [hidden]="true" accept="png,jpg" (change)="uploadLogo($event)" class="uploadFile">       
+                  <input matInput placeholder="Account logo (.png)" type="text" [readonly]="true" formControlName="ticketLogoName">          
+              </mat-input-container>
+              <button class="col-md-1 browseBtn" mat-raised-button  (click)="file2.click()" >Browse</button>
+              <br>
+              <button type="button" class="col-md-1 browseBtn uploadBtn" (click)="uploadFiles()" mat-raised-button  #upload [disabled]="!uploadTicketForm.controls.ticketDumpName.valid">Upload</button>
+              <button type="submit" class="col-md-1 browseBtn submitBtn" mat-raised-button  (click)="uploadTicketData()" [disabled]="!response.success || (!uploadTicketForm.valid && !validate)">Submit</button>
+           </form>
+          </mat-card> -->

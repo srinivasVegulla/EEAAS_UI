@@ -1,0 +1,24 @@
+.dashboardbody{
+    margin: 1%;
+   
+  }
+  #img1 {
+
+    background-repeat:no-repeat;
+    background-size:contain;
+}
+#button1 {
+    position: absolute;
+    top: 75%;
+    left:27%;
+    border-radius:24px;
+}
+td
+{
+    padding: 5px;
+    border:none;
+    outline:none;
+    text-align:left;
+    border-bottom-style: -0.7px ridge grey;
+
+}

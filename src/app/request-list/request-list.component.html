@@ -1,0 +1,97 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">Dashboard/New Request/Developer Tools</h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <mat-card class=" bodyCard">
+    <div class="row">
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">Requester</h5>
+        <p>EEaas PM</p>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">Approver</h5>
+        <p>Parker</p>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">Project Name</h5>
+        <p>Ericssion</p>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">Instance Type</h5>
+        <p>{{projectInfo.platform}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">Start Date</h5>
+        <p>{{projectInfo.startDate | date: 'dd'}}/{{projectInfo.startDate | date:'MM'}}/{{projectInfo.startDate | date: 'yyyy'}}</p>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">End Date</h5>
+        <p>{{projectInfo.endDate | date: 'dd'}}/{{projectInfo.endDate | date:'MM'}}/{{projectInfo.endDate | date: 'yyyy'}}</p>
+      </div>
+      <div class="col-md-3">
+        <h5 style="font-weight: bold">User List</h5>
+        <p>{{projectInfo.users}}</p>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="serviceName">
+          <mat-header-cell *matHeaderCellDef> Service Name</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.serviceName}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="serviceType">
+          <mat-header-cell *matHeaderCellDef> Service Type</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.serviceType}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="No_ofInstances" >
+          <mat-header-cell *matHeaderCellDef>No.Of Instances </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.No_ofInstances}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ram" *ngIf= "projectInfo.platform == 'vm'">
+          <mat-header-cell *matHeaderCellDef> RAM(GB)</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ram}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cpu" *ngIf= "projectInfo.platform == 'vm'">
+          <mat-header-cell *matHeaderCellDef> CPU(#Core) </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.cpu}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="hardDisk" *ngIf= "projectInfo.platform == 'vm'">
+            <mat-header-cell *matHeaderCellDef> Hard Disk(GB)</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.hardDisk}} </mat-cell>
+          </ng-container>
+        <ng-container matColumnDef="pricePerDay">
+          <mat-header-cell *matHeaderCellDef> Price per Day($) </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.pricePerDay}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="duration">
+          <mat-header-cell *matHeaderCellDef> Duration(days)</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.duration}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="totalprice">
+          <mat-header-cell *matHeaderCellDef>Total Price($) </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.totalprice}} </mat-cell>
+        </ng-container>
+       
+
+
+
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <div style="float:right;margin:10px;">
+        <button mat-raised-button style="color:red">Reject</button>
+        <button mat-raised-button color="primary" (click)="submit()" style="background-color:green">Provision</button></div>
+    </div>
+
+
+
+  </mat-card>
+</div>

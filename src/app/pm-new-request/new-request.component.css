@@ -1,0 +1,288 @@
+/*  */
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+.panel-title > a:before {
+    float: right !important;
+    font-family: FontAwesome;
+    content:"\f068";
+    padding-right: 5px;
+}
+.panel-title > a.collapsed:before {
+    float: right !important;
+    content:"\f067";
+}
+.panel-title > a:hover, 
+.panel-title > a:active, 
+.panel-title > a:focus  {
+    text-decoration:none;
+} 
+.panel-group{
+  margin:10px;
+} 
+.panel{
+  margin-bottom:15px;
+}
+
+.caption {
+    /* position: absolute; */
+    top: 0;
+    left: 5px;                            /*  changed to match image_grid padding  */
+    height: 100%;
+    /* width: calc(100% - 5px);               */
+    padding: 0 0px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .caption p {
+    /* padding: 3px;
+    color: white;
+    background: black;
+    font-size: 15.31px;
+    margin: 0 0 0px;
+    border: 1px solid #555d6a; */
+    padding: 3px;
+    color: black;
+    background: lightgrey;
+    font-size: 15.31px;
+    margin: 0 0 0px;
+
+  }
+  .imageandtext {
+    position: relative;
+  }
+  .image_grid {
+    display: inline-block;
+    padding-left: 5px;
+   
+  }
+  .image_grid img {                       /*  added rule  */
+    display: block;
+  }
+  
+  .image_grid input {
+    display: none;
+  }
+  .image_grid input:checked + label .caption p{
+    background: black;
+    color:white;
+
+  }
+
+  .image_grid input:checked + label {
+    
+    z-index:2;
+  padding:2px;
+    background: linear-gradient(to right, #f2a74c 0%, #c259dc 100%);
+  }
+  /* .image_grid input:checked + label .overlay{
+   
+    padding:10px;
+  position:absolute;
+  background-color:grey;
+  opacity:0.5;   
+  height:68px;  
+  width:116px;    
+  z-index:1;
+  top:0px;    
+  border:2px solid;
+
+  
+  } */
+  .tab-color{
+    color:black;
+  }
+  .image_grid input:checked + label:before {
+    /* content: '\2713';     */
+    content:"";
+    background-image:url('/assets/newimages/rightmark.png') ;
+    position: absolute;
+    top: 90%; left: 100%;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%,-50%);
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 50%;
+   
+    border-color: #f2a74c;
+    border-color: -moz-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    border-color: -webkit-gradient(left top, right top, color-stop(0%, #f2a74c), color-stop(100%, #c259dc));
+    border-color: -webkit-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    border-color: -o-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    border-color: -ms-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    border-color: linear-gradient(to right, #f2a74c 0%, #c259dc 100%);
+    /* background: #f2a74c; */
+    /* background: -moz-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, #f2a74c), color-stop(100%, #c259dc));
+    background: -webkit-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    background: -o-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    background: -ms-linear-gradient(left, #f2a74c 0%, #c259dc 100%);
+    background: linear-gradient(to right, #f2a74c 0%, #c259dc 100%); */
+    z-index:2;
+    background-size: 100%
+  
+  }
+  .col-md-2{
+    width:150px;
+  }
+  .img-thumbnail {
+    width: 116px;
+    height: 68px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  #collapseTwo .panel-body{
+    padding:0px;
+  }
+  #collapseTwo .panel{
+   border:0px;
+  }
+  #paneltab .panel-body{
+    padding:10px;
+  }
+  #paneltab .panel-heading{
+    border-bottom: 1px solid #555d6a;
+  }
+  #collapseTwo .panel .panel-heading{
+   background:#313944;
+   padding:0px;
+   }
+  /* .imgheight{
+   width: 106px;
+    height: 58px;
+  } */
+
+/* .image_grid input:checked + label img {
+    transform: scale(0.9);
+    box-shadow: 0 0 5px #333;
+    z-index: -1;
+  }  */
+  .image_grid input:checked + .caption::after {
+    content: '✔';    
+    position: absolute;
+    top: 0%; left: 50%;
+    width: 30px; height: 30px;
+    transform: translate(-50%,-50%);
+    color: #3db5ee;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid #3db5ee;
+    border-radius: 50%;
+    background: white;
+  }
+
+  .mat-expansion-panel-header {
+    background-color: lightgray;
+  }
+  .mat-expansion-panel{
+    padding:10px;
+  }
+
+  .mat-expansion-panel-header-title{
+    background-color: lightgray;
+    padding:12px;
+
+  }
+  .nav-tabs>li {
+   
+    background: white;
+    color:#313944;
+    border:1px solid #555d6a;
+    width: 180px;
+    text-align: center
+}
+.nav-tabs>li>a{
+   
+  
+  color:#313944;
+  width: 180px;
+}
+.nav>li>a:hover{
+  background:white;
+  color:black;
+  border:1px solid #555d6a;
+}
+.nav-tabs>li:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 75px;
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: white transparent;
+  display: block;
+  width: 0;
+  }
+.nav-tabs {
+   border-bottom: 0px solid #ddd;
+}
+.nav-tabs>li.active>a{
+  background:#c4782d;
+  color:white;
+  border:1px solid #555d6a;
+}
+.nav-tabs>li.active.active::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 75px;
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: #c4782d transparent;
+  display: block;
+  width: 0;
+  }
+  
+/* li.active{
+  background:#009cff;
+  color:white;
+  border:0px;
+} */
+  /* .mat-expansion-panel-header.mat-expanded[_ngcontent-c4],
+   {
+     height:0px;
+   } */
+   /* .mat-expansion-panel-header.mat-expanded[_ngcontent-c4]:hover{
+     background: white;
+   } */
+  /* .mat-expansion-panel-header.mat-expanded:hover{
+    background: red;
+  } */
+  /* .mat-expansion-panel-header.mat-expanded{
+    background: lightgrey;
+  } */
+  /* .mat-expansion-panel-header-title:hover{
+    background:white;
+  }  */
+  /* .mat-expansion-panel-header.mat-expanded[_ngcontent-c4] {
+    background:lightgrey;
+} */
+/* .mat-expansion-panel-header[_ngcontent-c4] {
+  background-color: red;
+} */
+/* .mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background: lightgrey;
+} */
+
+
+
+#bareMetalTable{
+  margin-top: 5px !important;
+}
+mat-row:hover {
+   /* background: #585858!important; */
+   background-color: #d6e8f1!important;
+   cursor:pointer;
+}
+.mat-form-field-disabled .mat-form-field-underline {
+
+    background-position: 0;
+    background-color: #313944 !important;
+
+}
+.panel .panel-heading {
+  cursor: pointer;
+}

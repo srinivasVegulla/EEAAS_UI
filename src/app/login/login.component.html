@@ -1,0 +1,77 @@
+<div class="login-page ">
+  <div class="row">
+    <div class="col-md-5">
+      <div style="color: white; margin:50% 0 0 30%;">
+        <!-- <h1 style="font-size: 48px;">Welcome to </h1> -->
+        <div style="    font-weight: bold;
+      font-size: 70px;">EEaaS</div>
+      </div>
+    </div>
+    <div class="login-details col-md-7">
+      <form>
+        <div class="example-container">
+          <h3>Login </h3>
+          <div class="form-group">
+
+
+
+            <mat-form-field class="example-full-width">
+
+              <input matInput placeholder="User Name" pattern="[a-zA-Z ]*" style="margin-left: 30px;
+    " [formControl]="usernameFormControl" [errorStateMatcher]="matcher" class="font-small">
+              <img src="./assets/newimages/user2.png" style="margin-top: -35px;" width="20px">
+              <mat-error *ngIf="usernameFormControl.hasError('required')">
+                User Name is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="usernameFormControl.hasError('pattern')">
+                Enter text with special characters and spaces
+              </mat-error>
+
+            </mat-form-field>
+            <mat-form-field class="example-full-width" (capsLock)="capsOn=$event">
+              <input matInput placeholder="Password" type="password" [formControl]="passwordFormControl"
+                [errorStateMatcher]="matcher" style="margin-left: 30px;
+              " class="font-small">
+              <img src="./assets/newimages/password.png" style="margin-top: -35px;" width="20px">
+
+            </mat-form-field>
+
+            <div class="button-row login-button">
+              <button mat-raised-button [disabled]="!usernameFormControl.valid && !passwordFormControl.valid"
+                (click)="login()">LOGIN</button>
+              <mat-error *ngIf="capsOn">Caps Lock is ON</mat-error>
+              <mat-error>
+                <strong>{{auth.errorMessage}}</strong>
+              </mat-error>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+
+  </div>
+  <!-- <footer class="logout"><span class="copy"></span>
+    <span class="nav-text" style="font-size: 10px; ">
+      &copy; 2019 | Tata Consultancy Services Limited.All Rights Reserved.
+    </span>
+  </footer> -->
+  <div style="    border-top: white 1px solid;
+  color: white;
+  position: relative;
+  margin-top: 9%;
+  padding-top: 8px;
+  padding-left: 20px;
+  font-size: 13px;">
+    <span>
+      &copy; 2019 | Tata Consultancy Services Limited.All Rights Reserved.
+    </span>
+  </div>
+</div>
+
+<!-- <footer class="logout"><span class="copy"></span>
+    <span class="nav-text" style="font-size: 10px; ">
+      &copy; 2019 | Tata Consultancy Services Limited.All Rights Reserved.
+    </span>
+  </footer> -->

@@ -1,0 +1,122 @@
+
+
+
+
+
+<div class="container-fluid" style="padding-right:0px;padding-left:0px;">
+    <div class="row" style="margin-right:0px;margin-left:0px;"><nav-app></nav-app>
+</div>
+<div class="row wrapper" style="margin-right:0px;margin-left:0px;margin-top: 46px;">
+        <div class="col-md-3" style="width:8.5%">
+                <nav class="main-menu" id="sidebar" style="width:8.5%">
+     
+  <ul>
+      
+     
+      <!-- <li class="dropdown" dropdown [dropdownToggle]=true   (onOpen)="doSomeActionOnOpen()" (onClose)="doSomeActionOnClose()" >
+              <a>
+                  <span class="icon"><img src="./assets/images/dashboard.png" id="logo" /></span>
+                  <span class="nav-text" dropdown-open>
+                     Environment
+                  </span>
+              </a>
+              <ul class="dropdown-menu menuOptions" >
+                   //<li   routerLink="/dashboard/NewRequest" class="dropCell" >
+                 //     <a style="margin-left:65px;">New Request</a>
+                //  </li> 
+                  <li   routerLink="/AdminDashboard/services/RequestList" class="dropCell" >
+                      <a style="margin-left:65px;">All</a>
+                  </li>
+                  <li   routerLink="/AdminDashboard/services/RequestList" class="dropCell" >
+                      <a style="margin-left:65px;">Pre Defined</a>
+                  </li>
+                  <li   routerLink="/AdminDashboard/services/RequestList" class="dropCell" >
+                      <a style="margin-left:65px;">Topology Designer</a>
+                  </li>
+                  <li   routerLink="/AdminDashboard/services/RequestList" class="dropCell" >
+                      <a style="margin-left:65px;">Telecom Networks</a>
+                  </li>
+              </ul>
+      </li> -->
+      <li router-link="/vdes">
+          <a href="/vdes" router-link="/vdes">
+              <span class="icon"><img src="./assets/images/vdes.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  My Topologies
+              </span>
+          </a>
+        
+      </li>
+      <li router-link="/catelogue">
+          <a href="/catelogue" router-link="/catelogue">
+              <span class="icon"><img src="./assets/images/catalogue.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  Workstation
+              </span>
+          </a>
+        
+      </li>
+      <li router-link="/users">
+          <a href="/users" router-link="/users">
+              <span class="icon"><img src="./assets/images/users.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  Reservations
+              </span>
+          </a>
+        
+      </li>
+      <li router-link="/activities">
+          <a href="/activities" router-link="/activities">
+              <span class="icon"><img src="./assets/images/activities.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  Worklist
+              </span>
+          </a>
+        
+      </li>
+      <li router-link="/assurance">
+          <a href="/assurance" router-link="/assurance">
+              <span class="icon"><img src="./assets/images/assurance.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  Calendar
+              </span>
+          </a>
+        
+      </li>
+      <li router-link="/reports">
+          <a href="/reports" router-link="/reports">
+              <span class="icon"><img src="./assets/images/reports.png" id="logo" ></span>
+              <span class="nav-text"><br>
+                  Reports
+              </span>
+          </a>
+        
+      </li>
+     
+  </ul>
+
+  <!-- <ul class="logout">
+      <li>
+          <a> <span class="copy"></span>
+              <span class="nav-text" style="font-size: 8px">
+                  &copy; CREDO | Tata Consultancy Services 
+              </span></a>
+          
+      </li>  
+  </ul> -->
+</nav>
+
+</div>
+
+    
+    <div class="col-md-9" style="padding: 0px;width:91.5%"> 
+                 
+            <router-outlet></router-outlet>
+            <footer class="logout"><span class="copy"></span>
+                <span class="nav-text" style="font-size: 10px">
+                    &copy; CREDO | Tata Consultancy Services 
+                </span></footer>
+              </div>
+</div>
+</div>
+

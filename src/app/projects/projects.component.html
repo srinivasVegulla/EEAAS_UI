@@ -1,0 +1,98 @@
+
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span routerLink="/lmdashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/lmdashboard/projects">Project List</span>
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Project List
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+        <mat-form-field class="example-full-width">
+
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+        </mat-form-field>
+
+
+        <mat-table [dataSource]="dataSource" matSort>
+
+
+          <!--   
+    <ng-container matColumnDef="position">
+      
+      <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+    
+        <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+
+    </ng-container> -->
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="projectId">
+            <mat-header-cell *matHeaderCellDef  >Project Id</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.projectId}}</mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="projectName">
+            <mat-header-cell *matHeaderCellDef  > Project Name</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.projectName}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="businessUnit">
+            <mat-header-cell *matHeaderCellDef  >Business Unit</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.businessUnit}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="teamSize">
+            <mat-header-cell *matHeaderCellDef  >Teamsize</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.teamSize}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="startDate">
+            <mat-header-cell *matHeaderCellDef  > Start_Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.startDate}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="endDate">
+            <mat-header-cell *matHeaderCellDef  > End_Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.endDate}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="startedDate">
+            <mat-header-cell *matHeaderCellDef  >Started_Date</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.startedDate}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="closedDate">
+            <mat-header-cell *matHeaderCellDef  > Closed_Date</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.closedDate}} </mat-cell>
+          </ng-container>
+         
+          <ng-container matColumnDef="totalBudget">
+            <mat-header-cell *matHeaderCellDef  > Total_Budget</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.totalBudget}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="availableBudget">
+            <mat-header-cell *matHeaderCellDef  > Available_Budget($)</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.availableBudget}} </mat-cell>
+          </ng-container>
+
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row (click)="viewRequest(row.request_id)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+
+
+      </div>
+    </div>
+  </div>
+</div>

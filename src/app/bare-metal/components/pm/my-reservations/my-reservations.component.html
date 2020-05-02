@@ -1,0 +1,139 @@
+<div style="overflow: auto !important">
+
+  <div class="panel">
+    <!-- Default panel contents -->
+    <div class="panel-heading">PENDING REQUESTS
+      <div style="float: right;  margin-right: 10px; cursor: pointer;">
+        <!-- <select style="background-color: #313944;
+            border-color: #313944; margin-right: 20px;"  [ngModel]="selectedDevice" (ngModelChange)="onChange($event)">
+          <option value="">View All</option>
+          <option value="switch">Switch</option>
+          <option value="server">Server</option>
+          <option value="vde">VDE</option>
+          <option value="service">Service</option>
+        </select>
+        <select [ngModel]="selectedDevice" (ngModelChange)="onChange($event)" name="sel2">
+            <option [value]="i" *ngFor="let i of devices">{{i}}</option>
+        </select> -->
+        <!-- <span class="btn btn-default" (click)="remove(selected_list, i)">
+          CANCEL REQUEST</span> -->
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <table class="table">
+        <!--  style="background-color:#313944; color:white" -->
+        <thead class="thead-dark">
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Request ID</th>
+            <!-- <th scope="col">Service Name</th> -->
+            <th scope="col">Service Type</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Project Name</th>
+            <!-- <th scope="col">Location</th> -->
+            <th scope="col">Price</th>
+            <th scope="col">Status</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tr-row" *ngFor="let data of splicedData_pending; let i = index;">
+            <!-- <th scope="row">
+              <input type="checkbox" [checked]="data.checked" (change)="data.checked == !data.checked">
+            </th> -->
+            <!-- <td>{{i+1}}</td> -->
+            <td (click)="process_ticket(data)" class="suresh-underline">{{data.request_id}}</td>
+            <td>{{data.instance_type.toLowerCase() == "physical" ? "Server" : data.instance_type}}</td>
+            <td>{{data.start_date}}</td>
+            <td *ngIf="!data.expired">{{data.end_date}}</td>
+            <td *ngIf="data.expired" style="color: red;">
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{data.end_date}}</td>
+
+            <td>{{data.project_name}}</td>
+            <!-- <td>{{data.location_id}}</td> -->
+            <td>{{data.price}}</td>
+            <td>{{data.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+      <mat-paginator (page)="pageChangeEvent($event, 'pending')" [length]="pageLength_pending"
+        [pageSize]="pageSize_pending" [pageSizeOptions]="pageSizeOptions">
+      </mat-paginator>
+      <!-- <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator> -->
+
+
+
+    </div>
+  </div>
+
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">RESERVED/IN USE
+      <div style="float: right;  margin-right: 10px; cursor: pointer;">
+        <!-- <select style="background-color: #313944;
+        border-color: #313944; margin-right: 20px;">
+          <option value="">View All</option>
+          <option value="switch">Switch</option>
+          <option value="server">Server</option>
+          <option value="vde">VDE</option>
+          <option value="service">Service</option>
+        </select> -->
+        <!-- <span class="btn btn-default" (click)="remove(selected_list, i)">
+          RELEASE</span> -->
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Request ID</th>
+            <th scope="col">Service Type</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Project Name</th>
+            <!-- <th scope="col">Location</th> -->
+            <th scope="col">Price</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tr-row" *ngFor="let data of splicedData_inuse; let i = index;">
+            <!-- <th scope="row">
+              <input type="checkbox" [checked]="data.checked" (change)="data.checked == !data.checked">
+            </th> -->
+            <!-- <td>{{i+1}}</td> -->
+            <td (click)="process_ticket(data)" class="suresh-underline">{{data.request_id}}</td>
+            <td>{{data.instance_type.toLowerCase() == "physical" ? "Server" : data.instance_type}}</td>
+            <!-- <td>{{data.instance_type}}</td> -->
+            <td>{{data.start_date}}</td>
+            <td *ngIf="!data.expired">{{data.end_date}}</td>
+            <td *ngIf="data.expired" style="color: red;">
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{data.end_date}}</td>
+            <td>{{data.project_name}}</td>
+            <!-- <td>{{data.location_id}}</td> -->
+            <td>{{data.price}}</td>
+            <td>{{data.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <mat-paginator (page)="pageChangeEvent($event, 'inuse')" [length]="pageLength_inuse" [pageSize]="pageSize_inuse"
+        [pageSizeOptions]="pageSizeOptions">
+      </mat-paginator>
+
+
+
+    </div>
+  </div>
+
+</div>

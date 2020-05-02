@@ -1,0 +1,232 @@
+<div class="container-fluid" style="padding-right:0px;padding-left:0px;">
+    <div class="row" style="margin-right:0px;margin-left:0px;">
+        <nav-app></nav-app>
+    </div>
+    <div class="row " style="margin-right:0px;margin-left:0px;margin-top: 46px;">
+        <div  style="width:8.5%">
+            <nav class="main-menu" id="sidebar" style="width:8.5%">
+                <!-- <div style="text-align: right"><button type="button" id="sidebarCollapse1" (click)="menuClose()" class="btn btn-info" style="background-color:black;border-color:black;text-align:right;">
+          
+              <span class="glyphicon glyphicon-arrow-left"></span>
+          </button></div> -->
+
+                <ul class="navr">
+                    <li routerLink="/lmdashboard" [ngClass]="{'active': webService.LMDashboard==true}">
+                        <a routerLink="/lmdashboard">
+                            <span class="icon"><img src="./assets/images/dashboard.png" width="28px" id="logo" /></span>
+                            <span class="nav-text"><br />
+                                Dashboard
+                            </span>
+                        </a>
+
+                    </li>
+                    <!--      <li routerLink="/lmdashboard/projects"  [ngClass]="{'active': webService.Projects==true}">
+          <a  routerLink="/lmdashboard/projects">
+              <span class="icon"><img src="./assets/images/projects.png" width="28px" id="logo" /></span>
+              <span class="nav-text"><br/>
+                  Projects
+              </span>
+          </a>
+        
+      </li> -->
+                    <!-- <li routerLink="/dashboard/inventory"  [ngClass]="{'active': webService.Inventory==true}">
+          <a  routerLink="/dashboard/inventory">
+              <span class="icon"><img src="./assets/images/dashboard.png" width="28px" id="logo" /></span>
+              <span class="nav-text"><br/>
+                  Inventory
+              </span>
+          </a>
+        
+      </li> -->
+                    <!-- <li class="has-subnav" routerLink="/lmdashboard/catalogue">
+          <a  routerLink="/lmdashboard/catalogue">
+              <span class="icon"><img src="./assets/images/catalogue.png" width="28px" id="logo" /></span>
+              <span class="nav-text"><br/>
+                  Catalogue
+              </span>
+          </a>
+          
+      </li> -->
+
+                    <!-- <li class="dropdown"  [ngClass]="{'active': webService.myService==true}" >
+            <a >
+                  <span class="icon"><img src="./assets/images/services.png" width="28px" id="logo" /></span>
+                  <span class="nav-text" ><br/>
+                     My Services
+                  </span>
+                  <i class="right"></i>
+              </a>
+     
+              <ul class="dropdown-menu" >
+                  <li   routerLink="/dashboard/Myservices/NewRequest" class="dropCell" >
+                      <a style="text-align: -webkit-left;">New Request</a>
+                  </li>
+                  <li   routerLink="/dashboard/Myservices/RequestList" class="dropCell" >
+                          <a style="text-align: -webkit-left;">Request list</a>
+                      </li>
+              </ul>
+      </li> -->
+                    <!--  <li routerLink="/lmdashboard/LMRequestList">
+          <a>
+              <span class="icon"><img src="./assets/images/service list.svg" width=24px; id="logo" /></span>
+              <span class="nav-text"><br/>
+                Request List
+              </span>
+          </a>
+      </li>
+      <li routerLink="/lmdashboard/LMServicetList">
+        <a>
+            <span class="icon"><img src="./assets/images/service list.svg" width=24px; id="logo" /></span>
+            <span class="nav-text"><br/>
+              Service List
+            </span>
+        </a>
+    </li> -->
+
+
+
+
+
+
+
+                    <!-- <li routerLink="/reports">
+                    <a routerLink="/reports">
+                        <span class="icon"><img src="./assets/images/reports.png" width="28px" id="logo"></span>
+                        <span class="nav-text"><br>
+                            Reports
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li routerLink="/lmdashboard/Billing" class="dropCell">
+                            <a routerLink="/lmdashboard/Billing">Billing</a>
+                        </li>
+                        <li routerLink="/lmdashboard/Utilisation" class="dropCell">
+                            <a routerLink="/lmdashboard/Utilisation">Utilisation</a>
+                        </li>
+                    </ul>
+                    </li> -->
+
+
+                    <li class="dropdown" [ngClass]="{'active': webService.labs==true}">
+                        <a>
+                            <span class="icon"><img src="./assets/images/labs.png" width="28px" id="logo" /></span>
+                            <span class="nav-text"><br />
+                                Labs
+                            </span>
+                            <i class="right"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li routerLink="/lmdashboard/lab1" class="dropCell">
+                                <a routerLink="/lmdashboard/lab1">LAB 1</a>
+                            </li>
+                            <li routerLink="/lmdashboard/lab2" class="dropCell">
+                                <a routerLink="/lmdashboard/lab2">LAB 2</a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li routerLink="/lmdashboard/catalogue" [ngClass]="{'active': webService.devices==true}">
+                        <a routerLink="/lmdashboard/catalogue">
+                            <span class="icon"><img src="./assets/images/devices.png" width="28px" id="logo" /></span>
+                            <span class="nav-text"><br />
+                                Catalogue
+                            </span>
+                        </a>
+                    </li>
+
+                    <li id="orders" routerLink="/lmdashboard/orders" [ngClass]="{'active': webService.orders==true}"
+                        style="cursor: pointer;">
+                        <a>
+                            <span class="icon"><img src="./assets/images/orders.png" width="28px" id="logo" /></span>
+                            <span class="nav-text"><br>
+                                <!-- Orders -->
+                                Requests
+                            </span>
+                        </a>
+
+                    </li>
+
+
+
+                    <li class="dropdown" [ngClass]="{'active': webService.reports==true}">
+                        <a>
+                            <span class="icon"><img src="./assets/images/reports.png" width="28px" id="logo"></span>
+                            <span class="nav-text"><br />
+                                Reports
+                            </span>
+                            <i class="right"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li routerLink="/lmdashboard/Billing" class="dropCell">
+                                <a routerLink="/lmdashboard/Billing">Billing</a>
+                            </li>
+                            <!-- <li routerLink="/lmdashboard/Utilisation" class="dropCell">
+                                <a routerLink="/lmdashboard/Utilisation">Utilisation</a>
+                            </li> -->
+
+
+                        </ul>
+
+                    </li>
+
+
+                    <!-- <li routerLink="/lmdashboard/Myservices/RequestList" [ngClass]="{'active': webService.ReservationList==true}">
+                        <a routerLink="/lmdashboard/Myservices/RequestList">
+                            <span class="icon"><img src="./assets/images/activities.png" width="28px" id="logo" /></span>
+                            <span class="nav-text"><br />
+                                My Reservations
+                            </span>
+                        </a>
+                    </li> -->
+
+                    <!-- <li routerLink="/lmdashboard/Billing" >
+        <a>
+            <span class="icon"><img src="./assets/images/billing.png" width=24px; id="logo" /></span>
+            <span class="nav-text"><br />
+                Billing
+            </span>
+        </a>
+    </li> -->
+
+                </ul>
+
+                <!-- <ul class="logout">
+      <li>
+          <a> <span class="copy"></span>
+              <span class="nav-text" style="font-size: 8px">
+                  &copy; CREDO | Tata Consultancy Services 
+              </span></a>
+          
+      </li>  
+  </ul> -->
+
+            </nav>
+
+
+
+
+        </div>
+        <div  style="padding: 0px;width:91.5%;">
+
+            <router-outlet></router-outlet>
+            <!-- <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/dashboard/Myservices/RequestList">Jim</a>
+          <a routerLink="/dashboard/Myservices/NewRequest">Bob</a>
+        </div> -->
+            <footer class="logout"><span class="copy"></span>
+                <span class="nav-text" style="font-size: 10px; ">
+                    &copy; 2019 | Tata Consultancy Services Limited.All Rights Reserved.
+                </span>
+            </footer>
+        </div>
+        <!-- <div> <button type="button" id="sidebarCollapse" (click)="menuOpen()" class="btn btn-info" style="background-color:black">
+  
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+  </button></div>    -->
+
+
+    </div>
+
+</div>

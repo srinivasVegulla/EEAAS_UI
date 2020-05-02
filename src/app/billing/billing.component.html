@@ -1,0 +1,101 @@
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+  
+<span *ngIf="auth.role=='Admin'"><span routerLink="/AdminDashboard">Dashboard/</span>
+      <span style="font-weight: bold;" routerLink="/AdminDashboard/Billing">Billing</span>
+    </span>
+    <span *ngIf="auth.role=='LM'">
+<span routerLink="/lmdashboard">Dashboard/</span>
+    <span style="font-weight: bold;" routerLink="/lmdashboard/Billing">Billing</span>
+  </span>
+
+  </h5>
+</div>
+
+<div class="container-fluid dashboardbody">
+  <div class=" bodyCard" id="listtable">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h6 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Billing
+          </a>
+        </h6>
+
+      </div>
+      <div class="panel-body">
+          <!-- <mat-form-field>
+        <mat-select placeholder="Select Report Type" [(ngModel)]="billingType" (change)="getBilling()">
+
+       
+
+          <mat-option *ngFor="let name of billingTypelist" [value]="name">{{name}}</mat-option>
+        </mat-select></mat-form-field> -->
+        <!-- startView="multi-year" -->
+        <mat-form-field>
+            <input matInput [matDatepicker]="dp" placeholder="Month and Year" (dateChange)="getBilling()"  [formControl]="date">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp 
+                          
+                            startView="year"
+                            (yearSelected)="chosenYearHandler($event)"
+                            (monthSelected)="chosenMonthHandler($event, dp)"
+                            
+                            panelClass="example-month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+          
+        <mat-form-field class="example-full-width">
+
+          <!-- <mat-icon matPrefix>search</mat-icon> -->
+          <input matInput type="search" (keyup)="applyFilter($event.target.value)" placeholder="Search for Results">
+        </mat-form-field>
+        <div style="margin-bottom:10px"><span style="font-weight:bold">Date: </span>From {{startDate.split(" ")[0]}} To {{endDate.split(" ")[0]}}
+        <span style="font-weight:bold;margin-left:50px">Total: </span>$ {{totalBill}}</div>
+<!-- <div *ngIf="billingType!=''"> -->
+
+        <mat-table [dataSource]="dataSource" matSort>
+
+
+          <!--   
+    <ng-container matColumnDef="position">
+      
+      <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+    
+        <mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</mat-cell>
+
+    </ng-container> -->
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="s_No">
+            <mat-header-cell *matHeaderCellDef  >S.No </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i=index">{{i+1}}</mat-cell>
+          </ng-container>
+ 
+          <!-- Weight Column -->
+          <ng-container matColumnDef="proj_name">
+            <mat-header-cell *matHeaderCellDef  > Project Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.proj_name}} </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="total_requests">
+            <mat-header-cell *matHeaderCellDef  > Total Requests </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total_requests}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="total_amount">
+            <mat-header-cell *matHeaderCellDef  > Total Amount($) </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total_amount}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row (click)="viewRequest(row.proj_name,i)" *matRowDef="let row; let i=index; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50,100]" style="padding-left:50px;"></mat-paginator>
+      <!-- </div> -->
+
+      </div>
+    </div>
+  </div>
+</div>
