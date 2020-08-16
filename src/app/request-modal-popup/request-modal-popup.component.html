@@ -1,0 +1,37 @@
+<div class="modalDialog">
+    <div class="modalDialogHeader">
+        <div class="closeContainer" (click)="closeModal(false)">
+            x
+        </div>
+        <div *ngIf="type == 'Reject'" class="modalHeadingText">Reason for Rejecting {{inputData}}</div>
+    </div>
+    <div class="modalDialogBody">
+        <h2 *ngIf="type == 'Release'">Are you sure you want to Release request {{inputData}} ? </h2>
+        <h2 *ngIf="type == 'Cancel'">Are you sure you want to Cancel request {{inputData}} ? </h2>
+
+        <form [formGroup]="reasonForm" #reasonFm="ngForm" *ngIf="type == 'Reject'">
+            <div class="customRow">
+                <div class="col-md-10 form-group">
+                    <textarea type="textarea" rows="4" cols="4" id="reason" class="form-control textarea"
+                        formControlName="reason"></textarea>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </form>
+    </div>
+    <div class="btnAlignment">
+        <button class="crtBtn easSecondaryBtn" (click)="closeModal(false)">
+            Don't {{type}}
+        </button>
+        <button class="crtBtn easPrimaryBtn" (click)="closeModal(true)" *ngIf="type == 'Release'">
+            {{type}}
+        </button>
+        <button class="crtBtn easPrimaryBtn" (click)="closeModal(true)" *ngIf="type == 'Cancel'">
+            {{type}} Request
+        </button>
+        <button class="crtBtn easPrimaryBtn" (click)="closeModal(true)" *ngIf="type == 'Reject'"
+            [disabled]="reasonForm.invalid" [ngClass]="{'disabledBtn' : reasonForm.invalid }">
+            {{type}}
+        </button>
+    </div>
+</div>

@@ -1,178 +1,96 @@
-<!-- Latest compiled and minified Bootstrap CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
-<!-- 
-
-<div class="container">
-  <div class="row">
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-  </div>
-  <div class="row">
-    <div class="col-8">col-8</div>
-    <div class="col-4">col-4</div>
-  </div>
-</div> -->
-
+<div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span *ngIf="login_data.role.toLowerCase() == 'pm'">
+      <span routerLink="/home/dashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/dashboard/my-reservations">My Reservations</span>
+    </span>
+    <span *ngIf="login_data.role.toLowerCase() == 'lm'">
+      <span routerLink="/home/lmdashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/lmdashboard/orders">Requests</span>
+    </span>
+    <span *ngIf="login_data.role.toLowerCase() == 'admin'">
+      <span routerLink="/home/AdminDashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/AdminDashboard/orders">Requests</span>
+    </span>
+  </h5>
+</div>
 <div class="overflow-auto" *ngIf="order_details">
 
-  <div class="row" style="padding-top: 10px;">
+  <div class="customRow easHeading">
     <div class="col-md-6">
-      <h4 class="black" style="margin-left: 18px;">Request ID: {{request_id}} </h4>
+      <div class="black" style="margin-left: 12px;">Request ID: {{request_id}} </div>
     </div>
     <div class="col-md-6">
       <!-- for pm -->
 
       <div style="float: right; margin-right: 2%" *ngIf="login_data.role.toLowerCase() == 'pm'">
-        <button class="btn" *ngIf="!enable_pm_edit" style="background-color: #313944; color: white;"
-          (click)="back()">CANCEL</button>
-        <button class="btn btn-primary" *ngIf="pm_can_edit && !enable_pm_edit" (click)="release()">RELEASE</button>
-        <button class="btn" *ngIf="enable_pm_edit" style="background-color: #313944; color: white;"
-          (click)="pmEdit(false)">CANCEL</button>
-        <button [disabled]="order_details.expired" class="btn btn-primary" *ngIf="enable_pm_edit"
-          (click)="pmEditSubmit()">SUBMIT REQUEST</button>
-        <button [disabled]="order_details.expired" class="btn btn-primary" *ngIf="pm_can_edit && !enable_pm_edit"
-          (click)="pmEdit(true)">EDIT</button>
+        <!-- WHEN EDIT IS NOT CLICKED....INITIAL STATE-->
+        <button class="easSecondaryBtn easButton" *ngIf="!enable_pm_edit" (click)="back()">Go Back</button>
+        <button class="easButton" *ngIf="pm_can_edit && !enable_pm_edit" (click)="release()">RELEASE</button>
+
+        <button [disabled]="order_details.expired" class="easButton"
+          *ngIf="pm_can_edit && !enable_pm_edit  && order_details?.instance_type != 'hardware'"
+          [ngClass]="{'disabledBtn' : order_details.expired }" (click)="pmEdit(true)">EDIT</button>
 
         <button [disabled]="order_details.expired || ['APPROVED'].includes(order_details.status.toUpperCase())"
-          class="btn btn-primary" *ngIf="pm_can_cancel_req" (click)="pmCancelReq()">CANCEL REQUEST</button>
+          [ngClass]="{'disabledBtn' : (order_details.expired || ['APPROVED'].includes(order_details.status.toUpperCase()) )}"
+          class="easButton" *ngIf="pm_can_cancel_req" (click)="pmCancelReq()">CANCEL
+          REQUEST</button>
+
+        <!-- WHEN EDIT IS CLICKED-->
+        <button class="easButton" *ngIf="enable_pm_edit" (click)="pmEdit(false)">CANCEL EDIT</button>
+
+        <button [disabled]="order_details.expired" [ngClass]="{'disabledBtn' : order_details.expired }"
+          class="easButton" *ngIf="enable_pm_edit" (click)="pmEditSubmit()">SUBMIT REQUEST</button>
       </div>
       <!-- for lm and admin -->
       <div style="float: right;margin-right: 2%" *ngIf="login_data.role.toLowerCase() != 'pm'">
-        <button class="btn btn-primary" *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.expired "
+
+        <!--LM and ADMIN-->
+        <!--SEC button in LM@REQUESTED and in admin@APPROVED-->
+        <!--Primary Button in -->
+        <button class="easButton" (click)="reject()"
+          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
+          [ngClass]="{'disabledBtn' : (order_details.expired || order_details.status == 'PROVISIONED' || order_details.status == 'ALLOCATED'), 'easSecondaryBtn': ((login_data.role == 'LM' && order_details.status =='REQUESTED') || (login_data.role.toLowerCase() == 'admin' && order_details.status == 'APPROVED') )}">
+          REJECT </button>
+
+        <button class="easButton" *ngIf="login_data.role == 'LM' && order_details.status =='REQUESTED'"
+          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
+          (click)="approve()"
+          [ngClass]="{'disabledBtn' : (order_details.expired || order_details.status == 'PROVISIONED' || order_details.status == 'ALLOCATED') }">
+          APPROVE</button>
+
+        <!--ADMIN and IF EXIPIRED only RELEASE IT-->
+        <button class="easButton" *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.expired "
+          [ngClass]="{'disabledBtn' : (order_details.status == 'RELEASED') }"
           [disabled]='order_details.status=="RELEASED"' (click)="release()">RELEASE</button>
-        <button class="btn" style="background-color: #313944; color: white;" (click)="reject()"
-          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'>REJECT</button>
 
-        <button class="btn btn-primary" *ngIf="login_data.role == 'LM' && order_details.status =='REQUESTED'"
+        <!--ADMIN and status as APROVED-->
+        <button class="easButton"
           [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
-          (click)="approve()">APPROVE</button>
-
-        <button class="btn btn-primary"
-          [disabled]='order_details.expired || order_details.status=="PROVISIONED" || order_details.status=="ALLOCATED"'
-          *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.status == 'APPROVED'"
-          (click)="provision()">PROVISION</button>
+          [ngClass]="{'disabledBtn' : (order_details.expired || order_details.status == 'PROVISIONED' || order_details.status == 'ALLOCATED') }"
+          *ngIf="login_data.role.toLowerCase() == 'admin' && order_details.status == 'APPROVED'" (click)="provision()">
+          <span *ngIf="order_details?.instance_type != 'hardware'">PROVISION</span>
+          <span *ngIf="order_details?.instance_type == 'hardware'">APPROVE</span>
+        </button>
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-4">
-    <table class="table">
-      <thead class="thead">
-        <tr>
-          <th scope="col">Total Price</th>
-          <th scope="col">Available Budget</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>${{order_details.price.toLocaleString()}}</td>
-          <td *ngIf="order_details.budget.avail_budget-order_details.price > 0" style="color: green;">
-            ${{order_details.budget.avail_budget.toLocaleString()}}</td>
-          <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
-            ${{order_details.budget.avail_budget}}</td>
-        </tr>
-        <tr>
-          <td></td>
-
-          <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
-            (Exceeds budget Limit)</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
-  <br>
-  <div class="row" *ngIf="login_data.role.toLowerCase() == 'lm'">
-    <div class="price">
+  <div class="customRow lmAva" *ngIf="login_data.role.toLowerCase() == 'lm'">
+    <div class="price" *ngIf="order_details?.instance_type != 'hardware'">
       <label>Available Budget :</label>
       <span *ngIf="order_details.budget.avail_budget-order_details.price < 0"
         style="color: red;">${{order_details.budget.avail_budget.toLocaleString()}}</span>
       <span *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">(Exceeds budget
         Limit)</span>
-      <span *ngIf="order_details.budget.avail_budget-order_details.price > 0"
-        style="color: green;">${{order_details.budget.avail_budget.toLocaleString()}}</span>
+      <span *ngIf="order_details.budget.avail_budget-order_details.price > 0" style="color: green;"
+        class="priceAmt">${{order_details.budget.avail_budget.toLocaleString()}}</span>
     </div>
-    <div class="price"><label>Total Price :</label><span>${{order_details.price.toLocaleString()}}</span></div>
+    <div class="price" *ngIf="order_details?.instance_type != 'hardware'"><label>Total Price :</label><span
+        class="priceAmt">${{order_details.price.toLocaleString()}}</span>
+    </div>
   </div>
   <hr>
-  <!-- header ends -->
-
-  <!-- that table like view -->
-
-
-  <!-- Default panel contents -->
-  <!-- <div class="panel-heading">Pending Since
-
-    </div> -->
-
-
-  <!-- <div class="row">
-    <div class="col-md-9">
-      <div class="panel">
-        <div class="panel-body">
-          <table class="table">
-            <thead class="thead-dark" style="background-color:#313944; color:white">
-              <tr>
-                <th scope="col">Pending Since</th>
-                <th scope="col">Role</th>
-                <th scope="col">Person</th>
-                <th scope="col">Status</th>
-                <th scope="col">Date Approved</th>
-               
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of pending">
-
-                <td>{{data.start_date}}</td>
-                <td>{{data.by}}</td>
-                <td>{{data.to}}</td>
-                <td>{{data.status}}</td>
-                <td>{{data.end_date}}</td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="panel">
-        <div class="panel-body">
-          <table class="table">
-            <thead class="thead-dark" style="background-color:#313944; color:white">
-              <tr>
-                <th scope="col">Total Price</th>
-                <th scope="col">Available Budget</th>
-
-
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-
-                <td>${{order_details.price}}</td>
-                <td *ngIf="order_details.budget.avail_budget-order_details.price > 0" style="color: green;">
-                  ${{order_details.budget.avail_budget}}</td>
-                <td *ngIf="order_details.budget.avail_budget-order_details.price < 0" style="color: red;">
-                  ${{order_details.budget.avail_budget}}</td>
-
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div> -->
-
-
-  <!-- collapse -->
-
-
   <div class="container" *ngIf="order_details">
 
     <div class="panel-group" id="accordion">
@@ -186,8 +104,6 @@
               href="#{{data.server_details_user.service_id}}">
               {{data.service_name}}
             </a>
-            <!-- <span style="float: right;  margin-right: 10px; cursor: pointer;" (click)="remove(selected_list, i)"><i
-                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i>Remove</span> -->
           </h4>
         </div>
         <div id="{{data.server_details_user.service_id}}" class="panel-collapse collapse in">
@@ -209,7 +125,7 @@
                           matInput placeholder="Location">
                       </mat-form-field>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" *ngIf="order_details?.instance_type != 'hardware'">
                       <mat-form-field>
                         <input disabled="true" name="price" ngDefaultControl
                           [(ngModel)]="data.server_details_user.price_per_hr" matInput
@@ -218,29 +134,14 @@
                     </div>
                   </div>
 
-
-                  <!-- <div class="form-group"> 
-                      <label for="exampleFormControlInput1">Project</label>
-                      <input name="project_name" ngDefaultControl [(ngModel)]="data.project_name" type="text"
-                        class="form-control form-width" id="exampleFormControlInput1" placeholder="project name">
-                    </div> -->
-
                   <div class="row">
                     <div class="col-md-4">
 
                       <div class="form-group">
-                        <!-- <label for="exampleFormControlInput1">Start Date</label> -->
-                        <!-- <mat-form-field>
-                          <input [value]="order_details.start_date" placeholder="Choose start date">
-                          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                          <mat-datepicker #startDate></mat-datepicker>
-                        </mat-form-field> -->
                         <mat-form-field>
                           <input disabled="true" name="start_date" ngDefaultControl
                             [(ngModel)]="order_details.start_date" matInput placeholder="Start Date">
                         </mat-form-field>
-
-                        <!-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="project name"> -->
                       </div>
                     </div>
 
@@ -264,20 +165,7 @@
                     </div>
 
                   </div>
-
-
-
-                  <!--<div class="form-group">
-                       <div class="card">
-                      <div class="card-header">
-                        Featured
-                      </div>
-                      <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                      </div>
-                    </div> -->
+                  <!--Select Operating System-->
                   <div
                     *ngIf="order_details.instance_type.toLowerCase() =='physical' && data.server_details_user.software"
                     class="panel panel-default">
@@ -287,12 +175,6 @@
                           <div class="col-md-6" style="color: black;">
                             Select Operating System
                           </div>
-                          <!-- <div class="col-md-6">
-                            <div style="float: right; color:#4775d1;" type="button" data-toggle="modal"
-                              data-target="#exampleModal"
-                              (click)="doModal(data.os_to_select, 'Select Operating System', 'radio', data)">
-                              Change</div>
-                          </div> -->
                         </div>
                       </h3>
                     </div>
@@ -303,8 +185,9 @@
                       <!-- {{data.server_details_user.software && data.server_details_user.software.os || 'NA'}} -->
                     </div>
                   </div>
-
-                  <div class="panel panel-default" *ngIf="data.extra_tools">
+                  <!--Select Application(s)-->
+                  <div class="panel panel-default"
+                    *ngIf="data.extra_tools && order_details?.instance_type != 'hardware'">
                     <div class="panel-heading" style="background-color: lightgray">
                       <h3 class="panel-title">
                         <div class="row">
@@ -340,91 +223,40 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="form-group">
-                      <div class="col-md-12" style="border: solid gray 1px;
-                          background-color: lightgray;">
-                        <div class="col-md-6" style="color: black;">
-                          Select Software(s)
-                        </div>
-                        <div class="col-md-6">
-                          <div style="text-align: right; color: #0000FF" type="button" data-toggle="modal"
-                            data-target="#exampleModal">
-                            Add</div>
-                        </div>
-                      </div>
-                      <div style=" border:solid gray 1px">
-                        <ul>
-                          <li>something</li>
-                          <li>something else</li>
-                        </ul>
-                      </div>
-                    </div> -->
-
-
-
-
-                  <!-- </div> -->
-
-                  <!-- <div class="form-group">
-                      <label for="exampleFormControlSelect1">Alert me before expiring in(days)</label>
-                      <select (change)="data.alert_before = $event.target.value" class="form-control form-width"
-                        id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                      </select>
-                    </div> -->
-                  <mat-form-field style="width: 35%;">
+                  <!-- vegulla removed -->
+                  <!--           <mat-form-field style="width: 35%;">
                     <mat-select disabled="true" (selectionChange)="data.custom_data.alert_before = $event.value"
                       placeholder="Alert me before expiring in(days)">
                       <mat-option value="1">1</mat-option>
                       <mat-option value="2">2</mat-option>
                     </mat-select>
-                  </mat-form-field>
-                  <!-- <div class="form-group">
-                    <label for="exampleFormControlSelect2">Example multiple select</label>
-                    <select multiple class="form-control" id="exampleFormControlSelect2">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Example textarea</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                  </div> -->
+                  </mat-form-field> -->
+
                 </form>
               </div>
+              <!-- TABLE BEING SHOWED VEGULLA -->
               <div class="col-md-4">
                 <table *ngIf="data.server_details" class="table server-detail" style="border: solid 1px gray">
-                  <!-- <thead> -->
-                  <tr>
-                    <th scope="col">{{ data.service_name.toLowerCase().includes("switch")? 'Switch' :  'Server'}}
-                      Details</th>
-                  </tr>
-                  <!-- </thead> -->
+                  <thead class="easTableHead">
+                    <!-- <tr> -->
+                    <th colspan="2">{{ data.service_name }} Details
+                    </th>
+                    <!--  </tr> -->
+                  </thead>
                   <!-- <tbody > -->
-                  <tr *ngFor="let row of Object.keys(data.server_details)">
-                    <td>{{api.humanize(row)}}</td>
-                    <td>{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
-                  </tr>
-                  <!-- <tr>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                      </tr>
-                      <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                      </tr>
-                      <tr>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                      </tr> -->
-                  <!-- </tbody> -->
+                  <tbody *ngIf="order_details?.instance_type != 'hardware'">
+                    <tr *ngFor="let row of Object.keys(data.server_details)">
+                      <td class="easTableRowColKey">{{api.humanize(row)}}</td>
+                      <td class="easTableRowCol">{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="order_details?.instance_type == 'hardware'">
+                    <tr *ngFor="let row of hardwareRows">
+                      <td class="easTableRowColKey">{{getHoverDisplayNames(row, 'hardware')}}</td>
+                      <td class="easTableRowCol">{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                    </tr>
+                  </tbody>
+
                 </table>
               </div>
             </div>
@@ -605,3 +437,8 @@
     </div>
   </div>
 </div>
+
+<div class="modal-background" *ngIf="isModalOpen"></div>
+<app-request-modal-popup *ngIf="isModalOpen" [inputData]="modalInputData" [type]="typeOfOperation"
+  (requestModalDialogClose)="closeModalDialog($event)">
+</app-request-modal-popup>

@@ -10,15 +10,15 @@ import { ApiService } from "../bare-metal/services/api.service";
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 @Injectable({ providedIn: 'root' })
 export class WebService {
-    @ViewChild('mySelect', {static: false}) mySelect: MatSelect;
+    @ViewChild('mySelect', { static: false }) mySelect: MatSelect;
     // BASE_URL = 'https://10.138.77.70:12399/';
     // SERVICE_URL = 'https://10.138.77.70:12399/';
     // URL = 'https://10.138.77.70:12399/';
     // URL1 = 'https://10.138.77.70:12399/';
-    BASE_URL = 'https://192.168.6.2:12311/';
-    SERVICE_URL = 'https://192.168.6.2:12311/';
-    URL = 'https://192.168.6.2:12311/';
-    URL1 = 'https://192.168.6.2:12311/';
+    BASE_URL = 'http://192.168.6.2:12311/';
+    SERVICE_URL = 'http://192.168.6.2:12311/';
+    URL = 'http://192.168.6.2:12311/';
+    URL1 = 'http://192.168.6.2:12311/';
     projectInfo = 'project_Info'
     bareMetalData;
     reason: any;
@@ -72,6 +72,7 @@ export class WebService {
     catalogue: boolean = false;
     orders: boolean = false
     Inventory: boolean = false;
+    Assets = false;
     designerDashboard: boolean = false;
     serviceRequest: boolean = false;
     serviceRequestList: boolean = false;
@@ -81,6 +82,7 @@ export class WebService {
     ReservationList: boolean = false;
     holidays: boolean = false;
     calendar: boolean = false;
+    currentTab;
     service_Types: any = ['Continuous Integration', 'Issue Management', 'Code Review', 'Virtual Development Environment', 'Monitoring', 'bare_metal'];
     selectedServiceType: any;
     formats: any = ['Docker', 'qcow2']
@@ -328,17 +330,39 @@ export class WebService {
         return this.http.post(this.SERVICE_URL + 'catalogue', data);
     }
     getBillingData(data) {
-        console.log(data)
         return this.http.post(this.SERVICE_URL + 'priceReports', data);
     }
     getServerDetails(data) {
-        console.log(data)
         return this.http.post(this.SERVICE_URL + 'serverList', data);
     }
     getUtilizationReports(data) {
-        console.log(data)
         return this.http.post(this.SERVICE_URL + 'utilizationReports', data);
     }
+
+    getAssetsData() {
+        return this.http.get(this.URL1 + 'assets');
+    }
+
+    submitAssetDetails(data) {
+        return this.http.post(this.SERVICE_URL + 'newasset', data);
+    }
+
+    getassetUsageHistory(data) {
+        return this.http.post(this.SERVICE_URL + 'usagehistory', data);
+    }
+
+    getUsersData() {
+        return this.http.get(this.URL1 + 'getusers');
+    }
+    submitUserDetails(data) {
+        return this.http.post(this.SERVICE_URL + 'newuser', data);
+    }
+
+    getAssetsUsageBar() {
+        return this.http.get(this.URL1 + 'assetdashboard');
+    }
+
+
     // private messageStore = [];
 
     // private messageSubjet = new Subject();

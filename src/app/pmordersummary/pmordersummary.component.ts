@@ -12,7 +12,7 @@ import { successPopup } from '../admin-request-list/admin-request-list.component
 @Component({
   selector: 'app-pmordersummary',
   templateUrl: './pmordersummary.component.html',
-  styleUrls: ['./pmordersummary.component.css']
+  styleUrls: ['./pmordersummary.component.scss']
 })
 export class PmordersummaryComponent implements OnInit {
 
@@ -160,7 +160,7 @@ export class PmordersummaryComponent implements OnInit {
   submit() {
     var projectData = JSON.parse(this.webService.project_Info);
     console.log(projectData)
-console.log(this.webService.imageArray)
+    console.log(this.webService.imageArray)
     console.log(this.webService.services)
     var data = {
       "order_details": {
@@ -187,7 +187,7 @@ console.log(this.webService.imageArray)
       var res: any = resp;
       var response = res;
 
-console.log(response)
+      console.log(response)
       if (response.job == true) {
         this.webService.message = "Submitted Successfully"
 
@@ -220,26 +220,26 @@ console.log(response)
     })
   }
   cancel() {
-  
-      this.webService.selectedProject = null;
-  //    this.webService.selectedUserList = null;
-   this.webService.lineManger = null;
-        this.webService.admin = null;
-  
-      this.webService.todayDate = null;
-      this.webService.lastDate = null;
- this.webService.todayDateReservation = null;
-      this.webService.lastDateReservation = null;
 
-      this.router.navigate(['/dashboard']);
+    this.webService.selectedProject = null;
+    //    this.webService.selectedUserList = null;
+    this.webService.lineManger = null;
+    this.webService.admin = null;
 
-  
+    this.webService.todayDate = null;
+    this.webService.lastDate = null;
+    this.webService.todayDateReservation = null;
+    this.webService.lastDateReservation = null;
+
+    this.router.navigate(['/dashboard']);
+
+
   }
   ngOnInit() {
     this.serviceData();
     this.tableData = [];
     //  this.bareMetalData();
-    this.webService.services.length=0
+    this.webService.services.length = 0
 
   }
   public tableData: any = []
@@ -247,5 +247,5 @@ console.log(response)
   displayedColumns: string[];
   // displayedColumns: string[] = ['serviceName', 'serviceType', 'No_ofInstances', 'pricePerDay', 'duration', 'totalprice'];
   bareMetalDisplayedColumns: string[]
- 
+
 }

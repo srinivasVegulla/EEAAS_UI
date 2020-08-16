@@ -1,4 +1,4 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import Moment from 'moment';
@@ -64,35 +64,35 @@ import { DatePipe } from '@angular/common';
 
 })
 export class addorEditHoliday {
-holidayData:any;
-holiday_date:any;
-holiday_reason:any;
+  holidayData: any;
+  holiday_date: any;
+  holiday_reason: any;
 
-  constructor(public dialog: MatDialog, private dialogRef: MatDialogRef<addorEditHoliday>,public datePipe:DatePipe, @Inject(MAT_DIALOG_DATA) public data: any, public auth: AuthService, private webService: WebService) {
-console.log(this.data)
-this.holidayData=this.data;
-if(this.holidayData.action=="edit"){
-  console.log(this.holidayData.data)
-  this.holiday_date=this.holidayData.data.holiday_date
-  this.holiday_reason=this.holidayData.data.holiday_reason
-}
+  constructor(public dialog: MatDialog, private dialogRef: MatDialogRef<addorEditHoliday>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any, public auth: AuthService, private webService: WebService) {
+    console.log(this.data)
+    this.holidayData = this.data;
+    if (this.holidayData.action == "edit") {
+      console.log(this.holidayData.data)
+      this.holiday_date = this.holidayData.data.holiday_date
+      this.holiday_reason = this.holidayData.data.holiday_reason
+    }
 
   }
-  saveHoliday(){
+  saveHoliday() {
     console.log(this.holidayData)
-    this.dialogRef.close({status:"true",holiday_date:this.datePipe.transform(this.holiday_date, "MM/dd/yyyy"),holiday_reason:this.holiday_reason})
+    this.dialogRef.close({ status: "true", holiday_date: this.datePipe.transform(this.holiday_date, "MM/dd/yyyy"), holiday_reason: this.holiday_reason })
   }
-  cancel(){
-    this.dialogRef.close({status:"false"})
+  cancel() {
+    this.dialogRef.close({ status: "false" })
   }
 }
 @Component({
   selector: 'app-holidays',
   templateUrl: './holidays.component.html',
-  styleUrls: ['./holidays.component.css'],
+  styleUrls: ['./holidays.component.scss'],
   providers: [DatePipe]
- 
-  
+
+
 })
 export class HolidaysComponent implements OnInit {
   displayedColumns: string[] = ['s_No', 'holiday_date', 'holiday_reason', 'actions'];
@@ -106,35 +106,35 @@ export class HolidaysComponent implements OnInit {
     { s_No: ' ', holiday_date: new Date("10/02/2019"), holiday_reason: 'Gandhi Jyanthi', actions: '' },
     { s_No: ' ', holiday_date: new Date("10/08/2019"), holiday_reason: 'Dussehra', actions: '' },
     { s_No: ' ', holiday_date: new Date("12/25/2019"), holiday_reason: 'Christamas', actions: '' },
-    
+
 
   ]
-dataSource:any;
+  dataSource: any;
 
-  constructor(private datePipe: DatePipe,public dialog: MatDialog,public auth:AuthService,public webService:WebService) {
+  constructor(private datePipe: DatePipe, public dialog: MatDialog, public auth: AuthService, public webService: WebService) {
     this.dataSource = new MatTableDataSource(this.tableData);
-  
-     var date = new Date()
-     var myDate = this.datePipe.transform(date, "dd/MM/yyyy");
-     console.log(myDate)
-   
-   }
-   addRow() {
+
+    var date = new Date()
+    var myDate = this.datePipe.transform(date, "dd/MM/yyyy");
+    console.log(myDate)
+
+  }
+  addRow() {
     // this.tableData.unshift(
     //   { s_No: ' ', holiday_date: new Date(), holiday_reason: ' ', actions: false })
     // this.dataSource = new MatTableDataSource(this.tableData);
     let dialogRef = this.dialog.open(addorEditHoliday, {
       height: '230px',
       width: '300px',
-     data: { action:"add" }
+      data: { action: "add" }
     })
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      if(result.status){
-            this.tableData.unshift(
-      { s_No: ' ', holiday_date: new Date(result.holiday_date), holiday_reason: result.holiday_reason, actions: false })
-    this.dataSource = new MatTableDataSource(this.tableData);
-       
+      if (result.status) {
+        this.tableData.unshift(
+          { s_No: ' ', holiday_date: new Date(result.holiday_date), holiday_reason: result.holiday_reason, actions: false })
+        this.dataSource = new MatTableDataSource(this.tableData);
+
       }
     })
   }
@@ -145,54 +145,63 @@ dataSource:any;
     let dialogRef = this.dialog.open(addorEditHoliday, {
       height: '230px',
       width: '300px',
-     data: { action:"edit",data:this.tableData[i] }
+      data: { action: "edit", data: this.tableData[i] }
     })
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      if(result.status){
-        this.tableData[i].holiday_date=new Date(result.holiday_date);
-        this.tableData[i].holiday_reason=result.holiday_reason
+      if (result.status) {
+        this.tableData[i].holiday_date = new Date(result.holiday_date);
+        this.tableData[i].holiday_reason = result.holiday_reason
 
- 
-this.dataSource = new MatTableDataSource(this.tableData);
-   
-  }
+
+        this.dataSource = new MatTableDataSource(this.tableData);
+
+      }
     })
   }
   delete(i) {
     let dialogRef = this.dialog.open(deletePopup, {
       height: '170px',
       width: '450px',
-    
+
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if(result){
+      console.log("hi vegulla HolidayRes", result);
+      if (result) {
         // this.webService.deleteServiceData(deleteData).subscribe(res => {
         // console.log(res)
         this.tableData.splice(i, 1);
         this.dataSource = new MatTableDataSource(this.tableData)
-      
+
       }
-      else{
+      else {
         console.log("closed");
       }
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
-   
-    
-   
-  
+  }
+
+
+
   ngOnInit() {
-    this.webService.Dashboard=false;
-    this.webService.devices=false;
-   this.webService.orders=false;
-this.webService.labs=false;
-this.webService.reports=false;
-    this.webService.Inventory  =false;
-this.webService.catalogue=false;
-this.webService.calendar=false;
-this.webService.holidays=true;
+    /* this.webService.Dashboard = false;
+    this.webService.devices = false;
+    this.webService.orders = false;
+    this.webService.labs = false;
+    this.webService.reports = false;
+    this.webService.Inventory = false;
+    this.webService.catalogue = false;
+    this.webService.calendar = false;
+    this.webService.holidays = true;
+    this.webService.Assets = false; */
+    this.webService.currentTab = 'holidays';
   }
 
 }

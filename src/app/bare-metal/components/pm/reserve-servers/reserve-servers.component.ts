@@ -5,13 +5,14 @@ import { Location } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../services/api.service";
+import { WebService } from "../../../../services/web.service";
 
 declare var bootbox;
 
 @Component({
   selector: 'app-reserve-servers',
   templateUrl: './reserve-servers.component.html',
-  styleUrls: ['./reserve-servers.component.css']
+  styleUrls: ['./reserve-servers.component.scss']
 })
 export class ReserveServersComponent implements OnInit {
   selected_service_type: any;
@@ -53,12 +54,26 @@ export class ReserveServersComponent implements OnInit {
   }
   enable_osApp_button = false;
 
+  modalInputData = '';
+  isModalOpen = false;
+  removeIndex;
+  hardwareRows = ['mac_address', 'RAM', 'location', 'model', 'status']
+  hoverDisplayNames = {
+    'hardware': {
+      'mac_address': 'Serial No',
+      'RAM': 'Ram Size',
+      'location': 'Location',
+      'model': 'Brand',
+      'status': 'Status'
+    }
+  }
   constructor(
     // private toast: ToastService
     private _location: Location,
     private api: ApiService,
     private router: Router,
     private Activatedroute: ActivatedRoute,
+    private webService: WebService
   ) {
 
   }
@@ -67,6 +82,7 @@ export class ReserveServersComponent implements OnInit {
     this.sub = this.Activatedroute.queryParamMap
       .subscribe(params => {
         this.selected_service_type = params.get('service_type') || 0;
+        this.webService.currentTab = 'ReservationSystem';
         // let type = params.get('service_type') || 0;
         // if (type == 'bare_metal') this.selected_service_type = 'Server';
         // if (type == 'switch') this.selected_service_type = 'Switch';
@@ -83,7 +99,15 @@ export class ReserveServersComponent implements OnInit {
     //console.log(this.api.getItem('project_id'));
     this.project_name_available = this.api.getItem('project_id') && this.api.getItem('project_id')[0]
     this.order_details.project_name = this.api.getItem('project_id')[0];
+    this.webService.currentTab = 'ReservationSystem';
+  }
 
+  getHoverDisplayNames(keyName, tab) {
+    if (this.hoverDisplayNames[tab][keyName]) {
+      return this.hoverDisplayNames[tab][keyName];
+    } else {
+      return keyName;
+    }
   }
 
   loaddata() {
@@ -92,6 +116,7 @@ export class ReserveServersComponent implements OnInit {
       item['custom_data'] = {};
       return item;
     });
+    console.log("hi this.ssssssssssssss", this.selected_list);
     this.api.getServerDetails(this.selected_list.map((item) => item['serviceid'])).subscribe(
       res => {
         // console.log(res);
@@ -107,6 +132,8 @@ export class ReserveServersComponent implements OnInit {
         })
       }
     );
+
+    console.log("hi this.ssssssssssssss  2", this.selected_list);
   }
 
   dateChange(data, field) {
@@ -116,24 +143,15 @@ export class ReserveServersComponent implements OnInit {
 
 
   remove(selected_list, index) {
-    bootbox.confirm({
-      size: "small",
-      message: "Are you sure you want to delete?",
-      buttons: {
-        confirm: {
-          label: 'Yes',
-          className: 'btn-success yes-btn'
-        },
-        cancel: {
-          label: 'No',
-          className: 'btn-danger no-btn'
-        }
-      },
-      callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
-        if (result) selected_list.splice(index, 1);
-      }
-    })
-
+    this.isModalOpen = true;
+    this.modalInputData = this.selected_list[index]['name'];
+    this.removeIndex = index;
+  }
+  closeModalDialog(dataObj) {
+    this.isModalOpen = false;
+    if (dataObj['isDelete']) {
+      this.selected_list.splice(this.removeIndex, 1);
+    }
   }
 
   back() {
@@ -306,93 +324,115 @@ export class ReserveServersComponent implements OnInit {
   // for suresh ends
 
   reserve() {
-    console.log(this.selected_list);
+    console.log("hi veguu this.selected_list", this.selected_list);
 
     if (!this.order_details.start_date || !this.order_details.end_date) {
       this.api.errorToast("Enter Start and End dates!");
       return false;
     }
     try {
-      let instance_type = this.selected_list.filter((item) => item['raw_data']['service_type'] == 'switch').length ? "Switch" : "Physical";
+      let firstElement = this.selected_list[0];
+      var instance_type = null;
+      console.log("hii first element", firstElement);
+      if (firstElement['raw_data']['service_type'] == 'switch') {
+        instance_type = 'Switch';
+      } else if (firstElement['raw_data']['service_type'] == 'bare_metal') {
+        instance_type = 'Physical';
+      } else if (firstElement['raw_data']['service_type'] == 'device') {
+        instance_type = 'hardware';
+      }
+      /*  let instance_type = this.selected_list.filter((item) => item['raw_data']['service_type'] == 'switch').length ? "Switch" : "Physical"; */
       // console.log(this.selected_list.filter((item) => item['raw_data']['service_type'] == 'switch'))
-      let req = {
-        action: 'create',
-        login: JSON.parse(localStorage.getItem('data')),
-        // login: {
-        //   job: true,
-        //   role: '',
-        //   user_id: '',
-        //   user_name: '',
-        //   project_id: ['']
-        // },
-        order_details: {
-          start_date: moment(this.order_details.start_date.value).format('MM/DD/YYYY') + " 00:00:00",
-          end_date: moment(this.order_details.end_date['value']).format('MM/DD/YYYY') + " 00:00:00",
-          alert_me_before: this.order_details.alert_me_before,
-          project_name: this.order_details.project_name,
-          order_items: this.selected_list.length,
-          estimated_no_of_users: 1,
-          status: 'REQUESTED',
-          instance_type,
-          location: 'Hyderabad'
+      var req = {};
+      if (instance_type == 'hardware') {
+        req = {
+          action: 'create',
+          login: JSON.parse(localStorage.getItem('data')),
+          order_details: {
+            start_date: moment(this.order_details.start_date.value).format('MM/DD/YYYY') + " 00:00:00",
+            end_date: moment(this.order_details.end_date['value']).format('MM/DD/YYYY') + " 00:00:00",
+            alert_me_before: this.order_details.alert_me_before,
+            project_name: this.order_details.project_name,
+            order_items: this.selected_list.length,
+            estimated_no_of_users: 1,
+            status: 'REQUESTED',
+            instance_type,
+            location: 'Hyderabad'
+          }, service_details: this.selected_list.map((item) => {
+            let obj = {};
+            if (this.selected_service_type == 'bare_metal' && !item['custom_data'].os) throw "Select OS."
+            obj['service_id'] = item['raw_data'].service_id;
+            obj['service_type'] = item['raw_data'].service_type;
+            obj['os'] = item['custom_data'].os;
+            obj['os_id'] = item['custom_data'].os_id;
+            // obj['softwares'] = item['custom_data'].apps.map((item) => item.service_id);
+            if (this.selected_service_type == 'bare_metal') {
+              // if (!item['custom_data'].apps || !item['custom_data'].apps.length)
+              //     throw "Select Softwares.";
+              let tools = {};
+              item['custom_data'].apps && item['custom_data'].apps_added && item['custom_data'].apps_added.map((item) => {
+                tools[item.service_name] = item.versions
+              });
+              obj['extra_tools'] = tools;
+            }
 
-        },
-        service_details: this.selected_list.map((item) => {
-          let obj = {};
-          if (this.selected_service_type == 'bare_metal' && !item['custom_data'].os) throw "Select OS."
-          obj['service_id'] = item['raw_data'].service_id;
-          obj['service_type'] = item['raw_data'].service_type;
-          obj['os'] = item['custom_data'].os;
-          obj['os_id'] = item['custom_data'].os_id;
-          // obj['softwares'] = item['custom_data'].apps.map((item) => item.service_id);
-          if (this.selected_service_type == 'bare_metal') {
-            // if (!item['custom_data'].apps || !item['custom_data'].apps.length)
-            //     throw "Select Softwares.";
-            let tools = {};
-            item['custom_data'].apps && item['custom_data'].apps_added && item['custom_data'].apps_added.map((item) => {
-              tools[item.service_name] = item.versions
-            });
-            obj['extra_tools'] = tools;
-          }
+            return JSON.stringify(obj);
 
-          return JSON.stringify(obj);
+          }),
+          userList: [this.api.getItem('user_name')]
+        };
+      } else {
+        req = {
+          action: 'create',
+          login: JSON.parse(localStorage.getItem('data')),
+          order_details: {
+            start_date: moment(this.order_details.start_date.value).format('MM/DD/YYYY') + " 00:00:00",
+            end_date: moment(this.order_details.end_date['value']).format('MM/DD/YYYY') + " 00:00:00",
+            alert_me_before: this.order_details.alert_me_before,
+            project_name: this.order_details.project_name,
+            order_items: this.selected_list.length,
+            estimated_no_of_users: 1,
+            status: 'REQUESTED',
+            instance_type,
+            location: 'Hyderabad'
+          },
 
-        }),
-        // [
-        //   { service_id: '', service_type: '', os: '', softwares: [] }
-        // ],
-        userList: [this.api.getItem('user_name')]
-      };
-      console.log({ req });
+          service_details: this.selected_list.map((item) => {
+            let obj = {};
+            if (this.selected_service_type == 'bare_metal' && !item['custom_data'].os) throw "Select OS."
+            obj['service_id'] = item['raw_data'].service_id;
+            obj['service_type'] = item['raw_data'].service_type;
+            obj['os'] = item['custom_data'].os;
+            obj['os_id'] = item['custom_data'].os_id;
+            // obj['softwares'] = item['custom_data'].apps.map((item) => item.service_id);
+            if (this.selected_service_type == 'bare_metal') {
+              // if (!item['custom_data'].apps || !item['custom_data'].apps.length)
+              //     throw "Select Softwares.";
+              let tools = {};
+              item['custom_data'].apps && item['custom_data'].apps_added && item['custom_data'].apps_added.map((item) => {
+                tools[item.service_name] = item.versions
+              });
+              obj['extra_tools'] = tools;
+            }
+
+            return JSON.stringify(obj);
+
+          }),
+          userList: [this.api.getItem('user_name')]
+        };
+      }
+
+      console.log("hi req is", { req });
       // return false
       this.api.reserveServers(req).subscribe(
         res => {
-          // console.log({ res });
           if (res['job'] == true) {
-
-            bootbox.alert({
-              message: "Request submitted successfully!",
-              callback: () => {
-
-                // console.log('This was logged in the callback!');
-                this.router.navigate(['/dashboard/my-reservations']);
-                // this.router. http://10.138.77.70:4200/dashboard/my-reservations
-              }
-            })
+            this.router.navigate(['/home/dashboard/my-reservations']);
           } else {
             this.api.errorToast(this.api.commonError)
-            // bootbox.alert({
-            //   message: "Something went wrong! Please try again.",
-            //   callback: function () {
-            //    // console.log('This was logged in the callback!');
-            //   }
-            // })
           }
-
-
         },
         err => {
-          //  console.log({ err })
           this.api.errorToast(this.api.commonError)
         }
       );

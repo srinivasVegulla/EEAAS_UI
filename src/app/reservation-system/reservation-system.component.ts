@@ -10,14 +10,14 @@ import { ApiService } from '../bare-metal/services/api.service';
 @Component({
   selector: 'app-reservation-system',
   templateUrl: './reservation-system.component.html',
-  styleUrls: ['./reservation-system.component.css']
+  styleUrls: ['./reservation-system.component.scss']
 })
 export class ReservationSystemComponent implements OnInit {
 
   listOfRequests: any;
-  filteredRequests:any;
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any,public router:Router,private DatePipe: DatePipe, public dialog: MatDialog, private auth: AuthService, private webService: WebService,
-  private api: ApiService
+  filteredRequests: any;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public router: Router, private DatePipe: DatePipe, public dialog: MatDialog, private auth: AuthService, private webService: WebService,
+    private api: ApiService
   ) { }
   public bareMetalTableData: any = [];
   public filteredTableData: any = [];
@@ -29,8 +29,8 @@ export class ReservationSystemComponent implements OnInit {
   startdateVal;
   userData: any = JSON.parse(this.auth.data) // {"Request payload":{"EDITOR_CONFIG":{"text":"{\"role\":\"PM\",\"project_id\":[\"NextGen\"],\"user_name\":\"Sam\",\"job\":true,\"user_id\":\"Sam\",\"action\":\"read\"}","mode":"text/html"}}}
   project_names: any = ['NextGen']//  this.userData.project_id;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.bareMetalDataSource.filter = filterValue.trim().toLowerCase();
@@ -49,13 +49,13 @@ export class ReservationSystemComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog closed: ${result}`);
-     // this.dialogResult = result;
+      // this.dialogResult = result;
     });
   }
 
   getFilteredData() {
- this.bareMetalData.length=0;
- this.filteredTableData.length=0;
+    this.bareMetalData.length = 0;
+    this.filteredTableData.length = 0;
     // console.log(this.webService.todayDate)
     // console.log(this.webService.lastDate)
     // console.log(this.webService.todayTimeReservation)
@@ -73,13 +73,13 @@ export class ReservationSystemComponent implements OnInit {
     // enDate.setHours(this.webService.lastTimeReservation.split(':')[0])
     // enDate.setMinutes(this.webService.lastTimeReservation.split(':')[1])
     // this.enddateVal = this.DatePipe.transform(enDate, 'MM/dd/yyyy HH:mm:ss')
-    this.startdateVal=(new Date(this.webService.todayDateReservation).getMonth()+1) + "/" +new Date(this.webService.todayDateReservation).getDate() + "/" +  new Date(this.webService.todayDateReservation).getFullYear()+" "+ new Date(this.webService.todayDateReservation).getHours()+":"+new Date(this.webService.todayDateReservation).getMinutes()+":"+new Date(this.webService.todayDateReservation).getSeconds();
-    this.enddateVal=(new Date(this.webService.lastDateReservation).getMonth()+1) + "/" +new Date(this.webService.lastDateReservation).getDate() + "/" +  new Date(this.webService.lastDateReservation).getFullYear()+" "+ new Date(this.webService.todayDateReservation).getHours()+":"+new Date(this.webService.todayDateReservation).getMinutes()+":"+new Date(this.webService.lastDateReservation).getSeconds();
+    this.startdateVal = (new Date(this.webService.todayDateReservation).getMonth() + 1) + "/" + new Date(this.webService.todayDateReservation).getDate() + "/" + new Date(this.webService.todayDateReservation).getFullYear() + " " + new Date(this.webService.todayDateReservation).getHours() + ":" + new Date(this.webService.todayDateReservation).getMinutes() + ":" + new Date(this.webService.todayDateReservation).getSeconds();
+    this.enddateVal = (new Date(this.webService.lastDateReservation).getMonth() + 1) + "/" + new Date(this.webService.lastDateReservation).getDate() + "/" + new Date(this.webService.lastDateReservation).getFullYear() + " " + new Date(this.webService.todayDateReservation).getHours() + ":" + new Date(this.webService.todayDateReservation).getMinutes() + ":" + new Date(this.webService.lastDateReservation).getSeconds();
     var data = {
       "start_date": this.startdateVal,
       "end_date": this.enddateVal,
       "action": "search",
-      "location":"all"
+      "location": "all"
     }
     console.log(data)
     this.webService.getFilteredReservationData(data).subscribe(res => {
@@ -110,7 +110,7 @@ export class ReservationSystemComponent implements OnInit {
             // "location_id" :this.listOfRequests[i].location_id,
             "reservedBy": this.filteredRequests[i].consumer,
             "allocatedTo": this.filteredRequests[i].project,
-            "pricePerHr":this.filteredRequests[i].price_per_hr,
+            "pricePerHr": this.filteredRequests[i].price_per_hr,
             //        "actions": this.filteredRequests[i].consumer
 
           })
@@ -139,7 +139,7 @@ export class ReservationSystemComponent implements OnInit {
       console.log(this.listOfRequests);
       //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo" , "pricePerHr"];
+      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo", "pricePerHr"];
       var len = this.listOfRequests.length;
       var j = 0;
       for (var i = len - 1; i >= 0; i--) {
@@ -159,7 +159,7 @@ export class ReservationSystemComponent implements OnInit {
             // "location_id" :this.listOfRequests[i].location_id,
             "reservedBy": this.listOfRequests[i].consumer,
             "allocatedTo": this.listOfRequests[i].project,
-            "pricePerHr":this.listOfRequests[i].price_per_hr,
+            "pricePerHr": this.listOfRequests[i].price_per_hr,
             //  "actions": this.listOfRequests[i].consumer
 
           })
@@ -204,13 +204,13 @@ export class ReservationSystemComponent implements OnInit {
     // enDate.setHours(this.webService.lastTimeReservation.split(':')[0])
     // enDate.setMinutes(this.webService.lastTimeReservation.split(':')[1])
     // this.enddateVal = this.DatePipe.transform(enDate, 'MM/dd/yyyy HH:mm:ss')
-    this.startdateVal=(new Date(this.webService.todayDateReservation).getMonth()+1) + "/" +new Date(this.webService.todayDateReservation).getDate() + "/" +  new Date(this.webService.todayDateReservation).getFullYear()+" "+ new Date(this.webService.todayDateReservation).getHours()+":"+new Date(this.webService.todayDateReservation).getMinutes()+":"+new Date(this.webService.todayDateReservation).getSeconds();
-    this.enddateVal=(new Date(this.webService.lastDateReservation).getMonth()+1) + "/" +new Date(this.webService.lastDateReservation).getDate() + "/" +  new Date(this.webService.lastDateReservation).getFullYear()+" "+ new Date(this.webService.todayDateReservation).getHours()+":"+new Date(this.webService.todayDateReservation).getMinutes()+":"+new Date(this.webService.lastDateReservation).getSeconds();
+    this.startdateVal = (new Date(this.webService.todayDateReservation).getMonth() + 1) + "/" + new Date(this.webService.todayDateReservation).getDate() + "/" + new Date(this.webService.todayDateReservation).getFullYear() + " " + new Date(this.webService.todayDateReservation).getHours() + ":" + new Date(this.webService.todayDateReservation).getMinutes() + ":" + new Date(this.webService.todayDateReservation).getSeconds();
+    this.enddateVal = (new Date(this.webService.lastDateReservation).getMonth() + 1) + "/" + new Date(this.webService.lastDateReservation).getDate() + "/" + new Date(this.webService.lastDateReservation).getFullYear() + " " + new Date(this.webService.todayDateReservation).getHours() + ":" + new Date(this.webService.todayDateReservation).getMinutes() + ":" + new Date(this.webService.lastDateReservation).getSeconds();
 
-     this.webService.setBareMetalData(this.bareMetalData)
+    this.webService.setBareMetalData(this.bareMetalData)
 
-   
-     var info = {
+
+    var info = {
       "projectName": this.webService.selectedProject, "users": this.webService.selectedUserList,
       "startDate": this.startdateVal, "endDate": this.enddateVal, "delivaryLocation": this.webService.selectedDelivaryLocation,
       "platform": "Physical", "lineManger": this.webService.lineManger, "admin": this.webService.admin,
@@ -219,16 +219,16 @@ export class ReservationSystemComponent implements OnInit {
 
     var res = this.webService.setProjectInfo(info)
     this.auth.setProjectName(this.webService.selectedProject);
-      this.router.navigate(['/dashboard/orderList']);
-    
+    this.router.navigate(['/dashboard/orderList']);
+
 
 
   }
   changeStartDate(event) {
     console.log("asjbndjasjdk")
     console.log(event.value)
-    console.log((new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds());
-    this.startdateVal=(new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds();
+    console.log((new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds());
+    this.startdateVal = (new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds();
 
     // this.webService.todayDate = this.DatePipe.transform(event, 'MM/dd/yyyy')
     // this.webService.todayTimeReservation = this.DatePipe.transform(event, 'HH:mm')
@@ -238,10 +238,10 @@ export class ReservationSystemComponent implements OnInit {
 
 
   changeEndDate(event) {
-    
+
     console.log(event.value)
-    console.log((new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds());
-    this.enddateVal=(new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds();
+    console.log((new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds());
+    this.enddateVal = (new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds();
     // this.webService.lastDate = this.DatePipe.transform(event, 'MM/dd/yyyy')
     // this.webService.lastTimeReservation = this.DatePipe.transform(event, 'HH:mm')
     // console.log("lastDate:" + this.webService.lastDate);
@@ -249,17 +249,17 @@ export class ReservationSystemComponent implements OnInit {
   }
 
   viewService(serviceId) {
-    this.webService.physicalServiceId= serviceId;
+    this.webService.physicalServiceId = serviceId;
     this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
   }
- cancle() {
+  cancle() {
     this.webService.selectedProject = null;
     //this.webService.selectedUserList = null;
     this.webService.todayDateReservation = null;
     this.webService.lastDateReservation = null;
     this.router.navigate(['/dashboard']);
   }
- userList(p_name) {
+  userList(p_name) {
     console.log(p_name)
     this.auth.setProjectName(p_name);
     var userData: any = JSON.parse(this.auth.data)
@@ -288,7 +288,7 @@ export class ReservationSystemComponent implements OnInit {
   ngOnInit() {
     this.getServerList();
     // this.reservationSystemData();
-    this.paginator._intl.itemsPerPageLabel = 'Show';
+    /* this.paginator._intl.itemsPerPageLabel = 'Show';
 
     this.webService.Dashboard  =false;
     this.webService.ReservationSystem  =true;
@@ -297,7 +297,8 @@ export class ReservationSystemComponent implements OnInit {
     this.webService.Inventory  =false;
   
     this.webService.devices  =false;
-    this.webService.ReservationList  =false;
+    this.webService.ReservationList  =false; */
+    this.webService.currentTab = 'ReservationSystem';
   }
 
   getServerList() {
@@ -316,7 +317,7 @@ export class ReservationSystemComponent implements OnInit {
       console.log(this.listOfRequests);
       //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo" , "pricePerHr"];
+      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo", "pricePerHr"];
       var len = this.listOfRequests.length;
       var j = 0;
       for (var i = len - 1; i >= 0; i--) {
@@ -336,7 +337,7 @@ export class ReservationSystemComponent implements OnInit {
             // "location_id" :this.listOfRequests[i].location_id,
             "reservedBy": this.listOfRequests[i].consumer,
             "allocatedTo": this.listOfRequests[i].project,
-            "pricePerHr":this.listOfRequests[i].price_per_hr,
+            "pricePerHr": this.listOfRequests[i].price_per_hr,
             //  "actions": this.listOfRequests[i].consumer
 
           })

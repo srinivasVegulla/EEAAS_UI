@@ -2,19 +2,19 @@
 <div class="dashboardhead">
   <h5 class="dashboardBody_Heading">
       <span *ngIf="auth.role == 'PM'">
-          <span routerLink="/dashboard">Dashboard</span>/
-          <span style="font-weight: bold;" routerLink="/dashboard/catalogue">Catalogue</span>
+          <span routerLink="/home/dashboard">Dashboard</span>/
+          <span style="font-weight: bold;" routerLink="/home/dashboard/catalogue">Catalogue</span>
 
           </span>
       
           <span *ngIf="auth.role == 'Admin'">
-          <span routerLink="/AdminDashboard">Dashboard</span>/
-          <span style="font-weight: bold;" routerLink="/AdminDashboard/catalogue">Catalogue</span>
+          <span routerLink="/home/AdminDashboard">Dashboard</span>/
+          <span style="font-weight: bold;" routerLink="/home/AdminDashboard/catalogue">Catalogue</span>
 
           </span>
         <span *ngIf="auth.role == 'LM'">
-          <span routerLink="/lmdashboard">Dashboard</span>/
-          <span style="font-weight: bold;" routerLink="/lmdashboard/catalogue">Catalogue</span>
+          <span routerLink="/home/lmdashboard">Dashboard</span>/
+          <span style="font-weight: bold;" routerLink="/home/lmdashboard/catalogue">Catalogue</span>
 
           </span>
     <!-- <span routerLink="/dashboard">Dashboard</span>/
@@ -27,7 +27,7 @@
     <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="headingOne">
         <h6 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
             Catalogue
           </a>
         </h6>

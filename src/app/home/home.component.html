@@ -1,0 +1,33 @@
+<div class="systemBar">
+    <div class="sysBarTitle ">
+        <img class="logoContainer" src="./assets/images/SVG_Admin/credo_logo_copy.png">
+        <span class="titleContainer">EEaaS</span>
+    </div>
+    <div class="sysBarContent ">
+
+        <div class="sysBarIcons">
+            <ul class="sysUListItems">
+                <li>{{logedInUser}}</li>
+                <li> <img src="./assets/images/SVG_Admin/role.png"></li>
+                <li (click)="logout()">Logout</li>
+                <li><img src="./assets/images/SVG_Admin/signout-18x18.png" width="18px"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="mainContent">
+
+    <div class="navSideBar">
+        <app-navigation-bar></app-navigation-bar>
+    </div>
+    <div class="navContainer">
+        <router-outlet></router-outlet>
+        <div class="footer">
+            <span class="copy"></span>
+            <span class="nav-text" style="font-size: 10px;">
+                &copy; 2020 | Tata Consultancy Services Limited.All Rights Reserved.
+            </span>
+        </div>
+    </div>
+</div>

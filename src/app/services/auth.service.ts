@@ -3,12 +3,13 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MenuComponent } from '../pmsidebar/menu.component';
 import { ApiService } from "../bare-metal/services/api.service";
+import * as $ from 'jquery';
 
 @Injectable()
 export class AuthService {
   resp;
   userid;
-  BASE_URL = 'https://192.168.6.2:12311'; // 'https://192.168.6.2:12311' //  'https://10.138.77.70:12399';
+  BASE_URL = 'http://192.168.6.2:12311'; // 'https://192.168.6.2:12311' //  'https://10.138.77.70:12399';
   NAME_KEY = 'name';
   TOKEN_KEY = 'token'
   errorMessage: any;
@@ -22,6 +23,7 @@ export class AuthService {
   }
 
   get name() {
+    console.log("hi vegu")
     return localStorage.getItem(this.NAME_KEY);
 
   }
@@ -114,11 +116,11 @@ console.log("hiiiiiiiiiiiiiiii",response )
 
       if (response.role == "PM") {
 
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['home/dashboard']);
 
       }
       else if (response.role == "Admin") {
-        this.router.navigate(['/AdminDashboard']);
+        this.router.navigate(['home/AdminDashboard']);
       }
       else if (response.role == "Tester") {
         this.router.navigate(['/TesterDashboard']);
@@ -130,7 +132,7 @@ console.log("hiiiiiiiiiiiiiiii",response )
         this.router.navigate(['/DesignerDashboard']);
       }
       else if (response.role == "LM") {
-        this.router.navigate(['/lmdashboard']);
+        this.router.navigate(['home/lmdashboard']);
       }
 
       //   else if(response.data.role=="Developer"){
@@ -146,7 +148,7 @@ console.log("hiiiiiiiiiiiiiiii",response )
       //  }
     }
     else {
-      this.errorMessage = "invalid Username and password";
+      this.errorMessage = "Invalid Username or Password";
     }
     // if(!authResponse.token)
     //     return;
@@ -156,9 +158,9 @@ console.log("hiiiiiiiiiiiiiiii",response )
     // this.router.navigate(['/dashboard']);
   }
   addCatalogueService() {
-    this.router.navigate(['/DesignerDashboard/serviceRequest']);
+    this.router.navigate(['/home/AdminDashboard/DesignerDashboard/serviceRequest']);
   }
   addLabService() {
-    this.router.navigate(['/AdminDashboard/serviceRequest']);
+    this.router.navigate(['/home/AdminDashboard/serviceRequest']);
   }
 } 

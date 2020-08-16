@@ -1,7 +1,7 @@
-import { Component, OnInit,Output, HostListener, EventEmitter ,Directive} from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, Validators,ReactiveFormsModule} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {Router} from '@angular/router';
+import { Component, OnInit, Output, HostListener, EventEmitter, Directive } from '@angular/core';
+import { FormControl, FormGroupDirective, NgForm, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { WebService } from '../services/web.service';
 
@@ -13,43 +13,46 @@ import { WebService } from '../services/web.service';
 
 export class LoginComponent implements OnInit {
   usernameFormControl = new FormControl('', [
-    Validators.required,Validators.pattern(/^\S*$/)
+    Validators.required, Validators.pattern(/^\S*$/)
   ]);
   passwordFormControl = new FormControl('', [
     Validators.required
   ]);
 
-login(){
-  var userData={"user_id":this.usernameFormControl.value,"password":this.passwordFormControl.value};
-  
-  this.auth.login(userData);
-  //sudo rm -rf /home/tcs/Downloads/EEaaS
-//cp -R /home/tcs/Downloads/EEAAS_UI/*  /home/tcs/Downloads/bareMetal/
-// cp -R  source destination
-  // console.log(this.usernameFormControl.value);   sam/tcs123  pm
-  // if(this.usernameFormControl.value=="admin"){      https://10.138.77.70:12399/access
-  //   this.router.navigate(['./AdminDashboard']);    Jason/tcs123 admin  Alice/tcs123  lm
-  // }
-  // if(this.usernameFormControl.value=="pm"){
-  //   this.router.navigate(['./dashboard']);
-  // }
-}
+  login() {
+    var userData = { "user_id": this.usernameFormControl.value, "password": this.passwordFormControl.value };
+
+    this.auth.login(userData);
+    //sudo rm -rf /home/tcs/Downloads/bareMetal
+    //cp -R /home/tcs/Downloads/EEAAS_UI/*  /home/tcs/Downloads/bareMetal/
+    // cp -R  source destination
+
+    // ng serve --host 10.138.77.70 --port 2020 --poll 2000
+
+    // console.log(this.usernameFormControl.value);   sam/tcs123  pm
+    // if(this.usernameFormControl.value=="admin"){      http://10.138.77.70:12399/access
+    //   this.router.navigate(['./AdminDashboard']);    Jason/tcs123 admin  Alice/tcs123  lm
+    // }
+    // if(this.usernameFormControl.value=="pm"){
+    //   this.router.navigate(['./dashboard']);
+    // }
+  }
   matcher = new MyErrorStateMatcher();
- // loginSubmit = ()=>window.location.pathname="https://www.google.com";
-  constructor(private router: Router, private auth : AuthService,public webService:WebService) {
-  
-   }
+  // loginSubmit = ()=>window.location.pathname="https://www.google.com";
+  constructor(private router: Router, private auth: AuthService, public webService: WebService) {
+
+  }
 
   ngOnInit() {
     this.webService.selectedProject = null;
     //    this.webService.selectedUserList = null;
-     this.webService.lineManger = null;
-          this.webService.admin = null;
-    
-        this.webService.todayDate = null;
-        this.webService.lastDate = null;
-   this.webService.todayDateReservation = null;
-        this.webService.lastDateReservation = null;
+    this.webService.lineManger = null;
+    this.webService.admin = null;
+
+    this.webService.todayDate = null;
+    this.webService.lastDate = null;
+    this.webService.todayDateReservation = null;
+    this.webService.lastDateReservation = null;
 
   }
 

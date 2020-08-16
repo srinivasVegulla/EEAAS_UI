@@ -10,7 +10,7 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
 @Component({
   selector: 'app-service-request',
   templateUrl: './service-request.component.html',
-  styleUrls: ['./service-request.component.css']
+  styleUrls: ['./service-request.component.scss']
 })
 export class ServiceRequestComponent implements OnInit {
   public serviceTypes:any=[];
@@ -43,7 +43,7 @@ export class ServiceRequestComponent implements OnInit {
             this.webService.setServiceData(data).subscribe(res => {
               console.log("data",res);
              // this.router.navigate([`/AdminDashboard/lab1`])
-              this.router.navigate([`/DesignerDashboard`])
+              this.router.navigate([`/home/AdminDashboard/DesignerDashboard`])
             })
 
   }

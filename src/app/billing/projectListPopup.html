@@ -1,0 +1,99 @@
+<div class="panel panel-default" style="border-color:#232730;background-color:#232720;height:100%;margin-bottom:0px">
+    <div class="panel-heading">
+        <h4 class="text-left">Order Summary</h4>
+
+        <button type="button" mat-dialog-close class="text-right close"
+            style="opacity:1.2;margin-top:-30px;outline:none;color:white">
+            &times;
+        </button>
+    </div>
+    <div class="panel-body" style="padding:10px;overflow-x:hidden">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 style="font-weight: bold">Project Name</h5>
+                    <p>{{projectData.proj_name}}</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 style="font-weight: bold">Total Requests</h5>
+                    <p>{{projectData.total_requests}}</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 style="font-weight: bold">Total Amount</h5>
+                    <p>{{projectData.total_amount}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" style="height: 300px;
+                                overflow-y: auto;">
+                    <mat-table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="s_No">
+
+                            <mat-header-cell *matHeaderCellDef style="flex:1"> S.No</mat-header-cell>
+
+                            <mat-cell *matCellDef="let element;let i=index;" style="flex:1"> {{i+1}}</mat-cell>
+
+                        </ng-container>
+
+                        <ng-container matColumnDef="request_id">
+
+                            <mat-header-cell *matHeaderCellDef style="flex:2"> Request Id </mat-header-cell>
+
+                            <mat-cell *matCellDef="let element" style="flex:2"> {{element.request_id}}</mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="service_name">
+
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> Hardware </mat-header-cell>
+
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.service_name}}</mat-cell>
+
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="user">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5">User</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.user}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="from">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> From</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.start_date.slice(0,10)}}
+                            </mat-cell>&nbsp;&nbsp;
+                        </ng-container>
+
+                        <ng-container matColumnDef="to">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> To</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.end_date.slice(0,10)}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="hours">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> Hours</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.hours}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="bill_rate">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> Bill Rate($)</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.bill_rate}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef style="flex:1.5"> Total($)</mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex:1.5"> {{element.price}} </mat-cell>
+                        </ng-container>
+
+
+
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+
+        </div>

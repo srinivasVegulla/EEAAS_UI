@@ -11,18 +11,18 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
 @Component({
   selector: 'app-service-request-list',
   templateUrl: './service-request-list.component.html',
-  styleUrls: ['./service-request-list.component.css']
+  styleUrls: ['./service-request-list.component.scss']
 })
 export class ServiceRequestListComponent implements OnInit {
 
   listOfRequests: any;
-  filteredRequests:any;
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private auth: AuthService, private webService: WebService) { }
+  filteredRequests: any;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private auth: AuthService, private webService: WebService) { }
   public tableData: any = [];
   displayedColumns: string[]
   dataSource;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -41,22 +41,22 @@ export class ServiceRequestListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog closed: ${result}`);
-     // this.dialogResult = result;
+      // this.dialogResult = result;
     });
   }
 
-  
+
   reservationSystemData() {
-    
-    var data = {"status":"Requested","action":"read"};
+
+    var data = { "status": "Requested", "action": "read" };
     //JSON.parse(this.auth.data);
-  //  data.action = "read";
+    //  data.action = "read";
 
     this.webService.getCatalogueList(data).subscribe(res => {
       var response: any = res;
       this.listOfRequests = response.catalogue;
       console.log(this.listOfRequests);
-    //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
+      //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
       this.displayedColumns = ["serviceId", "serviceName", "serviceType", "imageType", "versions", "description", "pricePerHr"];
       var len = this.listOfRequests.length;
@@ -65,10 +65,10 @@ export class ServiceRequestListComponent implements OnInit {
         this.tableData.push(
           {
             "serviceId": this.listOfRequests[i].service_id,
-            "serviceName":  this.listOfRequests[i].service_name,
+            "serviceName": this.listOfRequests[i].service_name,
             "serviceType": this.listOfRequests[i].service_type,
             "imageType": this.listOfRequests[i].image_type,
-            "versions": this.listOfRequests[i].versions ,
+            "versions": this.listOfRequests[i].versions,
             // "location_id" :this.listOfRequests[i].location_id,
             "description": this.listOfRequests[i].description,
             "pricePerHr": this.listOfRequests[i].price_per_hr
@@ -108,14 +108,16 @@ export class ServiceRequestListComponent implements OnInit {
 
     this.reservationSystemData();
     this.paginator._intl.itemsPerPageLabel = 'Show';
-this.webService.LMDashboard=false
-this.webService.orders=false
-this.webService.labs=false
-this.webService.devices=false
-this.webService.ReservationList=true
-this.webService.reports=false
-    this.webService.Dashboard = false;
-    this.webService.myService = true;
+    /*  this.webService.LMDashboard = false
+     this.webService.orders = false
+     this.webService.labs = false
+     this.webService.devices = false
+     this.webService.ReservationList = true
+     this.webService.reports = false
+     this.webService.Dashboard = false;
+     this.webService.myService = true;
+     this.webService.Assets = false; */
+    this.webService.currentTab = 'orders';
   }
 
 

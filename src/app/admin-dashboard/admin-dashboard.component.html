@@ -1,9 +1,17 @@
-<div style="padding: 23px;">
+<div>
 
-  <h4 style="margin-left: 17px;">USAGE</h4>
-  <hr>
-  <div>
-    <app-carousel [data]="data_pie"></app-carousel>
+  <div class="adminTabContainer">
+    <div class="adminTab" [ngClass]="{'currentSelectedTab' : (currentTab == 'device') }"
+      (click)="setDashboardTab('device')">Devices</div>
+    <div class="adminTab" [ngClass]="{'currentSelectedTab' : (currentTab == 'baremetal') }"
+      (click)="setDashboardTab('baremetal')">Baremetal Servers & Switches</div>
   </div>
+  <div *ngIf="currentTab == 'device'" class="dashboardBody">
+    <app-device-overview></app-device-overview>
+  </div>
+  <div *ngIf="currentTab == 'baremetal'" class="dashboardBody">
+    <app-device-usage-chart></app-device-usage-chart>
+  </div>
+
 
 </div>

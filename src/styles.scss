@@ -4,7 +4,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
  //@import '~font-awesome/css/font-awesome.css';
-html, body { height: 100%; }
+html, body { height: 100vh; overflow: hidden; }
 
 * {
     padding: 0;
@@ -28,7 +28,7 @@ body {
   overflow-x: hidden;
   /* background-image: url("assets/images/ui_bg1.jpg") !important; */
   background: #d7d9ee;
-  
+  font-size: 14px;
 
 }
 
@@ -94,7 +94,7 @@ text {
 .dashboardbody {
   /* margin-left:10%; */
   padding: 0px;
-  margin: 10px 38px;
+  margin: 10px;
   height: 85vh;
   overflow: auto;
   overflow-x: hidden;
@@ -273,8 +273,17 @@ router-link {
   color: #ffffff;
   background-color: #313944;
   border-color: #ddd;
-
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
+/* .panel-heading {
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+} */
 
 .panel .panel-tittle {
   font-weight: bold;
@@ -283,8 +292,6 @@ router-link {
 .panel .panel-body {
   background: white;
   color: #313944;
-  padding-top: 0px;
-
 }
 
 .panel.panel-default>.panel-heading+.panel-collapse>.panel-body {
@@ -340,6 +347,18 @@ mat-header-cell {
   font-weight: bold !important;
   text-align: center !important;
 }
+.mat-header-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: inherit;
+}
+
+.mat-header-cell:first-of-type {
+  padding-left: 24px;
+}
 
 mat-row {
   margin: 0px !important;
@@ -361,6 +380,7 @@ mat-row:nth-child(odd){
 mat-cell {
   color: #313944 !important;
   text-align: center !important;
+  word-break: break-all;
 }
 
 .tick {
@@ -537,11 +557,11 @@ login-page.mat-form-field-empty.mat-form-field-label {
   .dashboardbody {
 
     padding: 0px;
-    margin: 10px 38px;
+    margin: 10px;
     height: 75vh;
     overflow: auto;
     overflow-x: hidden;
-    margin: 3% 12%;
+   // margin: 3% 12%;
   }
 }
 
@@ -617,4 +637,176 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     font-weight: bold;
     text-decoration: underline;
     cursor: pointer;
+}
+
+//vegulla Added CSS
+
+panel-title>.small, .panel-title>.small>a, .panel-title>a, .panel-title>small, .panel-title>small>a {
+  color: inherit;
+}
+.panel-body {
+  padding: 15px;
+}
+.fade.in {
+  opacity: 1;
+}
+
+.mat-header-row, .mat-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.mat-header-row {
+  min-height: 32px;
+  padding: 4px 0;
+}
+.mat-header-row, .mat-row {
+  border-bottom-color: rgba(0,0,0,.12);
+}
+.collapse.in {
+  display: block;
+}
+.fa-trash:before {
+  content: "\f1f8";
+}
+.panel-heading .accordion-toggle.collapsed::after {
+  content: "\e080";
+}
+.panel-heading .accordion-toggle:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
+  float: right;
+  color: white;
+  box-sizing: border-box;
+}
+
+
+.login-page .mat-form-field-label-wrapper {
+  position: absolute;
+  left: 30px !important;
+  top: -20px !important;
+  box-sizing: content-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  font-size: 14px;
+
+}
+.mat-form-field-infix {
+  font-size: 14px;
+}
+
+.modal-dialog {
+  max-width: 500px;
+  margin: 15% auto;
+}
+
+.btnMargin {
+  margin-right: 5px !important;
+}
+.customRow {
+  display: flex;
+  flex-wrap: wrap;
+}
+.bootbox {
+  opacity: 1 !important;
+}
+td {
+  font-size: 14px;
+}
+.hover-row:hover{
+  background-color: #d6e8f1!important;
+}
+mat-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.cursorPointer{
+  cursor: pointer;
+}
+
+.modal-background {
+  /* modal background fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.75;
+  
+  /* z-index must be below .jw-modal and above everything else  */
+  z-index: 900;
+}
+
+label {
+  font-weight: 100;
+}
+
+input[type=text], input[type=textarea] {
+  font-size: 16px;
+}
+
+.textAlignRight {
+  text-align: right;
+}
+
+.carousel-control  {
+  width: 5% !important;
+}
+
+.easHeading {
+  height: 50px;
+  line-height: 50px;
+}
+.easButton {
+  background-color: #072f61;
+  margin: 0 10px;
+  color: #ffffff;
+  padding: 5px 15px;
+  line-height: 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.easPrimaryBtn {
+  background-color: #072f61;
+}
+.easSecondaryBtn {
+  background-color: black;
+ /*  background-color: #313944; */
+}
+.disabledBtn {
+  background-color: #555d6a;
+  cursor: not-allowed !important;
+}
+
+.textarea {
+  font-size: 16px;
+}
+.easTableHead {
+  color: #ffffff;
+  background-color: #313944;
+}
+.easTableRowColKey {
+  width: 40%;
+}
+.easTableRowCol {
+  width: 60%;
+}
+.easWidHeading {
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  padding: 0 10px;
+}
+
+.easBoldText {
+  font-weight: bold;
 }

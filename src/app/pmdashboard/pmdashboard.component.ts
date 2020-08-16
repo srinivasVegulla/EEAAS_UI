@@ -38,20 +38,8 @@ export class PmdashboardComponent implements OnInit {
   ngOnInit() {
     // this.temp();
     // this.serviceData();
-    this.webService.Dashboard = true;
-    this.webService.ReservationSystem = false;
-    this.webService.myService = false;
 
-    this.webService.Inventory = false;
-
-    this.webService.devices = false;
-    this.webService.ReservationList = false;
-    // this.budget(10,90)
-    //     this.webService.Dashboard=true;
-    //     this.webService.myService=false;
-    //  this.webService.devices=false;
-
-
+    this.webService.currentTab = 'Dashboard';
     // new from here
     this.getdashboard();
     this.getNotifications();
@@ -287,7 +275,7 @@ export class PmdashboardComponent implements OnInit {
         console.log(this.api.getItem('project_id')[0]);
         let raw = res[this.api.getItem('project_id')[0]];
         obj = this.api.makePieData(raw);
-        console.log("xxxxxxxxxxxx makePieData",obj)
+        console.log("xxxxxxxxxxxx makePieData", obj)
         //  sample {
         //   switch: 22,
         //   bare_metal: 43,

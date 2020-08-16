@@ -1,0 +1,105 @@
+.systemBar {
+    height: 50px;
+    line-height: 50px;
+    background-color: black;
+    color: white;
+}
+.sysBarTitle {
+   text-align: center;
+    width: 200px;
+    float: left;
+}
+.logoContainer {
+    width: 44px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: -5px;
+    
+}
+.titleContainer {
+    color: #ffffff;
+    font-size: 24px;
+    padding: 10px;
+}
+.sysBarContent { 
+    float: left;
+    width: calc(100vw - 220px);
+}
+
+.sysBarIcons{
+    float: right;
+}
+
+.sysUListItems {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sysUListItems li{
+    display: inline-block;
+    color: #ffffff;
+    padding: 0 5px;
+    text-decoration: none;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+}
+//Main Content
+.mainContent { 
+    height: calc(100vh - 50px);
+    background-color: #f0f0f0;
+    clear: both;
+}
+
+.navSideBar{
+    background-color: #212121;
+    height: calc(100vh - 50px);
+    width: 110px;
+    float: left;
+    position: relative;
+    top: -3px;
+}
+.navContainer{
+    float: left;
+    height: calc(100vh - 81px);
+    width: calc(100vw - 110px);
+    overflow-y: scroll;
+    background-color: #d7d9ee;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    background: #d7d9ee;
+    color: black;
+    padding: 5px 10px;
+    width: 100%;
+    z-index: 2;
+}
+
+/* .navList {
+    list-style-type: none;
+    color: #bdbdbd;
+   
+}
+.navList li {
+    height: 45px;
+    margin: 5px 0;
+}
+.activeNavLink {
+ color: #ffffff;
+  border-left: 4px solid  #069eda;
+}
+.navList li span {
+    display: inline-block;
+    
+}
+.navIcons {
+    width: 70px;
+}
+.navIconMain {
+    width: calc(100% - 70px);
+    padding: 0 15px;
+} */
+

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-designer-sidebar',
   templateUrl: './designer-sidebar.component.html',
-  styleUrls: ['./designer-sidebar.component.css']
+  styleUrls: ['./designer-sidebar.component.scss']
 })
 export class DesignerSidebarComponent implements OnInit {
 

@@ -8,22 +8,52 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { AuthService } from "../../../../services/auth.service";
 import * as moment from 'moment';
 declare var bootbox;
+//import * as $ from 'jquery';
 declare var $;
 
 @Component({
   selector: 'app-servers-list',
   templateUrl: './servers-list.component2.html',
-  styleUrls: ['./servers-list.component.css']
+  styleUrls: ['./servers-list.component.scss']
 })
 export class ServersListComponent implements OnInit {
   Object = Object;
   isArray = Array.isArray;
+  shownNames = {
+    "bare_metal": {
+      "name": "Server Name"
+    },
+    "switch": {
+      "name": "Switch Name"
+    },
+    "VDE": {
+      "name": "VDE Name"
+    },
+    "service": {
+      "name": "Service Name"
+    },
+    "device": {
+      "name": "Device Name"
+    },
+  };
+  outputTableName;
+  hoverDisplayNames = {
+    'device': {
+      'mac_address': 'Serial No',
+      'RAM': 'Ram Size',
+      'location': 'Location',
+      'model': 'Brand',
+      'status': 'Status'
+    }
+  }
   public tabdata = [
-    { tab: "PHYSICAL SERVERS", value: "somedata1", id: "bare_metal", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] },
-    { tab: "SWITCHES", value: "somedata2", id: "switch", displayedColumns: ["checked", "name", "location", "os", "model", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "model", "allocatedTo", "pricePerHr"] },
-    { tab: "VDEs", value: "somedata3", id: "VDE", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] },
-    { tab: "SERVICES", value: "somedata4", id: "service", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] }
+    { tab: "PHYSICAL SERVERS", reserveSingleName: "Server", reservePluralName: "Servers", isReserve: true, value: "somedata1", id: "bare_metal", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] },
+    { tab: "SWITCHES", reserveSingleName: "Switch", reservePluralName: "Switches", isReserve: true, value: "somedata2", id: "switch", displayedColumns: ["checked", "name", "location", "os", "model", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "model", "allocatedTo", "pricePerHr"] },
+    { tab: "DEVICES", reserveSingleName: "Device", reservePluralName: "Devices", isReserve: true, value: "somedata5", id: "device", displayedColumns: ["checked", "name", "owner", 'owner_group', 'status', 'reservedBy', "location"], filterColumns: ["name", 'owner', 'owner_group', 'status', 'reservedBy', "location"], hoverShowDetails: ['mac_address', 'model', 'RAM', 'location', 'status'] }
   ];
+  //VEGULLA COMMENTED to keep as tabs in UI for future
+  /* { tab: "VDEs", reserveSingleName: "VDE's", isReserve: false, value: "somedata3", id: "VDE", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] },
+    { tab: "SERVICES", reserveSingleName: "Services", isReserve: false, value: "somedata4", id: "service", displayedColumns: ["checked", "name", "location", "os", "softwares", "allocatedTo", "pricePerHr"], filterColumns: ["name", "location", "os", "softwares", "allocatedTo", "pricePerHr"] }, */
   bareMetalDataSource: any;
   // displayedColumns = ["checked", "name", "os", "available_from", "available_till", "reservedBy", "allocatedTo", "pricePerHr"];
   displayedColumns = ["checked", "name", "os", "softwares", "allocatedTo", "pricePerHr"];
@@ -32,6 +62,7 @@ export class ServersListComponent implements OnInit {
   modal_data: any;
   modal_data_inv: any;
   current_tab: any;
+  selectedTab;
   selected_servers = {};
   project_name_available: any;
   enableReserveBtn = true;
@@ -47,7 +78,7 @@ export class ServersListComponent implements OnInit {
   // pageLength: number;
   // pageSize: 5;
   // pageSizeOptions = [5, 10, 25, 100];
-  // @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private api: ApiService,
     private router: Router,
@@ -60,23 +91,33 @@ export class ServersListComponent implements OnInit {
     // this.sample();
     // this.getList();
     this.getFilteredData();
-    this.selectTab(this.tabdata[0].id);
+    this.selectTab(this.tabdata[0].id, this.tabdata[0]);
     this.project_name_available = this.api.getItem('project_id') && this.api.getItem('project_id')[0]
     this.webService.project_name = this.api.getItem('project_id')[0];
   }
 
-  selectTab(tab) {
-    this.current_tab = tab;
-    console.log(this.selected_servers);
+  selectTab(tabID, wholeTabData) {
+    this.current_tab = tabID;
+    this.selectedTab = wholeTabData;
+    console.log("hello vegu this.current_tab", this.current_tab);
+    this.outputTableName = this.shownNames[tabID];
+
     Object.values(this.selected_servers).map((item) => item['checked'] = false)
     this.selected_servers = {};
     this.changeDetectorRefs.detectChanges();
     this.enableReserveBtn = true;
-    // this.getFilteredData();
+    //this.getFilteredData();
+  }
+
+  getHoverDisplayNames(keyName, tab) {
+    if (this.hoverDisplayNames[tab][keyName]) {
+      return this.hoverDisplayNames[tab][keyName];
+    } else {
+      return keyName;
+    }
   }
 
   getFilteredData(from?) {
-    // console.log(this.webService);
     let string = "";
     if (!this.webService.todayDateReservation)
       string += "Start Date, ";
@@ -91,9 +132,7 @@ export class ServersListComponent implements OnInit {
   tValue = ['', '', '', '', '', ''];
 
   applyFilter(text, field, service_type, i) {
-    // console.log({ text, field, service_type });
     this.tValue[i] = text;
-    let fltr_dta = [];
     this.tabdata.map((item, i) => {
       if (item.id == service_type) {
         item['data_pg'] = _.filter(item['data'], function (row) {
@@ -127,7 +166,6 @@ export class ServersListComponent implements OnInit {
     // let switch = []; 
     //   let vde = [];
     // let service = [];
-    // console.log(JSON.parse(this.auth.data)['project_id'][0]);
 
     try {
       localStorage.setItem('multiple_http_', 'true');
@@ -136,8 +174,9 @@ export class ServersListComponent implements OnInit {
       let inventoryList = await this.api.getServerList(get_server_list_data).toPromise(); // .subscribe(
 
       let catogeryList = await this.api.getCatalog().toPromise();
-
-      // code to get physical servers and switches
+      console.log("hi inventoryList", inventoryList)
+      console.log("hi catogeryList", catogeryList)
+      // code to get physical servers and switches and devices
       let inv_list = inventoryList['serverlist']['servers'].map((item, i) => {
         catogeryList['catalogue'].map((catg, j) => {
           if (item.service_id == catg.service_id) {
@@ -148,11 +187,9 @@ export class ServersListComponent implements OnInit {
         return item;
       });
       let server_details_hover = await this.api.getServerDetails().toPromise();
-      console.log({ server_details_hover });
       inv_list && inv_list.map((item) => {
         server_details_hover && server_details_hover['server_details'].map((hover_detail) => {
           let hover_details_ = { ...hover_detail };
-          // console.log({ hover_details_ })
           if (hover_details_.softwares && hover_details_.softwares != "NA" && JSON.parse(hover_details_.softwares)) {
             let softwares = { ...JSON.parse(hover_details_.softwares) };
             if (softwares.tools && softwares.tools != "NA") {
@@ -163,11 +200,7 @@ export class ServersListComponent implements OnInit {
           if (item.service_id == hover_details_.server_id) item['hover_details'] = hover_details_;
         })
       })
-      console.log({ server_details_hover });
 
-
-
-      console.log({ inventoryList }, { catogeryList }, { inv_list });
       // let filteredTableData = inventoryList['serverlist']['servers'].map((item, i) => {
       let filteredTableData = inv_list.map((item, i) => {
         let softwares = "NA";
@@ -196,13 +229,14 @@ export class ServersListComponent implements OnInit {
           "reservedBy": item.consumer,
           "allocatedTo": item.project,
           "pricePerHr": item.price_per_hr,
+          "owner": item.owner,
+          'owner_group': item.project,
           softwares,
           os: item['os'] || "NA",
           model: item['model'] || 'NA'
         }
 
       });
-      console.log({ filteredTableData });
 
       filteredTableData.map((item, i) => {
         this.tabdata.map((item2, i) => {
@@ -254,8 +288,6 @@ export class ServersListComponent implements OnInit {
 
       })
 
-      console.log("hiiiiiiiiiiiiiiiii", this.tabdata);
-
       this.tabdata.map((item) => {
         if (item.id == 'VDE') {
           item['data'] = vdes_list;
@@ -268,9 +300,6 @@ export class ServersListComponent implements OnInit {
 
       //  Services = Filter output from catalogue where image_type in ('vm','container') and service_type not in ("VDE","bare_metal","switch");
 
-
-
-      console.log({ vdes_list, switch_list_cat, service_list_cat });
 
       this.tabdata.map((item) => {
         item['pageSize'] = 5;
@@ -287,7 +316,6 @@ export class ServersListComponent implements OnInit {
 
       // raw_data.type.service_type
 
-      console.log("hiiii 2", this.tabdata);
       this.bareMetalDataSource = new MatTableDataSource(filteredTableData);
       setTimeout(() => {
         this.loader.hide();
@@ -296,7 +324,6 @@ export class ServersListComponent implements OnInit {
       // if (from)
       //  $("#exp-date-range").click();
     } catch (err) {
-      // console.log({ err })
       setTimeout(() => {
         this.loader.hide();
         localStorage.setItem('multiple_http_', '');
@@ -311,15 +338,9 @@ export class ServersListComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-
-
-
-    // console.log({ event, row }, event.target.lastChild);
-    console.log(row, event);
     try {
       this.modal_data = null;
       let something = await this.api.getServerDetails(row.serviceid).toPromise();
-      // console.log({ something });
       something = something['server_details'] && something['server_details'].length && something['server_details'][0] || null;
       this.modal_data_inv = null;
 
@@ -364,15 +385,13 @@ export class ServersListComponent implements OnInit {
       }
       if (this.modal_data && this.modal_data['softwares'] && this.modal_data['softwares'] != "NA" && JSON.parse(this.modal_data['softwares']))
         this.modal_data['softwares'] = Object.values(JSON.parse(this.modal_data['softwares'])['tools']).join(", ");
-      console.log(this.modal_data, this.modal_data_inv)
     } catch (err) {
-      console.log({ err })
+
       this.api.errorToast(this.api.commonError);
 
     }
     // this.api.getServerDetails(row.serviceid).subscribe(
     //   res => {
-    //     console.log(res);
     //     this.modal_data = res['server_details'] && res['server_details'].length && res['server_details'][0];
     //     // this.modal_data.info = {
     //     //   Brand: this.modal_data.model || '',
@@ -391,6 +410,7 @@ export class ServersListComponent implements OnInit {
 
   pageChangeEvent(event, data, tab) {
     const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
+    console.log("hiii event offset", event, offset)
     tab['data_4_tbl_filtr'] = new MatTableDataSource(data.slice(offset).slice(0, event.pageSize));
     this.set_popovers(data.slice(offset).slice(0, event.pageSize));
   }
@@ -400,25 +420,20 @@ export class ServersListComponent implements OnInit {
     event.stopPropagation();
     row.checked = !row.checked;
     row.checked ? this.selected_servers[row.serviceid] = row : delete this.selected_servers[row.serviceid]
-    console.log(this.selected_servers);
     if (this.selected_servers && Object.keys(this.selected_servers).length) this.enableReserveBtn = false;
     else this.enableReserveBtn = true;
   }
 
   reserve() {
-    console.log(this.current_tab, this.selected_servers);
-    // this.selected_servers = this.selected_servers.filter((item)=>item.raw_data.service_type == this.current_tab)
-
     // return "some"
     if (this.selected_servers && Object.keys(this.selected_servers).length) {
       localStorage.setItem("reserve_servers", JSON.stringify(this.selected_servers));
-      if (this.current_tab == 'bare_metal') {
-        this.router.navigate(['/dashboard/reserve-servers'], { queryParams: { service_type: this.current_tab } });
+      if (this.current_tab == 'bare_metal' || this.current_tab == 'device') {
+        this.router.navigate(['/home/dashboard/reserve-servers'], { queryParams: { service_type: this.current_tab } });
       } else if (this.current_tab == 'switch') {
         // this.router.navigate(['/dashboard/reserve-switch']);
-        this.router.navigate(['/dashboard/reserve-servers'], { queryParams: { service_type: this.current_tab } });
+        this.router.navigate(['/home/dashboard/reserve-servers'], { queryParams: { service_type: this.current_tab } });
       } else {
-        console.log(this.current_tab);
 
       }
     } else {
@@ -432,7 +447,6 @@ export class ServersListComponent implements OnInit {
   cellMover(event, row) {
     // event.preventDefault();
     // event.stopPropagation();
-    // console.log("m over", row);
     // $("#show_modal").click();
     // this.modal_data = row.raw_data.hover_details && row.raw_data.hover_details;
   }
@@ -441,7 +455,7 @@ export class ServersListComponent implements OnInit {
     bootbox.alert({
       message: text || "This is an alert with a callback!",
       callback: function () {
-        console.log('This was logged in the callback!');
+
       }
     })
   }
@@ -450,6 +464,7 @@ export class ServersListComponent implements OnInit {
     setTimeout(() => {
 
       data.map((item) => {
+
         $('#popover' + item.serviceid).popover(
           {
             trigger: "hover",
@@ -464,7 +479,7 @@ export class ServersListComponent implements OnInit {
   }
 
   componentClick() {
-    console.log($("#collapseExample").attr("class"))
+
     if ($("#collapseExample").attr("class") != 'collapse') {
       $("#collapseExample").removeClass($("#collapseExample").attr("class"));
       $("#collapseExample").addClass("collapse");

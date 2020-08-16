@@ -1,7 +1,7 @@
 <div class="dashboardhead">
   <h5 class="dashboardBody_Heading">
-    <span routerLink="/dashboard">Dashboard</span>/
-    <span style="font-weight: bold;" routerLink="/dashboard/Myservices/NewRequest">
+    <span routerLink="/home/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/home/dashboard/Myservices/NewRequest">
       VM Provisioning</span></h5>
 </div>
 
@@ -1125,7 +1125,7 @@
       </div>
     </div>
     <div class="row" style="text-align:center;">
-      <button mat-raised-button class="cancel" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"
+      <button mat-raised-button class="cancel btnMargin" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"
         (click)="cancle()">Cancel</button>
       <button mat-raised-button class="pro" [disabled]="webService.selectedProject==undefined || webService.selectedPlatform == undefined || webService.selectedUserList == undefined || webService.todayDate==undefined || webService.lastDate==undefined && webService.todayDate=='' || webService.lastDate=='' || webService.selectedDelivaryLocation==undefined || webService.lineManger==undefined || webService.admin== undefined || ((webService.selectedPlatform=='Container'||webService.selectedPlatform=='Virtual Machine') && (webService.imageArray.length==0 && imageArray.length==0 && disablecheck()))"
         style="border-radius:6px;background:#072f61;z-index:4;font-weight:bold;color:white" (click)="submit()">Continue</button>

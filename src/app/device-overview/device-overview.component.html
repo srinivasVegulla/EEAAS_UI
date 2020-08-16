@@ -1,0 +1,78 @@
+<div class="customRow Overview">
+    <div class="col-md-6 ">
+        <div class="containerBoxPie marginBtm">
+            <div class="customRow">
+                <div class="col-md-6">
+                    <div id="chartdivPie" style="height: 190px"></div>
+                </div>
+                <div class="col-md-6 customRow">
+                    <div class="col-md-6 onlineOfflinePadding">
+                        <div class="easBoldText">Online</div>
+                        <div class="onlineOfflineContainer online">10</div>
+                    </div>
+                    <div class="col-md-6 onlineOfflinePadding">
+                        <div class="easBoldText">Offline</div>
+                        <div class="onlineOfflineContainer offline">4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tableContainerBox marginBtm">
+            <div class="tableTabsContainer customRow">
+                <div class="tabElement col-md-6" [ngClass]="{'currentTab' : (currentTab == 'lowest') }"
+                    (click)="setTab('lowest')">Devices (Lowest Reservation)</div>
+                <div class="tabElement col-md-6" [ngClass]="{'currentTab' : (currentTab == 'highest') }"
+                    (click)="setTab('highest')">Devices (Highest Reservation)</div>
+            </div>
+            <div class="tableBody">
+                <div>
+                    <div class="customRow headerRow">
+                        <!-- <tr> -->
+                        <div class="col-md-1">#</div>
+                        <div class="col-md-4">Device Name</div>
+                        <div class="col-md-4">Feature</div>
+                        <div class="col-md-3">Idle Time (In Hrs)</div>
+
+                        <!--  </tr> -->
+                    </div>
+                    <!-- <tbody > -->
+                    <div *ngFor="let row of showMinTableData; let i = index" class="customRow bodyRow">
+                        <div class="col-md-1">{{i+1}}</div>
+                        <div class="col-md-4">{{row?.deviceName}}</div>
+                        <div class="col-md-4">{{row?.deviceFeature}}</div>
+                        <div class="col-md-3">{{row?.idleHrs}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tableFooter" *ngIf="tableData.length > 5">
+                <div class="pull-right">View All</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="containerBoxPie marginBtm">
+            <div class="customRow">
+                <div class="col-md-8">
+                    <div class="easWidHeading easBoldText"> Requests Activity Since 01/07/2020</div>
+                    <div id="chartdivRecentPie" style="height: 160px"></div>
+                </div>
+                <div class="col-md-4 customRow">
+                    <div class="col-md-12 onlineOfflinePadding">
+                        <div class="easBoldText">New Devices Added in last 3 Months</div>
+                        <div class="onlineOfflineContainer offline">32</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="containerBargraph marginBtm">
+            <div class="easWidHeading">Low Utilization</div>
+            <div id="chartdivBar" style="height: 225px"></div>
+        </div>
+        <div class="containerBargraph marginBtm">
+            <div class="easWidHeading">Requests & Availability</div>
+            <div id="chartdivStackedBar" style="height: 225px"></div>
+        </div>
+    </div>
+
+</div>

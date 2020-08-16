@@ -1,0 +1,18 @@
+<div class="modalDialog">
+    <div class="modalDialogHeader">
+        <div class="closeContainer" (click)="closeModal(false)">
+            x
+        </div>
+    </div>
+    <div class="modalDialogBody">
+        <h2>Are you sure you want to delete {{type}} "{{objectName}}" ? </h2>
+    </div>
+    <div class="btnAlignment">
+        <button class="crtBtn cancelBtn" (click)="closeModal(false)">
+            Don't Delete
+        </button>
+        <button class="crtBtn" (click)="closeModal(true)">
+            Delete {{type}}
+        </button>
+    </div>
+</div>

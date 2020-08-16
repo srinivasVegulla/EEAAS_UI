@@ -1,0 +1,202 @@
+<div class="assetsComponent">
+    <div class="assetHeading">
+        <div class="pull-left">
+            <span *ngIf="!isCreateUser" class="headingText"> USERS </span>
+            <span *ngIf="isCreateUser" class="headingText"> ADD A USER </span>
+        </div>
+        <div class="pull-right">
+            <button class="crtBtn" *ngIf="!isCreateUser" (click)="createAnAsset(true)">
+                ADD A USER
+            </button>
+            <button class="crtBtn cancelBtn" *ngIf="isCreateUser" (click)="createAnAsset(false)">
+                CANCEL
+            </button>
+            <button class="crtBtn" *ngIf="isCreateUser" type="button" [disabled]="userForm.invalid"
+                [ngClass]="{'disabledBtn' : (userForm.invalid)}" (click)="submitUser(userForm.value)">
+                SUBMIT USER
+            </button>
+        </div>
+    </div>
+    <hr>
+    <div class="assetTableBody" *ngIf="!isCreateUser">
+        <div class="assetTableBodyHeading">
+            <div class="pull-left">
+                List of Users ({{listOfUsers?.length}})
+            </div>
+            <div class="pull-right">
+
+            </div>
+        </div>
+        <div *ngIf="listOfUsers?.length > 0">
+            <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="S_NO">
+                    <mat-header-cell *matHeaderCellDef style="flex: 0.4;">S_NO </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" style="flex: 0.4;">{{i+1}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="user_name">
+                    <mat-header-cell *matHeaderCellDef class="specificWidth">Name of User </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="specificWidth">{{element.user_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="user_group">
+                    <mat-header-cell *matHeaderCellDef class="specificWidth"> User's Group </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="specificWidth"> {{element.user_group}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="location">
+                    <mat-header-cell *matHeaderCellDef class="specificWidth"> Location Details </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="specificWidth"> {{element.location}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef class="specificWidth">Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="specificWidth">
+                        <span (click)="deleteService(row)"><i class="material-icons cursorPointer">
+                                delete
+                            </i></span>
+                    </mat-cell>
+                </ng-container>
+
+
+
+                <!--  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                <ng-container *matHeaderRowDef="displayedColumns">
+                    <mat-header-row class="mainHeader"></mat-header-row>
+                    <div class="mat-header-row header-group-row secondHeader">
+                        <div class="mat-header-cell" role="columnheader" style="flex: 0.4;">
+                            <img src="assets/bare/admin-filter.png">
+                        </div>
+
+                        <div class="mat-header-cell" role="columnheader"
+                            *ngFor="let field of filterColumns; let i = index">
+                            <input type="text" class="inputFilter" [value]="tValue[i]"
+                                (keyup)="applyFilter($event.target.value, field, i); ">
+                            <button class="assetFilterClose" (click)="clear(i, field)">X</button>
+                        </div>
+                        <div class="mat-header-cell" role="columnheader">
+
+                        </div>
+
+                        <button class="assetFilterClose" (click)="clearAll()">X</button>
+
+                    </div>
+                </ng-container>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row" style="z-index: 0;"
+                    [ngStyle]="{'background-color':row.checked ? '#d6e8f1' : '' }">
+                </mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageIndex]="0" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20,50,100]"
+                (page)="pageChangeEvent($event, filteredData)" [length]="pageLength" style="padding-left:50px;">
+            </mat-paginator>
+        </div>
+    </div>
+
+    <!-- CREATE asset -->
+
+    <div class="assetTableBody" *ngIf="isCreateUser">
+        <!-- <div class="assetTableBodyHeading">
+            <div class="pull-left">
+                Device Details
+            </div>
+            <div class="pull-right">
+
+            </div>
+        </div> -->
+        <div>
+            <form [formGroup]="userForm" #logFm="ngForm">
+                <div class="customRow">
+                    <div class="col-md-6 form-group">
+                        <label for="user_name">Name of the User</label>
+                        <input type="text" id="user_name" class="form-control" formControlName="user_name">
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow" *ngIf="user_name.invalid && (user_name.dirty || user_name.touched)">
+                    <div *ngIf="user_name.errors.required" class="col-md-6 form-group errorFont">
+                        User Name is required.
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow">
+                    <div class="col-md-6 form-group">
+                        <label for="user_group">User's Group</label>
+                        <!-- <input type="text" id="user_group" class="form-control" formControlName="user_group" required> -->
+                        <div class="dropdown drpDwnBtn">
+                            <div class="dropdown-toggle form-control inputHeight" (click)="openUSerGroupDropdown()">
+                                <span>{{usersGroupDrpDwnVal}}</span>
+                            </div>
+                            <ul class="dropdown-menu" [ngClass]="{'openDropdown' : expandUGDropDown}">
+                                <li class="dropDownItem" *ngFor="let userGroup of userGroups"
+                                    (click)="changeUserGroup(userGroup)">
+                                    {{userGroup}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow" *ngIf="user_group.invalid && (user_group.dirty || user_group.touched)">
+                    <div *ngIf="user_group.errors.required" class="col-md-6 form-group errorFont">
+                        User's Group is required.
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow">
+                    <div class="col-md-6 form-group">
+                        <label for="location">Location Details</label>
+                        <input type="text" id="location" class="form-control" formControlName="location">
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow" *ngIf="location.invalid && (location.dirty || location.touched)">
+                    <div *ngIf="location.errors.required" class="col-md-6 form-group errorFont">
+                        Location Details are required.
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow">
+                    <div class="col-md-6 form-group">
+                        <label for="password">Password</label>
+                        <input type="text" id="password" class="form-control" formControlName="password" required>
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow" *ngIf="password.invalid && (password.dirty || password.touched)">
+                    <div *ngIf="password.errors.required" class="col-md-6 form-group errorFont">
+                        Password is required.
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow">
+                    <div class="col-md-6 form-group">
+                        <label for="role">Role</label>
+                        <!--  <input type="text" id="role" class="form-control" formControlName="role"> -->
+                        <!-- <select class="form-control" (change)="changeRole($event)" formControlName="role">
+                            <option value="" disabled>Select a Role</option>
+                            <option *ngFor="let role of roles" [ngValue]="role">{{role}}</option>
+                        </select> -->
+                        <div class="dropdown drpDwnBtn">
+                            <div class="dropdown-toggle form-control inputHeight" (click)="openDropdown()">
+                                <span>{{dropDwnValue}}</span>
+                            </div>
+                            <ul class="dropdown-menu" [ngClass]="{'openDropdown' : expandDropDown}">
+                                <li class="dropDownItem" *ngFor="let rol of roles" (click)="changeRole(rol)">
+                                    {{rol}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="customRow" *ngIf="role.invalid && (role.dirty || role.touched)">
+                    <div *ngIf="role.errors.required" class="col-md-6 form-group errorFont">
+                        Role is required.
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal-background" *ngIf="isModalOpen"></div>
+<app-is-delete-modal-popup *ngIf="isModalOpen" [inputData]="modalInputData" [type]="'User'"
+    (modalDialogClose)="closeModalDialog($event)">
+</app-is-delete-modal-popup>

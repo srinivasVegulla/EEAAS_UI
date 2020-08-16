@@ -1,0 +1,96 @@
+.mat-header-row, .mat-row {
+
+    border-top-width: 1px; 
+       border-top-style: solid;
+       border-top-color: rgba(0,0,0,.12);
+   }
+   .mat-elevation-z8{
+       padding:25px;
+   }
+   .example-full-width{
+       left: 64%;
+   }
+   input.mat-input-element {
+      
+       padding-bottom: 7px;
+   }
+   .mat-dialog-container {
+     
+       border-radius: 15px !important;
+      
+   }
+   .mat-raised-button[disabled]{
+    cursor:not-allowed;
+  }
+   mat-header-row{
+       background-color: white;
+       border-bottom-width: 0px; 
+      border-bottom-style: none;
+      /* font-weight:bold; */
+      min-height: 40px;
+   
+     }
+     mat-header-cell{
+    
+       font-weight:bold;
+      font-size:13px;
+      color: white !important;
+   
+     }
+     
+     mat-row:hover {
+        /* background: #585858!important; */
+        background-color: #d6e8f1!important;
+        cursor:pointer;
+    }
+
+.billingDateFormater {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.bold {
+    font-weight:bold;
+}
+.lftMargin {
+    margin-left: 50px;
+}
+
+//PROJECTLIST POPUP
+
+
+.col-md-2{
+    width:20%
+  }
+  mat-row:nth-child(even){
+    background-color:white;
+    }
+    .mat-raised-button[disabled]{
+      cursor:not-allowed;
+      color:white;
+    }
+mat-row:nth-child(odd){
+    background-color:#d6e8f1;
+    }
+    mat-header-row{
+      background-color:#d6e8f1;
+      border-bottom-width: 0px; 
+     border-bottom-style: none;
+     font-weight:bold;
+     min-height: 40px;
+  
+    }
+    mat-header-cell{
+   
+     font-weight:bold;
+     font-size:16px;
+  
+    }
+    .mat-cell, .mat-header-cell {
+     font-size:12px!important;
+      text-align: center!important;
+  }
+    mat-row{
+      border-bottom-width: 0px; 
+      border-bottom-style: none;
+      min-height: 40px;
+    }

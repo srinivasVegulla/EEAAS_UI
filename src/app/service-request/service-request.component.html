@@ -1,7 +1,7 @@
 <div class="dashboardhead">
   <h5 class="dashboardBody_Heading">
-    <span style="font-weight: bold;" routerLink="/DesignerDashboard">Catalogue</span>/
-    <span routerLink="/DesignerDashboard/serviceRequest">New Service</span>
+    <span style="font-weight: bold;" routerLink="/home/AdminDashboard/DesignerDashboard">Catalogue</span>/
+    <span routerLink="/home/AdminDashboard/DesignerDashboard/serviceRequest">New Service</span>
   </h5>
 </div>
 
@@ -153,7 +153,7 @@
 
 
           <button type="submit" class="btn btn-success" [disabled]="!serviceForm.form.valid" (click)="createService(serviceForm)">Confirm</button>
-          <button type="submit" class="btn btn-error"  routerLink="/DesignerDashboard">Cancel</button>
+          <button type="submit" class="btn btn-error"  routerLink="/home/AdminDashboard/DesignerDashboard">Cancel</button>
 
           <div>
             <hr>

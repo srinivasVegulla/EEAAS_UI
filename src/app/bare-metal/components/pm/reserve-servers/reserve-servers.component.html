@@ -1,33 +1,18 @@
-<!-- Latest compiled and minified Bootstrap CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
-<!-- 
-
-<div class="container">
-  <div class="row">
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-  </div>
-  <div class="row">
-    <div class="col-8">col-8</div>
-    <div class="col-4">col-4</div>
-  </div>
-</div> -->
-
 <div class="overflow-auto">
 
-  <div class="row" style="padding: 10px 20px 0px 20px;">
+  <div class="customRow easHeading">
     <div class="col-md-6">
-      <h4 class="black" *ngIf="!req_submitted">RESERVE
+      <div class="black" *ngIf="!req_submitted">RESERVE
         {{selected_service_type == 'bare_metal' ? 'SERVER(S)' : api.capitalize(selected_service_type).toUpperCase()+'(ES)'}}
-      </h4>
-      <h4 *ngIf="req_submitted">Request has been submitted successfully.</h4>
+      </div>
+      <div *ngIf="req_submitted">Request has been submitted successfully.</div>
     </div>
     <div class="col-md-6">
       <div style="float: right;">
-        <button class="btn" style="background-color: #313944; color: white;" (click)="back()">CANCEL</button>
-        <button class="btn btn-primary" (click)=" reserve()">SUBMIT REQUEST</button>
+        <button class="easSecondaryBtn easButton" (click)="back()">CANCEL</button>
+        <button [disabled]="(!order_details.start_date || !order_details.end_date)" class="easButton"
+          [ngClass]="{'disabledBtn' : (!order_details.start_date || !order_details.end_date) }"
+          (click)=" reserve()">SUBMIT REQUEST</button>
       </div>
     </div>
   </div>
@@ -49,17 +34,17 @@
               {{data.name}}
             </a>
             <span style="float: right;  margin-right: 10px; cursor: pointer;" (click)="remove(selected_list, i)"><i
-                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i>Remove</span>
+                class="fa fa-trash" aria-hidden="true" style="margin-right: 5px;"></i></span>
           </h4>
         </div>
         <div id="{{data.serviceid}}" class="panel-collapse collapse in">
           <div class="panel-body" style="padding-top: 10px">
             <div class="row">
               <div style="padding-top:20px"
-                [ngClass]="{'col-md-8': selected_service_type == 'bare_metal', 'col-md-6': selected_service_type == 'switch'}">
+                [ngClass]="{'col-md-8': selected_service_type == 'bare_metal', 'col-md-6': (selected_service_type == 'switch' || selected_service_type == 'device')}">
                 <!-- this form is for reserving a server -->
 
-                <form *ngIf="selected_service_type && selected_service_type != 'switch'">
+                <form *ngIf="selected_service_type && selected_service_type == 'bare_metal'">
                   <mat-form-field>
                     <input name="project_name" ngDefaultControl [disabled]="project_name_available"
                       [(ngModel)]="order_details.project_name" matInput placeholder="Project">
@@ -234,7 +219,8 @@
                 </form>
 
                 <!-- this form is for reserving a switch -->
-                <form *ngIf="selected_service_type && selected_service_type == 'switch'">
+                <form
+                  *ngIf="selected_service_type && (selected_service_type == 'switch' || selected_service_type == 'device')">
                   <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-6">
@@ -289,30 +275,61 @@
                       </div>
                     </div>
                   </div>
+
+
+                  <div class="row" *ngIf="selected_service_type == 'device'">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <!-- <label for="exampleFormControlInput1">End Date</label> -->
+                        <mat-form-field style="width: 269px; padding-top: 19px;">
+                          <mat-select [value]="order_details.alert_me_before"
+                            (selectionChange)="order_details.alert_me_before = $event.value"
+                            placeholder="Alert me before expiring in(days)">
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
                 </form>
 
 
 
               </div>
               <div
-                [ngClass]="{'col-md-4': selected_service_type == 'bare_metal', 'col-md-6': selected_service_type == 'switch'}">
+                [ngClass]="{'col-md-4': selected_service_type == 'bare_metal', 'col-md-6': (selected_service_type == 'switch' || selected_service_type == 'device')}">
 
                 <!-- <div class="col-md-4"> -->
                 <table *ngIf="data.server_details" class="table server-detail" style="border: solid 1px gray">
                   <!-- <thead> -->
-                  <tr>
-                    <th scope="col">
+                  <thead class="easTableHead">
+                    <th colspan="2">
                       {{selected_service_type == 'bare_metal' ? 'Server Details' : api.capitalize(selected_service_type) + ' Specifications'}}
                     </th>
-                  </tr>
+                  </thead>
                   <!-- </thead>
                   <tbody > -->
-                  <tr *ngFor="let row of Object.keys(data.server_details)">
-                    <td>{{api.humanize(row)}}</td>
-                    <td>{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
-                    <!-- <td>{{row}}</td>
-                      <td>{{data.server_details[row]}}</td> -->
-                  </tr>
+                  <tbody *ngIf="selected_service_type == 'bare_metal' || selected_service_type == 'switch'">
+                    <tr *ngFor="let row of Object.keys(data.server_details)">
+                      <td class="easTableRowColKey">{{api.humanize(row)}}</td>
+                      <td class="easTableRowCol">{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                      <!-- <td>{{row}}</td>
+                            <td>{{data.server_details[row]}}</td> -->
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="selected_service_type == 'device'">
+                    <tr *ngFor="let row of hardwareRows">
+                      <td class="easTableRowColKey">{{getHoverDisplayNames(row, 'hardware')}}</td>
+                      <td class="easTableRowCol">{{api.add_units_to_server_details(data.server_details[row], row)}}</td>
+                      <!-- <td>{{row}}</td>
+                            <td>{{data.server_details[row]}}</td> -->
+                    </tr>
+                  </tbody>
+
 
                   <!-- </tbody> -->
                 </table>
@@ -423,6 +440,7 @@
 
   </div> <!-- end container -->
 </div>
-<!-- Latest compiled and minified JavaScript -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+<div class="modal-background" *ngIf="isModalOpen"></div>
+<app-is-delete-modal-popup *ngIf="isModalOpen" [inputData]="modalInputData" [type]="'Request'"
+  (modalDialogClose)="closeModalDialog($event)">
+</app-is-delete-modal-popup>

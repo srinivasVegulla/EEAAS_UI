@@ -1,0 +1,28 @@
+.adminTabContainer {
+    padding: 15px 15px 0 15px;
+}
+.adminTab {
+    text-align: center;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: auto;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: grey;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+}
+
+.currentSelectedTab {
+    background-color: #ffffff;
+    border: none;
+}
+
+.dashboardBody {
+    padding: 10px 0;
+    background-color: #ffffff;
+}

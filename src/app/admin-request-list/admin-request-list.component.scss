@@ -1,0 +1,70 @@
+.mat-header-row, .mat-row {
+
+ border-top-width: 1px; 
+    border-top-style: solid;
+    border-top-color: rgba(0,0,0,.12);
+}
+.mat-elevation-z8{
+    padding:25px;
+    box-shadow: none !important;
+}
+.example-full-width{
+    left: 80%;
+}
+input.mat-input-element {
+   
+    padding-bottom: 7px;
+}
+.mat-dialog-container {
+  
+    border-radius: 15px !important;
+   
+}
+/* .mat-paginator-page-size {
+    display: none;
+} */
+mat-header-row{
+    background-color: white;
+    border-bottom-width: 0px; 
+   border-bottom-style: none;
+   /* font-weight:bold; */
+   min-height: 40px;
+
+  }
+  mat-header-cell{
+ 
+    font-weight:bold;
+   font-size:13px;
+
+  }
+  mat-row:hover {
+    /* background: #585858!important; */
+    background-color: #d6e8f1!important;
+    cursor:pointer;
+}
+.red-danger{
+    color: red !important;
+}
+.btn-custom {
+    /* border-radius: 4px 4px 0 0; */
+    /* margin-right: 10px; */
+    background-color: #e6e6e6;
+    color: black;
+    border: solid  #e6e6e6 1px;
+    border-radius: 0px;
+    box-shadow: none;
+}
+.active{
+    background-color: #333;
+    color: white;
+    outline: none;
+}
+.btn-default.active{
+    background-color: white;
+    color: black;
+    outline: none;
+    border: solid white 1px;
+}
+.tableHeight {
+    height: calc(100vh - 126px) !important;
+}

@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 import { of as observableOf } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
-
-declare var $;
+import * as $ from 'jquery';
 
 @Injectable()
 export class ApiService {
@@ -20,7 +19,7 @@ export class ApiService {
     ) {
         // this.showSuccess()
     }
-    API = 'https://10.138.77.70:12399'; //'https://192.168.6.2:12311';
+    API = 'http://10.138.77.70:12399'; //'https://192.168.6.2:12311';
     commonError = "Something went wrong. Please try again.";
     // utils 
 
@@ -92,8 +91,8 @@ export class ApiService {
             let list = $("rect");
             list.map((item) => {
                 let it = $(list[item]);
-                if (it.attr("width") == 66 && it.attr("height") == 21) {
-                    it.parent().parent().remove()
+                if (it.attr("width") == '66' && it.attr("height") == '21') {
+                    it.parent().parent().remove();
                 }
             });
         }, 1000);

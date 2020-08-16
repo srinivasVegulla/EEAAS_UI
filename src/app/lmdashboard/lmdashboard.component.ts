@@ -19,7 +19,7 @@ import { ApiService } from '../bare-metal/services/api.service';
 @Component({
   selector: 'app-lmdashboard',
   templateUrl: './lmdashboard.component.html',
-  styleUrls: ['./lmdashboard.component.css']
+  styleUrls: ['./lmdashboard.component.scss']
 })
 export class LmdashboardComponent implements OnInit {
   data_pie: Object; //  = { list: [{ bare_metal: 22, switch: 23, VDE: 39, service: 44 }, { bare_metal: 44, switch: 63, VDE: 76, service: 4 }] } // : any;
@@ -171,23 +171,7 @@ export class LmdashboardComponent implements OnInit {
     this.loadBarChart();
     this.loadPie();
     this.serviceData();
-    // this.webService.Dashboard  =true;
-    this.webService.ReservationSystem = false;
-    this.webService.myService = false;
-    this.webService.LMDashboard = true
-    this.webService.orders = false
-    this.webService.labs = false
-    this.webService.devices = false
-    this.webService.ReservationList = false
-    this.webService.reports = false
-    this.webService.Inventory = false;
-
-    this.webService.devices = false;
-    this.webService.ReservationList = false;
-    // this.budget(10,90)
-    //     this.webService.Dashboard=true;
-    //     this.webService.myService=false;
-    //  this.webService.devices=false;
+    this.webService.currentTab = 'LMDashboard';
   }
   ngAfterViewInit() {
     // this.budget(10,90)
@@ -206,92 +190,16 @@ export class LmdashboardComponent implements OnInit {
         console.log({ res });
         // Create chart instance
         let chart = am4core.create("chartdiv_bar", am4charts.XYChart);
-
+        let projectsArray = res['project'];
+        projectsArray = projectsArray.slice(0, 12);
         // Add data
-        chart.data = res['project'].map((item) => {
+        chart.data = projectsArray.map((item) => {
           return {
-            project: item.project_name,
+            project: item.project_name.substr(0, 9),
             used: item.reserve_budget,
             available: item.avail_budget
           }
         });
-
-        // chart.data = [{
-        //   "year": "2003",
-        //   "europe": 2.5,
-        //   "namerica": 2.5,
-        //   // "asia": 2.1,
-        //   // "lamerica": 1.2,
-        //   // "meast": 0.2,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2004",
-        //   "europe": 2.6,
-        //   "namerica": 2.7,
-        //   // "asia": 2.2,
-        //   // "lamerica": 1.3,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2005",
-        //   "europe": 2.8,
-        //   "namerica": 2.9,
-        //   // "asia": 2.4,
-        //   // "lamerica": 1.4,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // },
-        // {
-        //   "year": "2006",
-        //   "europe": 2.5,
-        //   "namerica": 2.5,
-        //   // "asia": 2.1,
-        //   // "lamerica": 1.2,
-        //   // "meast": 0.2,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2007",
-        //   "europe": 2.6,
-        //   "namerica": 2.7,
-        //   // "asia": 2.2,
-        //   // "lamerica": 1.3,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2008",
-        //   "europe": 2.8,
-        //   "namerica": 2.9,
-        //   // "asia": 2.4,
-        //   // "lamerica": 1.4,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // },
-        // {
-        //   "year": "2009",
-        //   "europe": 2.5,
-        //   "namerica": 2.5,
-        //   // "asia": 2.1,
-        //   // "lamerica": 1.2,
-        //   // "meast": 0.2,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2010",
-        //   "europe": 2.6,
-        //   "namerica": 2.7,
-        //   // "asia": 2.2,
-        //   // "lamerica": 1.3,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // }, {
-        //   "year": "2011",
-        //   "europe": 2.8,
-        //   "namerica": 2.9,
-        //   // "asia": 2.4,
-        //   // "lamerica": 1.4,
-        //   // "meast": 0.3,
-        //   // "africa": 0.1
-        // },];
-
         // Create axes
         let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "project";
@@ -333,11 +241,7 @@ export class LmdashboardComponent implements OnInit {
 
 
         createSeries("used", "Used", false, "#d65db1");
-        createSeries("available", "Available", true);
-        // createSeries("asia", "Asia", false);
-        // createSeries("lamerica", "Latin America", true);
-        // createSeries("meast", "Middle East", true);
-        // createSeries("africa", "Africa", true);
+        createSeries("available", "Allocated", true);
 
         // Add legend
         // chart.legend = new am4charts.Legend();

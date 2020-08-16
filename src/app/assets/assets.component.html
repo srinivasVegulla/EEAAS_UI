@@ -1,0 +1,460 @@
+<div class="assetsComponent">
+    <div class="assetHeading">
+        <div class="pull-left">
+            <span *ngIf="currentPage == 'assetsPage'" class="headingText"> DEVICES </span>
+            <span *ngIf="currentPage == 'createPage'" class="headingText"> CREATE DEVICE </span>
+            <span *ngIf="currentPage == 'editPage'" class="headingText"> UPDATE DEVICE </span>
+            <span *ngIf="currentPage == 'detailPage'" class="headingText cursorPointer" (click)="backPage()">
+                <i class="material-icons cursorPointer backArrowAlignment">arrow_back</i></span> <span
+                *ngIf="currentPage == 'detailPage'" class="headingText"> DEVICE DETAILS
+            </span>
+        </div>
+        <div class="pull-right">
+            <button class="crtBtn" *ngIf="currentPage == 'assetsPage'" (click)="createAnAsset('createPage')">
+                CREATE A DEVICE
+            </button>
+            <button class="crtBtn cancelBtn" *ngIf="currentPage == 'createPage'" (click)="createAnAsset('assetsPage')">
+                CANCEL
+            </button>
+            <button class="crtBtn cancelBtn" *ngIf="currentPage == 'editPage'"
+                (click)="cancelEditingAsset('assetsPage')">
+                CANCEL
+            </button>
+            <button class="crtBtn" *ngIf="currentPage == 'editPage'" type="button" [disabled]="assetForm.invalid"
+                [ngClass]="{'disabledBtn' : assetForm.invalid}" (click)="submitAsset(assetForm.value, 'update')">
+                UPDATE DEVICE
+            </button>
+            <button class="crtBtn" *ngIf="currentPage == 'createPage'" type="button" [disabled]="assetForm.invalid"
+                [ngClass]="{'disabledBtn' : assetForm.invalid}" (click)="submitAsset(assetForm.value, 'create')">
+                SUBMIT DEVICE
+            </button>
+            <button class="crtBtn" *ngIf="currentPage == 'detailPage'" (click)="deleteService(currentAsset)">
+                DELETE DEVICE
+            </button>
+        </div>
+    </div>
+    <hr>
+
+    <!-- ASSETS LIST PAGE -->
+
+    <div class="assetTableBody" *ngIf="currentPage == 'assetsPage'">
+        <div class="assetTableBodyHeading">
+            <div class="pull-left">
+                List of Devices ({{listOfDevices?.length}})
+            </div>
+            <div class="pull-right">
+
+            </div>
+        </div>
+        <div *ngIf="listOfDevices?.length > 0">
+            <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="S_NO">
+                    <mat-header-cell *matHeaderCellDef style="flex:0.5">S_NO </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index" style="flex:0.5">{{i+1}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="asset_name">
+                    <mat-header-cell *matHeaderCellDef>Device Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="color: blue !important;
+                    font-weight: inherit; cursor: pointer" (click)="showAssetDetailPage(element)">
+                        {{element.asset_name}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="asset_number">
+                    <mat-header-cell *matHeaderCellDef> Device Number </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.asset_number}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="availablity">
+                    <mat-header-cell *matHeaderCellDef> Availability </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.availablity}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="last_user">
+                    <mat-header-cell *matHeaderCellDef> Last User </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.last_user}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="last_user_group">
+                    <mat-header-cell *matHeaderCellDef> Last User Group </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.last_user_group}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <span (click)="updateAsset(row, 'assetsPage')"><i class="material-icons cursorPointer">
+                                edit
+                            </i></span>
+                        <span (click)="deleteService(row)"><i class="material-icons cursorPointer">
+                                delete
+                            </i></span>
+                    </mat-cell>
+                </ng-container>
+
+
+
+                <!--  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                <ng-container *matHeaderRowDef="displayedColumns">
+                    <mat-header-row class="mainHeader"></mat-header-row>
+                    <div class="mat-header-row header-group-row secondHeader">
+                        <div class="mat-header-cell" role="columnheader" style="flex:0.5">
+                            <img src="assets/bare/admin-filter.png">
+                        </div>
+
+                        <div class="mat-header-cell" role="columnheader"
+                            *ngFor="let field of filterColumns; let i = index">
+                            <input type="text" class="inputFilter" [value]="filterValue[i]"
+                                (keyup)="applyFilter($event.target.value, field, i); ">
+                            <button class="assetFilterClose" (click)="clear(i, field)">X</button>
+                        </div>
+                        <div class="mat-header-cell" role="columnheader">
+
+                        </div>
+
+                        <button class="assetFilterClose" (click)="clearAll()">X</button>
+
+                    </div>
+                </ng-container>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row" style="z-index: 0;"
+                    [ngStyle]="{'background-color':row.checked ? '#d10e8f1' : '' }">
+                </mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageIndex]="0" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20,50,100]"
+                (page)="pageChangeEvent($event, filteredData)" [length]="pageLength" style="padding-left:50px;">
+            </mat-paginator>
+        </div>
+    </div>
+
+    <!-- CREATE and EDIT Device -->
+
+    <div class="assetTableBody" *ngIf="currentPage == 'createPage' || currentPage == 'editPage'">
+        <div class="customRow">
+            <div class="col-md-6">
+                <div class="headingText crtHeading">
+                    Device Details
+                </div>
+                <div>
+                    <form [formGroup]="assetForm" #logFm="ngForm">
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="asset_name">Device Name</label>
+                                <input type="text" id="asset_name" class="form-control" formControlName="asset_name">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="asset_name.invalid && (asset_name.dirty || asset_name.touched)">
+                            <div *ngIf="asset_name.errors.required" class="col-md-10 form-group errorFont">
+                                Device Name is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="owner">Device Owner</label>
+                                <input type="text" id="owner" class="form-control" formControlName="owner" required>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="owner.invalid && (owner.dirty || owner.touched)">
+                            <div *ngIf="owner.errors.required" class="col-md-10 form-group errorFont">
+                                Device Owner is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="owner_group">Device Owner Group</label>
+                                <!-- <select class="form-control" (change)="changeOwnerGroup($event)"
+                                    formControlName="owner_group">
+                                    <option value="" disabled>Select Owner Group</option>
+                                    <option value="NextGen" class="xyz">NextGen</option>
+                                    <option value="IoT" class="xyz">IoT</option>
+                                    <option value="EEaaS" class="xyz">EEaaS</option>
+                                    <option value="CloudOps" class="xyz">CloudOps</option>
+                                
+                                </select> -->
+                                <div class="dropdown drpDwnBtn">
+                                    <div class="dropdown-toggle form-control inputHeight" (click)="openDropdown()">
+                                        <span>{{dropDwnValue}}</span>
+                                    </div>
+                                    <ul class="dropdown-menu" [ngClass]="{'openDropdown' : expandDropDown}">
+                                        <li class="dropDownItem" *ngFor="let owner_name of owner_groups"
+                                            (click)="changeOwnerGroup(owner_name)">{{owner_name}}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow"
+                            *ngIf="owner_group.invalid && (owner_group.dirty || owner_group.touched)">
+                            <div *ngIf="owner_group.errors.required" class="col-md-10 form-group errorFont">
+                                Device Owner Group is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" class="form-control" formControlName="location"
+                                    required>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="location.invalid && (location.dirty || location.touched)">
+                            <div *ngIf="location.errors.required" class="col-md-10 form-group errorFont"> Location is
+                                required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="brand">Brand</label>
+                                <input type="text" id="brand" class="form-control" formControlName="brand" required>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="brand.invalid && (brand.dirty || brand.touched)">
+                            <div *ngIf="brand.errors.required" class="col-md-10 form-group errorFont">
+                                Brand is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="model_number">Model Number</label>
+                                <input type="text" id="model_number" class="form-control"
+                                    formControlName="model_number">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow"
+                            *ngIf="model_number.invalid && (model_number.dirty || model_number.touched)">
+                            <div *ngIf="model_number.errors.required" class="col-md-10 form-group errorFont">
+                                Model Number is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="RAM">RAM</label>
+                                <input type="text" id="RAM" class="form-control" formControlName="RAM">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="RAM.invalid && (RAM.dirty || RAM.touched)">
+                            <div *ngIf="RAM.errors.required" class="col-md-10 form-group errorFont">
+                                RAM is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="voltage">Voltage</label>
+                                <input type="text" id="voltage" class="form-control" formControlName="voltage">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow" *ngIf="voltage.invalid && (voltage.dirty || voltage.touched)">
+                            <div *ngIf="voltage.errors.required" class="col-md-10 form-group errorFont">
+                                Voltage is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="headingText crtHeading">
+                    Usage Instructions
+                </div>
+                <div>
+                    <form [formGroup]="assetForm" #logFm="ngForm">
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="asset_number">Serial Number</label>
+                                <input type="text" id="asset_number" class="form-control" formControlName="asset_number"
+                                    required>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow"
+                            *ngIf="asset_number.invalid && (asset_number.dirty || asset_number.touched)">
+                            <div *ngIf="asset_number.errors.required" class="col-md-10 form-group errorFont">
+                                Serial Number is required.
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="passkey">Pass Key</label>
+                                <input type="text" id="passkey" class="form-control" formControlName="passkey">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="customRow">
+                            <div class="col-md-10 form-group">
+                                <label for="instructions">Usage Instructions</label>
+                                <textarea type="textarea" rows="7" cols="7" id="instructions"
+                                    class="form-control textarea" formControlName="instructions"></textarea>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="assetTableBodyHeading">
+            <div class="pull-left headingText">
+                Device Details
+            </div>
+            <div class="pull-right">
+
+            </div>
+        </div> -->
+        <div>
+
+
+        </div>
+
+    </div>
+
+    <!-- DEVICE DETAIL PAGE -->
+
+    <div class="assetDetailBody" *ngIf="currentPage == 'detailPage'">
+        <div class="assetContainer">
+            <div class="assetDetailHeadingContainer">
+                <div class="pull-left assetDetailHeading">
+                    {{currentAsset?.asset_name}}
+                </div>
+                <div class="pull-right assetDetailHeading cursorPointer"
+                    (click)="updateAsset(currentAsset, 'detailPage')">
+                    <span>Edit Device</span>
+                </div>
+                <div class="pull-right cursorPointer iconHeight" (click)="updateAsset(currentAsset, 'detailPage')">
+                    <span><i class="material-icons adjustEditIconAlignment"> edit</i></span>
+                </div>
+            </div>
+            <div class="customRow detailBodyContainer">
+                <div class="col-md-6">
+                    <div class="headingText crtHeading">
+                        Device Details
+                    </div>
+                    <div class="customRow">
+                        <div *ngFor="let asset of leftSideDeviceDetails" class="col-md-12">
+                            <div class="col-md-4 textAlignRight">
+                                {{asset?.displayName}}
+                            </div>
+                            <div class="col-md-8">
+                                {{currentAsset[asset['key']]}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="headingText crtHeading">
+                        Usage Instructions
+                    </div>
+                    <div class="customRow">
+                        <div *ngFor="let asset of rightSideDeviceDetails" class="col-md-12">
+                            <div class="col-md-4 textAlignRight">
+                                {{asset?.displayName}}
+                            </div>
+                            <div class="col-md-8">
+                                {{currentAsset[asset['key']]}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="usageContainer">
+            <div class="usageHeading headingText">
+                USAGE HISTORY
+            </div>
+            <div class="usageBody">
+                <div *ngIf="usageHistoryData?.length > 0">
+                    <mat-table [dataSource]="usageHistoryDataSource" matSort>
+                        <ng-container matColumnDef="S_NO">
+                            <mat-header-cell *matHeaderCellDef style="flex:0.5">S_NO </mat-header-cell>
+                            <mat-cell *matCellDef="let element; let i = index" style="flex:0.5">{{i+1}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="pm_id">
+                            <mat-header-cell *matHeaderCellDef>Name of User
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                {{element.pm_id}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="project_id">
+                            <mat-header-cell *matHeaderCellDef> Users's Group </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.project_id}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="location_id">
+                            <mat-header-cell *matHeaderCellDef> Contact Details </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.location_id}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="start_date">
+                            <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.start_date.substring(0, 10)}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="end_date">
+                            <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.end_date.substring(0, 10)}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef>Status </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="actions1">
+                            <mat-header-cell *matHeaderCellDef>Returned On </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.last_user_group}} </mat-cell>
+                        </ng-container>
+
+
+
+                        <mat-header-row *matHeaderRowDef="UHdisplayedColumns"></mat-header-row>
+                        <!--  <ng-container *matHeaderRowDef="UHdisplayedColumns">
+                            <mat-header-row class="mainHeader"></mat-header-row>
+                            <div class="mat-header-row header-group-row secondHeader">
+                                <div class="mat-header-cell" role="columnheader" style="flex:0.5">
+                                    <img src="assets/bare/admin-filter.png">
+                                </div>
+
+                                <div class="mat-header-cell" role="columnheader"
+                                    *ngFor="let field of UHfilterColumns; let i = index">
+                                    <input type="text" class="inputFilter" [value]="filterValueUH[i]"
+                                        (keyup)="applyFilterUH($event.target.value, field, i); ">
+                                    <button class="assetFilterClose" (click)="clearUH(i, field)">X</button>
+                                </div>
+
+                                <button class="assetFilterClose" (click)="clearAllUH()">X</button>
+
+                            </div>
+                        </ng-container> -->
+
+                        <mat-row *matRowDef="let row; columns: UHdisplayedColumns;" class="hover-row"
+                            style="z-index: 0;" [ngStyle]="{'background-color':row.checked ? '#d10e8f1' : '' }">
+                        </mat-row>
+                    </mat-table>
+                    <mat-paginator #paginatorUH [pageIndex]="0" [pageSize]="pageSizeUH"
+                        [pageSizeOptions]="[5, 10, 20,50,100]" (page)="pageChangeEventUH($event, filteredDataUH)"
+                        [length]="pageLengthUH" style="padding-left:50px;">
+                    </mat-paginator>
+                </div>
+                <div *ngIf="usageHistoryData?.length == 0">
+                    <div class="headingText">
+                        No Usage History for {{currentAsset?.asset_name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-background" *ngIf="isModalOpen"></div>
+<app-is-delete-modal-popup *ngIf="isModalOpen" [inputData]="modalInputData" [type]="'Device'"
+    (modalDialogClose)="closeModalDialog($event)">
+</app-is-delete-modal-popup>

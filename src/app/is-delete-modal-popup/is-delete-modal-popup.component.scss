@@ -1,0 +1,103 @@
+.modalDialog {
+    position: absolute;
+    width: 50%;
+    margin: 5% 20%;
+    padding: 15px;
+    border-radius: 6px;
+    height: calc(100vh - 120px);
+    max-height: 250px;
+    top: 60px;
+    background-color: #ffffff;
+    z-index: 1000;
+}
+.modalDialogHeader{
+    text-align: left;
+    font-size: 16px;
+    font-family: "Roboto-Regular";
+    letter-spacing: 0;
+    color: #333333;
+    opacity: 1;
+    height: 30px;
+    line-height: 30px;
+}
+.closeContainer {
+    float: right;
+    cursor: pointer;
+    text-align: center;
+    color: #333333;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #D8D8D8;
+    opacity: 1;
+}
+.modalDialogBody {
+    width: 100%;
+  //  height: calc(100vh - 210px);
+    margin: 15px 0;
+    overflow: auto;
+}
+
+.crtBtn {
+    margin: 0 10px;
+    background-color: #072f61;
+    color: #ffffff;
+    padding: 5px 15px;
+    line-height: 25px;
+    border-radius: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.cancelBtn {
+    background-color: black;
+}
+.btnAlignment {
+    text-align: center;
+}
+/* .modalTable {
+    display: table;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+.modalTableHeader {
+    display: table-header-group;
+    border-top: 1px solid #DCDCE5;
+    border-bottom: 1px solid #DCDCE5;
+    
+}
+.modalTableHeaderCell {
+    display: table-cell;
+    padding: 5px 10px;
+    min-width: 150px;
+    font-size: 12px;
+}
+.modalTableRow {
+    display: table-row;
+    border-bottom: 1px solid #DCDCE5;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 4px #8C94A51A;
+    border-radius: 6px;
+    
+}
+.modalTableRow:nth-child(even) {
+    background: #F7F7F7 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 4px #8C94A51A;
+    border-radius: 6px;
+    opacity: 1;  
+}
+.modalTableRowCell {
+    display: table-cell;
+    padding: 5px 10px;
+    min-width: 150px;
+    font-size: 14px;
+}
+.indexCell {
+    max-width: 75px !important;
+    display: table-cell;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.imagePadding {
+    padding: 0 25px;
+} */

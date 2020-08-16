@@ -9,7 +9,7 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
 @Component({
   selector: 'app-labs',
   templateUrl: './labs.component.html',
-  styleUrls: ['./labs.component.css']
+  styleUrls: ['./labs.component.scss']
 })
 export class LabsComponent implements OnInit {
 
@@ -21,8 +21,8 @@ export class LabsComponent implements OnInit {
   public tableData: any = [];
   displayedColumns: string[]
   dataSource;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -44,7 +44,7 @@ export class LabsComponent implements OnInit {
       // this.dialogResult = result;
     });
   }
-  openAdd(){
+  openAdd() {
     this.auth.addLabService();
   }
   getFilteredData() {
@@ -54,17 +54,17 @@ export class LabsComponent implements OnInit {
     let stDate = new Date(this.webService.todayDateReservation);
     let enDate = new Date(this.webService.lastDateReservation);
 
-    if(this.hydLocation == false) {
+    if (this.hydLocation == false) {
       var data = {
         "start_date": stDate,
         "end_date": enDate,
-        "location":"PDI_SKYVIEW"
+        "location": "PDI_SKYVIEW"
       }
     } else if (this.hydLocation == true) {
       var data = {
         "start_date": stDate,
         "end_date": enDate,
-        "location":"COLO-HYD"
+        "location": "COLO-HYD"
       }
     }
 
@@ -81,7 +81,7 @@ export class LabsComponent implements OnInit {
 
 
   reservationSystemData() {
-    var data:any;
+    var data: any;
 
     // var data = {
     //             "start_date": "",
@@ -89,15 +89,15 @@ export class LabsComponent implements OnInit {
     //             }
     //JSON.parse(this.auth.data);
     //  data.action = "read";
-    if(this.hydLocation == false) {
+    if (this.hydLocation == false) {
       data = {
-        "location":"ODC3",
-        "action":"read"
+        "location": "ODC3",
+        "action": "read"
       }
-    } else  {
+    } else {
       data = {
-        "location":"ODC1",
-        "action":"read"
+        "location": "ODC1",
+        "action": "read"
       }
     }
     // var data = {
@@ -108,13 +108,13 @@ export class LabsComponent implements OnInit {
     console.log(data)
 
     this.webService.getReservationListLocation(data).subscribe(res => {
-    // this.webService.getReservationList().subscribe(res => {
+      // this.webService.getReservationList().subscribe(res => {
       var response: any = res;
       this.listOfRequests = response.opnfv;
       console.log(this.listOfRequests);
       //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["S_No","asset_id","model", "cpu","ram","allocation_type", "ip_address","team","start_date","end_date"];
+      this.displayedColumns = ["S_No", "asset_id", "model", "cpu", "ram", "allocation_type", "ip_address", "team", "start_date", "end_date"];
       // this.displayedColumns = ["name", "status", "model"];
       var len = this.listOfRequests.length;
       var j = 0;
@@ -133,8 +133,8 @@ export class LabsComponent implements OnInit {
             "allocation_type": this.listOfRequests[i].allocation_type,
             "ip_address": this.listOfRequests[i].ip_address,
             "team": this.listOfRequests[i].team,
-            "start_date":this.listOfRequests[i].start_date,
-            "end_date" :this.listOfRequests[i].end_date,
+            "start_date": this.listOfRequests[i].start_date,
+            "end_date": this.listOfRequests[i].end_date,
             // "reservedBy": this.listOfRequests[i].consumer,
             // "allocatedTo": this.listOfRequests[i].project,
             // "actions": this.listOfRequests[i].consumer
@@ -143,7 +143,7 @@ export class LabsComponent implements OnInit {
         j = j + 1;
       }
       console.log("loop outside")
-      console.log("table data",this.tableData)
+      console.log("table data", this.tableData)
 
       this.dataSource = new MatTableDataSource(this.tableData);
       this.dataSource.paginator = this.paginator;
@@ -174,63 +174,63 @@ export class LabsComponent implements OnInit {
   // }
 
   viewRequest(reqId) {
-    this.webService.physicalServiceId= reqId;
+    this.webService.physicalServiceId = reqId;
 
-    if(this.router.url == '/dashboard/lab1') {
-      this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
-    } else if (this.router.url == '/dashboard/lab2') {
-      this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
-    }else if(this.router.url == '/AdminDashboard/lab1') {
+    if (this.router.url == '/home/dashboard/lab1') {
+      this.router.navigate(['/home/dashboard/Myservices/NewRequest/service']);
+    } else if (this.router.url == '/home/dashboard/lab2') {
+      this.router.navigate(['/home/dashboard/Myservices/NewRequest/service']);
+    } else if (this.router.url == '/AdminDashboard/lab1') {
       this.router.navigate(['/AdminDashboard/services']);
     } else if (this.router.url == '/AdminDashboard/lab2') {
       this.router.navigate(['/AdminDashboard/services']);
-    }else if(this.router.url == '/lmdashboard/lab1') {
-      this.router.navigate(['/lmdashboard/services']);
-    } else if (this.router.url == '/lmdashboard/lab2') {
-      this.router.navigate(['/lmdashboard/services']);
+    } else if (this.router.url == '/home/lmdashboard/lab1') {
+      this.router.navigate(['/home/lmdashboard/services']);
+    } else if (this.router.url == '/home/lmdashboard/lab2') {
+      this.router.navigate(['/home/lmdashboard/services']);
     }
     // this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
   }
 
   ngOnInit() {
 
-    this.paginator._intl.itemsPerPageLabel = 'Show';
+    //this.paginator._intl.itemsPerPageLabel = 'Show';
 
     // this.webService.Dashboard = false;
     // this.webService.myService = true;
 
-    if(this.router.url == '/dashboard/lab1') {
+    if (this.router.url == '/home/dashboard/lab1') {
       this.hydLocation = false;
-    } else if (this.router.url == '/dashboard/lab2') {
+    } else if (this.router.url == '/home/dashboard/lab2') {
       this.hydLocation = true;
-    }else if(this.router.url == '/AdminDashboard/lab1') {
+    } else if (this.router.url == '/home/AdminDashboard/lab1') {
       this.hydLocation = false;
-    } else if (this.router.url == '/AdminDashboard/lab2') {
+    } else if (this.router.url == '/home/AdminDashboard/lab2') {
       this.hydLocation = true;
-    }else if(this.router.url == '/lmdashboard/lab1') {
+    } else if (this.router.url == '/home/lmdashboard/lab1') {
       this.hydLocation = false;
-    } else if (this.router.url == '/lmdashboard/lab2') {
+    } else if (this.router.url == '/home/lmdashboard/lab2') {
       this.hydLocation = true;
     }
     this.reservationSystemData();
-    console.log(this.router.url);
-    this.webService.Dashboard  =false;
-    this.webService.ReservationSystem  =false;
-    this.webService.myService  =false;
-    this.webService.devices  =false;
-    this.webService.ReservationList  =false;
-    this.webService.Dashboard  =false;
-    this.webService.ReservationSystem  =false;
-    this.webService.myService  =false;
-this.webService.LMDashboard=false;
-this.webService.orders=false;
-this.webService.labs=true;
-this.webService.reports=false;
-    this.webService.Inventory  =false;
-this.webService.catalogue=false;
-this.webService.calendar=false;
-this.webService.holidays=false;
-
+    /* this.webService.Dashboard = false;
+    this.webService.ReservationSystem = false;
+    this.webService.myService = false;
+    this.webService.devices = false;
+    this.webService.ReservationList = false;
+    this.webService.Dashboard = false;
+    this.webService.ReservationSystem = false;
+    this.webService.myService = false;
+    this.webService.LMDashboard = false;
+    this.webService.orders = false;
+    this.webService.labs = true;
+    this.webService.reports = false;
+    this.webService.Inventory = false;
+    this.webService.catalogue = false;
+    this.webService.calendar = false;
+    this.webService.holidays = false;
+    this.webService.Assets = false; */
+    this.webService.currentTab = 'labs';
   }
 
 

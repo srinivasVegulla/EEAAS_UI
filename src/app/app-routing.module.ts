@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MenuComponent } from './pmsidebar/menu.component';
 import { AppComponent } from './app.component';
-import { WebService } from './services/web.service';
 import { NavComponent } from './navigation/nav.component';
-
-import { AuthService } from './services/auth.service';
 import { LoginComponent, TrackCapsDirective } from './login/login.component';
 
 import { Authguard } from './services/authguard.service'
@@ -68,7 +65,10 @@ import { LmReqProcessingComponent } from './bare-metal/components/lm/lm-req-proc
 import { ReserveSwitchComponent } from './bare-metal/components/pm/reserve-switch/reserve-switch.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { CarouselComponent } from './bare-metal/components/common-components/carousel/carousel.component';
-
+import { HomeComponent } from './home/home.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { AssetsComponent } from './assets/assets.component';
+import { NewUsersComponent } from './new-users/new-users.component';
 
 var routes: Routes = [
   {
@@ -85,12 +85,122 @@ var routes: Routes = [
     // canActivate: [Authguard]
   },
   {
+    path: 'home',
+    component: HomeComponent,
+    children: [
+      {
+        path: 'dashboard',
+        // component: MenuComponent,
+        children: [
+          { path: '', component: PmdashboardComponent },
+          // { path: 'catalogue', component: DesignerComponent },
+          { path: 'Myservices/NewRequest', component: NewRequestComponent },
+          { path: 'Myservices/NewRequest/service', component: PmphysicalserviceComponent },
+          { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+          { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+          { path: 'orderList', component: PmordersummaryComponent },
+          { path: 'reservationSystem', component: ReservationSystemComponent },
+          { path: 'inventory', component: CatalogueComponent },
+          { path: 'catalogue', component: CatalogueComponent },
+          { path: 'lab1', component: LabsComponent },
+          { path: 'lab2', component: LabsComponent },
+          { path: 'serverlist', component: ServersListComponent },
+          //  { path: 'AdminRequestList', component: AdminRequestListComponent },
+          {
+            path: 'reserve-servers',
+            component: ReserveServersComponent
+          },
+          {
+            path: 'reserve-switch',
+            component: ReserveSwitchComponent
+          },
+          {
+            path: 'my-reservations',
+            component: MyReservationsComponent
+          },
+          {
+            path: 'process-my-reservations',
+            component: ProcessMyReservationsComponent
+          },
+          {
+            path: 'pm-req-cancel',
+            component: LmReqProcessingComponent
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    children: [
+      {
+        path: 'AdminDashboard',
+        // component: AdminSidebarComponent,
+        canActivate: [Dashguard],
+        children: [
+          { path: '', component: AdminDashboardComponent },
+          { path: 'users', component: NewUsersComponent },
+          { path: 'devices', component: AssetsComponent },
+          { path: 'orders', component: AdminRequestListComponent },
+          { path: 'assurance', component: AssuranceComponent },
+          { path: 'Billing', component: BillingComponent },
+          { path: 'Utilization', component: UtilizationReportsComponent },
+          { path: 'lab1', component: LabsComponent },
+          { path: 'lab2', component: LabsComponent },
+          { path: 'serviceRequest', component: ServiceRequestComponent },
+          { path: 'services', component: PmphysicalserviceComponent },
+          { path: 'catalogue', component: CatalogueComponent },
+          { path: 'calendar', component: CalendarComponent },
+          { path: 'holidays', component: HolidaysComponent },
+          { path: 'lm-req-processing', component: LmReqProcessingComponent },
+          {
+            path: 'DesignerDashboard',
+            canActivate: [Dashguard],
+            children: [
+              { path: '', component: DesignerComponent },
+              { path: 'serviceRequest', component: ServiceRequestComponent },
+              { path: 'serviceRequestList', component: ServiceRequestListComponent },
+              { path: 'issues', component: AssuranceComponent },
+            ]
+          },
+        ]
+      }
+    ]
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    children: [
+      {
+        path: 'lmdashboard',
+        canActivate: [Dashguard],
+        children: [
+          { path: '', component: LmdashboardComponent },
+          { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+          // { path: 'catalogue', component: DesignerComponent },
+          { path: 'projects', component: ProjectsComponent },
+          { path: 'serviceRequestList', component: ServiceRequestListComponent },
+          { path: 'issues', component: AssuranceComponent },
+          { path: 'Billing', component: BillingComponent },
+          { path: 'orders', component: AdminRequestListComponent },
+          { path: 'catalogue', component: CatalogueComponent },
+          { path: 'lab1', component: LabsComponent },
+          { path: 'lab2', component: LabsComponent },
+          { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+          { path: 'services', component: PmphysicalserviceComponent },
+          { path: 'lm-req-processing', component: LmReqProcessingComponent },
+        ]
+      }
+    ]
+  },
+
+  /* {
     path: 'dashboard',
     component: MenuComponent,
     canActivate: [Dashguard],
     children: [
       { path: '', component: PmdashboardComponent },
-      // { path: 'catalogue', component: DesignerComponent },
       { path: 'Myservices/NewRequest', component: NewRequestComponent },
       { path: 'Myservices/NewRequest/service', component: PmphysicalserviceComponent },
       { path: 'Myservices/RequestList', component: PmrequestlistComponent },
@@ -123,18 +233,9 @@ var routes: Routes = [
         component: LmReqProcessingComponent
       }
     ]
-  },
-  // {
-  //   path: 'reservationSystem',
-  //   component: ReservationSystemComponent,
-  //   canActivate : [Dashguard]
-  // },
-  // {
-  //   path: 'catalogue',
-  //   component: CatalogueComponent,
-  //   canActivate : [Dashguard]
-  // },
-  {
+  }, */
+
+  /* {
     path: 'AdminDashboard',
     component: AdminSidebarComponent,
     canActivate: [Dashguard],
@@ -155,58 +256,46 @@ var routes: Routes = [
       { path: 'lm-req-processing', component: LmReqProcessingComponent },
 
     ]
+  }, */
+
+  {
+    path: 'TesterDashboard',
+    component: TesterSidebarComponent,
+    canActivate: [Dashguard],
+    children: [
+      { path: '', component: TestComponent }
+    ]
   },
-{
-  path: 'TesterDashboard',
-  component: TesterSidebarComponent,
-  canActivate: [Dashguard],
-  children: [
-    { path: '', component: TestComponent }
+  {
+    path: 'Developer',
+    component: DevelopersidebarComponent,
+    canActivate: [Dashguard],
+    children: [
+      { path: '', component: DeveloperComponent }
+    ]
+  },
 
-  ]
-},
-{
-  path: 'Developer',
-  component: DevelopersidebarComponent,
-  canActivate: [Dashguard],
-  children: [
-    { path: '', component: DeveloperComponent }
-  ]
-},
-{
-  path: 'DesignerDashboard',
-  component: AdminSidebarComponent,
-  // component: DesignerSidebarComponent,
-  canActivate: [Dashguard],
-  children: [
-    { path: '', component: DesignerComponent },
-    { path: 'serviceRequest', component: ServiceRequestComponent },
-    { path: 'serviceRequestList', component: ServiceRequestListComponent },
-    { path: 'issues', component: AssuranceComponent },
-
-  ]
-},
-{
-  path: 'lmdashboard',
-  component: LmsidebarComponent,
-  canActivate: [Dashguard],
-  children: [
-    { path: '', component: LmdashboardComponent },
-{ path: 'Myservices/RequestList', component: PmrequestlistComponent },
-// { path: 'catalogue', component: DesignerComponent },
-{ path: 'projects', component: ProjectsComponent },
-{ path: 'serviceRequestList', component: ServiceRequestListComponent },
-{ path: 'issues', component: AssuranceComponent },
-{ path: 'Billing', component: BillingComponent },
-{ path: 'orders', component: AdminRequestListComponent },
-{ path: 'catalogue', component: CatalogueComponent },
-{ path: 'lab1', component: LabsComponent },
-{ path: 'lab2', component: LabsComponent },
-{ path: 'Myservices/RequestList', component: PmrequestlistComponent },
-{ path: 'services', component: PmphysicalserviceComponent },
-{ path: 'lm-req-processing', component: LmReqProcessingComponent },
-]
-}];
+  /* {
+    path: 'lmdashboard',
+    component: LmsidebarComponent,
+    canActivate: [Dashguard],
+    children: [
+      { path: '', component: LmdashboardComponent },
+      { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'serviceRequestList', component: ServiceRequestListComponent },
+      { path: 'issues', component: AssuranceComponent },
+      { path: 'Billing', component: BillingComponent },
+      { path: 'orders', component: AdminRequestListComponent },
+      { path: 'catalogue', component: CatalogueComponent },
+      { path: 'lab1', component: LabsComponent },
+      { path: 'lab2', component: LabsComponent },
+      { path: 'Myservices/RequestList', component: PmrequestlistComponent },
+      { path: 'services', component: PmphysicalserviceComponent },
+      { path: 'lm-req-processing', component: LmReqProcessingComponent },
+    ]
+  } */
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

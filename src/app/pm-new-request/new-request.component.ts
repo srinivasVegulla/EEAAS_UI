@@ -8,19 +8,19 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialogModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReservationDialogComponent } from '../reservation-dialog/reservation-dialog.component';
 import { DatePipe } from '@angular/common';
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-new-request',
   templateUrl: './new-request.component.html',
-  styleUrls: ['./new-request.component.css']
+  styleUrls: ['./new-request.component.scss']
 })
 
 export class NewRequestComponent implements OnInit {
   startDate: any;
-  endDate:any;
+  endDate: any;
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
-  test:true;
+  test: true;
   public projectNames: any = [];
   panelOpenState = true;
   expandedHeight = 10;
@@ -86,9 +86,9 @@ export class NewRequestComponent implements OnInit {
   }
   check() {
     console.log("check")
-  
+
     // $('input[type="checkbox"]').on('change', function () {
-      
+
     //   $('input[name="' + this.name + '"]').not(this).prop('checked', false);
     // });
   }
@@ -109,11 +109,11 @@ export class NewRequestComponent implements OnInit {
     else if (this.webService.selectedPlatform == "Physical") {
       platform = "physical"
     }
-    this.webService.imageArray=[];
+    this.webService.imageArray = [];
     for (var i = 0; i < this.imageArray.length; i++) {
-console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g , '').toLowerCase())
-      console.log($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g , '').toLowerCase()).prop('checked'))
-      if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g , '').toLowerCase()).prop('checked')) {
+      console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase())
+      console.log($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked'))
+      if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked')) {
         this.webService.imageArray.push(this.imageArray[i]);
       }
     }
@@ -137,8 +137,8 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
     // enDate.setHours(this.webService.lastTimeReservation.split(':')[0])
     // enDate.setMinutes(this.webService.lastTimeReservation.split(':')[1])
     // this.enddateVal = this.DatePipe.transform(enDate, 'MM/dd/yyyy HH:mm:ss')
-    this.startdateVal=(new Date(this.webService.todayDate).getMonth()+1) + "/" +new Date(this.webService.todayDate).getDate() + "/" +  new Date(this.webService.todayDate).getFullYear()+" "+ new Date(this.webService.todayDate).getHours()+":"+new Date(this.webService.todayDate).getMinutes()+":"+new Date(this.webService.todayDate).getSeconds();
-    this.enddateVal=(new Date(this.webService.lastDate).getMonth()+1) + "/" +new Date(this.webService.lastDate).getDate() + "/" +  new Date(this.webService.lastDate).getFullYear()+" "+ new Date(this.webService.todayDate).getHours()+":"+new Date(this.webService.todayDate).getMinutes()+":"+new Date(this.webService.lastDate).getSeconds();
+    this.startdateVal = (new Date(this.webService.todayDate).getMonth() + 1) + "/" + new Date(this.webService.todayDate).getDate() + "/" + new Date(this.webService.todayDate).getFullYear() + " " + new Date(this.webService.todayDate).getHours() + ":" + new Date(this.webService.todayDate).getMinutes() + ":" + new Date(this.webService.todayDate).getSeconds();
+    this.enddateVal = (new Date(this.webService.lastDate).getMonth() + 1) + "/" + new Date(this.webService.lastDate).getDate() + "/" + new Date(this.webService.lastDate).getFullYear() + " " + new Date(this.webService.todayDate).getHours() + ":" + new Date(this.webService.todayDate).getMinutes() + ":" + new Date(this.webService.lastDate).getSeconds();
     //  var info={"projectName": this.webService.selectedProject,"users":this.webService.selectedUserList,
     //  "startDate":this.webService.todayDate,"endDate":this.webService.lastDate,"delivarLocation": this.webService.selectedDelivaryLocation,
     //  "platform":platform,"lineManger":this.webService.lineManger,"admin":this.webService.admin,"imageType":this.webService.imageArray,"duration":this.duration};
@@ -175,8 +175,8 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
   displayedColumns: string[]
   bareMetalDataSource;
   bareMetalData: any = [];
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.bareMetalDataSource.filter = filterValue.trim().toLowerCase();
@@ -201,8 +201,8 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
 
   changeStartDate(event) {
     console.log(event.value)
-    console.log((new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds());
-    this.startdateVal=(new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds();
+    console.log((new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds());
+    this.startdateVal = (new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds();
 
     // this.webService.todayDate = this.DatePipe.transform(event, 'MM/dd/yyyy')
     // this.webService.todayTimeReservation = this.DatePipe.transform(event, 'HH:mm')
@@ -212,10 +212,10 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
 
 
   changeEndDate(event) {
-    
+
     console.log(event.value)
-    console.log((new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds());
-    this.enddateVal=(new Date(event.value).getMonth()+1) + "/" +new Date(event.value).getDate() + "/" +  new Date(event.value).getFullYear()+" "+ new Date(event.value).getHours()+":"+new Date(event.value).getMinutes()+":"+new Date(event.value).getSeconds();
+    console.log((new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds());
+    this.enddateVal = (new Date(event.value).getMonth() + 1) + "/" + new Date(event.value).getDate() + "/" + new Date(event.value).getFullYear() + " " + new Date(event.value).getHours() + ":" + new Date(event.value).getMinutes() + ":" + new Date(event.value).getSeconds();
     // this.webService.lastDate = this.DatePipe.transform(event, 'MM/dd/yyyy')
     // this.webService.lastTimeReservation = this.DatePipe.transform(event, 'HH:mm')
     // console.log("lastDate:" + this.webService.lastDate);
@@ -245,7 +245,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
       "start_date": this.startdateVal,
       "end_date": this.enddateVal,
       "action": "search",
-      "location":"all"
+      "location": "all"
     }
     this.webService.getFilteredReservationData(data).subscribe(res => {
       var response: any = res;
@@ -275,7 +275,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
             // "location_id" :this.listOfRequests[i].location_id,
             "reservedBy": this.filteredRequests[i].consumer,
             "allocatedTo": this.filteredRequests[i].project,
-            "pricePerHr":this.filteredRequests[i].price_per_hr,
+            "pricePerHr": this.filteredRequests[i].price_per_hr,
             //        "actions": this.filteredRequests[i].consumer
 
           })
@@ -322,7 +322,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
       console.log(this.listOfRequests);
       //  this.listOfRequests.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo" , "pricePerHr"];
+      this.displayedColumns = ["checked", "serviceid", "name", "status", "reservedBy", "allocatedTo", "pricePerHr"];
       var len = this.listOfRequests.length;
       var j = 0;
       for (var i = len - 1; i >= 0; i--) {
@@ -342,7 +342,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
             // "location_id" :this.listOfRequests[i].location_id,
             "reservedBy": this.listOfRequests[i].consumer,
             "allocatedTo": this.listOfRequests[i].project,
-            "pricePerHr":this.listOfRequests[i].price_per_hr,
+            "pricePerHr": this.listOfRequests[i].price_per_hr,
             //  "actions": this.listOfRequests[i].consumer
 
           })
@@ -356,7 +356,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
     })
   }
 
-  @ViewChild('mySelect', {static: false}) mySelec: MatSelect;
+  @ViewChild('mySelect', { static: false }) mySelec: MatSelect;
   //  openselect(my){
   //    console.log("sjsjj")
   //    my.toggle();
@@ -493,19 +493,19 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
   }
   cancle() {
     this.webService.selectedProject = null;
-//    this.webService.selectedUserList = null;
- this.webService.lineManger = null;
-      this.webService.admin = null;
+    //    this.webService.selectedUserList = null;
+    this.webService.lineManger = null;
+    this.webService.admin = null;
 
     this.webService.todayDate = null;
     this.webService.lastDate = null;
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/home/dashboard']);
   }
   disablecheck() {
 
     console.log(this.imageArray.length)
     for (var i = 0; i < this.imageArray.length; i++) {
-      if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g , '').toLowerCase()).prop('checked')) {
+      if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked')) {
 
         return false;
       }
@@ -517,7 +517,7 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
     console.log(this.webService.imageArray.length)
     for (var i = 0; i < list.length; i++) {
 
-      $("#" + list[i].toString().replace(/ +/g, "").replace(/[-.]/g , '').toLowerCase()).prop('checked', true);
+      $("#" + list[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked', true);
       this.imageArray.push(list[i])
     }
     console.log(this.imageArray.length)
@@ -527,25 +527,26 @@ console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]
 
 
   viewService(serviceId) {
-    this.webService.physicalServiceId= serviceId;
+    this.webService.physicalServiceId = serviceId;
     this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
   }
 
 
   ngOnInit() {
     this.radioCheck(this.webService.imageArray)
-    this.webService.Dashboard  =false;
-    this.webService.ReservationSystem  =false;
-    this.webService.myService  =true;
-  
-    this.webService.Inventory  =false;
-  
-    this.webService.devices  =false;
-    this.webService.ReservationList  =false;
+    /*  this.webService.Dashboard  =false;
+     this.webService.ReservationSystem  =false;
+     this.webService.myService  =true;
+   
+     this.webService.Inventory  =false;
+   
+     this.webService.devices  =false;
+     this.webService.ReservationList  =false; */
+    this.webService.currentTab = 'myService';
     this.cdr.detectChanges()
     this.reservationSystemData();
-    if(this.webService.selectedProject!= undefined){
-    this.userList(this.webService.selectedProject)
+    if (this.webService.selectedProject != undefined) {
+      this.userList(this.webService.selectedProject)
     }
     // $('.no-open-lmao').collapse({
     //   toggle: false

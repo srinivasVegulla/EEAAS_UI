@@ -1,0 +1,72 @@
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon */
+    content: "\e114";
+    /* adjust as needed, taken from bootstrap.css */
+    float: right;
+    /* adjust as needed */
+    color: white;
+    /* adjust as needed */
+}
+.price{
+    float: right;
+    margin-right: 2%;
+}
+.lmAva{
+    padding: 0 28px;
+}
+.priceAmt {
+    padding: 0 5px;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+    /* adjust as needed, taken from bootstrap.css */
+}
+
+.item-title {
+    color: white !important;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
+.container {
+    overflow-y: auto !important;
+}
+
+.form-width {
+    width: 25%;
+}
+
+.server-detail {
+    border-collapse: unset;
+    background-color: lightgray;
+}
+
+.mat-input-element:disabled {
+     color:black;
+}
+
+
+.easButton {
+    background-color: #072f61;
+    margin: 0 10px;
+    color: #ffffff;
+    padding: 5px 15px;
+    line-height: 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.easPrimaryBtn {
+    background-color: #072f61;
+}
+.easSecondaryBtn {
+    background-color: black;
+   /*  background-color: #313944; */
+}
+.disabledBtn {
+    background-color: #555d6a;
+    cursor: not-allowed;
+}

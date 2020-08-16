@@ -6,7 +6,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-my-reservations',
   templateUrl: './my-reservations.component.html',
-  styleUrls: ['./my-reservations.component.css']
+  styleUrls: ['./my-reservations.component.scss']
 })
 export class MyReservationsComponent implements OnInit {
 
@@ -43,7 +43,7 @@ export class MyReservationsComponent implements OnInit {
         let user_data = JSON.parse(localStorage.getItem('data'));
 
 
-        res['request'] = res['request'].filter((item) => item.pm_id == user_data.user_id).map((item) => {
+        res['request'] = res['request'].filter((item) => item.pm_id.toLowerCase() == user_data.user_id.toLowerCase()).map((item) => {
           item.expired = moment().isAfter(moment(item.end_date, "MM/DD/YYYY"), 'day');
           return item;
         });
@@ -79,7 +79,6 @@ export class MyReservationsComponent implements OnInit {
   }
 
   async process_ticket(data) {
-    console.log({ data });
     let pm_can_edit = data.status.toLowerCase() == 'provisioned' || data.status.toLowerCase() == 'allocated';
     let server_d: any;
     if (pm_can_edit) {
@@ -89,16 +88,16 @@ export class MyReservationsComponent implements OnInit {
         // console.log({ server_d })
         if (server_d['request'][0].service_name.toLowerCase().replace(/ /g, "").includes("switch")) {
           console.log("this is switch");
-          this.router.navigate(['/dashboard/reserve-switch'], { queryParams: { request_id: data.request_id } });
+          this.router.navigate(['/home/dashboard/reserve-switch'], { queryParams: { request_id: data.request_id } });
         } else {
 
-          this.router.navigate(['/dashboard/pm-req-cancel'], { queryParams: { request_id: data.request_id, pm_can_edit, pm_can_cancel_req: !pm_can_edit } });
+          this.router.navigate(['/home/dashboard/pm-req-cancel'], { queryParams: { request_id: data.request_id, pm_can_edit, pm_can_cancel_req: !pm_can_edit } });
         }
       } catch (err) {
         // console.log(err)
       }
     } else {
-      this.router.navigate(['/dashboard/pm-req-cancel'], { queryParams: { request_id: data.request_id, pm_can_edit, pm_can_cancel_req: !pm_can_edit } });
+      this.router.navigate(['/home/dashboard/pm-req-cancel'], { queryParams: { request_id: data.request_id, pm_can_edit, pm_can_cancel_req: !pm_can_edit } });
     }
 
 
@@ -114,7 +113,6 @@ export class MyReservationsComponent implements OnInit {
   }
 
   pageChangeEvent(event, type) {
-    console.log(event);
     const offset = ((event.pageIndex + 1) - 1) * event.pageSize;
     if (type == 'inuse')
       this.splicedData_inuse = this.inuse.slice(offset).slice(0, event.pageSize);

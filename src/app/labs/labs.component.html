@@ -1,20 +1,20 @@
 <div class="dashboardhead">
   <h5 class="dashboardBody_Heading">
     <span *ngIf="auth.role == 'PM'">
-    <span routerLink="/dashboard">Dashboard</span>/
-    <span style="font-weight: bold;" routerLink="/dashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
-    <span style="font-weight: bold;" routerLink="/dashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    <span routerLink="/home/dashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/home/dashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/home/dashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
     </span>
 
     <span *ngIf="auth.role == 'Admin'">
-    <span routerLink="/AdminDashboard">Dashboard</span>/
-    <span style="font-weight: bold;" routerLink="/AdminDashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
-    <span style="font-weight: bold;" routerLink="/AdminDashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    <span routerLink="/home/AdminDashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/home/AdminDashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/home/AdminDashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
     </span>
   <span *ngIf="auth.role == 'LM'">
-    <span routerLink="/lmdashboard">Dashboard</span>/
-    <span style="font-weight: bold;" routerLink="/lmdashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
-    <span style="font-weight: bold;" routerLink="/lmdashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
+    <span routerLink="/home/lmdashboard">Dashboard</span>/
+    <span style="font-weight: bold;" routerLink="/home/lmdashboard/inventory" *ngIf="hydLocation == false;">ODC 3</span>
+    <span style="font-weight: bold;" routerLink="/home/lmdashboard/inventory" *ngIf="hydLocation == true;">ODC 1</span>
     </span>
 
 

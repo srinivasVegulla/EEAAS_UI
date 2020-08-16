@@ -11,7 +11,7 @@ declare var bootbox;
 @Component({
   selector: 'app-reserve-switch',
   templateUrl: './reserve-switch.component.html',
-  styleUrls: ['./reserve-switch.component.css']
+  styleUrls: ['./reserve-switch.component.scss']
 })
 export class ReserveSwitchComponent implements OnInit {
   JSON = JSON;
@@ -102,6 +102,12 @@ export class ReserveSwitchComponent implements OnInit {
   project_name_available: any;
   request_id: any;
   sub: any;
+
+  isModalOpen = false;
+  modalInputData;
+  typeOfOperation;
+
+
   constructor(
     private Activatedroute: ActivatedRoute,
     private router: Router,
@@ -152,7 +158,6 @@ export class ReserveSwitchComponent implements OnInit {
       let server_details_user = await this.api.getServerDetails_user(sec_2['request'].map((item) => item.service_id)).toPromise();
       // let req_price = await this.api.getReq_data1_lm({ 'action': 'read', 'request_id': request_id }
       // ).toPromise(); // duplicate of sec_1
-      console.log({ sec_1, sec_2, server_details, server_details_user });
       // to add user added details to a server
       let sec_2_n = [];
 
@@ -243,8 +248,6 @@ export class ReserveSwitchComponent implements OnInit {
 
       this.order_details.start_date = new FormControl(moment(sec_1['request'][0].start_date, "MM/DD/YYYY").format());
       this.order_details.end_date = new FormControl(moment(sec_1['request'][0].end_date, "MM/DD/YYYY").format());
-
-      console.log(this.order_details)
       // setTimeout(() => {
       //   this.order_details['servers'][0]['sw_details'][2]['data'][0] = { "name": "something", "password": "something", "type": "something" }
       // }, 5000);
@@ -252,7 +255,6 @@ export class ReserveSwitchComponent implements OnInit {
       this.loader.hide();
       localStorage.setItem('multiple_http_', '');
     } catch (err) {
-      console.log({ err });
       this.loader.hide();
       localStorage.setItem('multiple_http_', '');
     }
@@ -261,7 +263,6 @@ export class ReserveSwitchComponent implements OnInit {
 
   addRow(sw) {
     if (!this.order_details['expired']) {
-      console.log({ sw });
       let new_rec = {
         input: true,
         new: true
@@ -274,7 +275,6 @@ export class ReserveSwitchComponent implements OnInit {
   }
 
   row_action(server, sw_confg, row, action, index?) {
-    console.log(this.order_details, { server, sw_confg, row, action, index });
     if (!this.order_details['expired']) {
       let newRow = { ...row };
       if (action == 'edit') {
@@ -298,8 +298,6 @@ export class ReserveSwitchComponent implements OnInit {
 
         this.pm_config_sw(server, sw_confg, newRow, action, index, row);
       } else if (action == 'delete') {
-
-        console.log(typeof newRow.vlan_id);
         if (sw_confg.id == 'vlan' && newRow.name) delete newRow.name;
         this.pm_config_sw(server, sw_confg, newRow, action, index, row)
       }
@@ -335,7 +333,6 @@ export class ReserveSwitchComponent implements OnInit {
     if (sw_confg.id == 'user') some['password_type'] = "PET_PLAIN_TEXT";
 
     if (action == 'delete' && sw_confg.id == 'acl') {
-      console.log({ row });
 
       some = {
         acl_id: row.id,
@@ -360,8 +357,6 @@ export class ReserveSwitchComponent implements OnInit {
     request.config[sw_confg.id] = some;
     row.input = false;
 
-
-    console.log(request);
     // return false
     this.api.configureSwitch(request).subscribe(
       res => {
@@ -416,15 +411,12 @@ export class ReserveSwitchComponent implements OnInit {
   showversions(server, curVersion) {
     this.server_4_versions = server;
     curVersion = curVersion.split('.').join('_');
-    console.log(curVersion)
     // this.seletedFirmVersion = curVersion;
     this.sw_versions = [...['WB_16_02_0026', 'WB_16_03_0007', 'WB_16_04_0016']].filter((item) => item != curVersion);
     this.seletedFirmVersion = this.sw_versions[0];
-    console.log(this.sw_versions, curVersion);
   }
 
   update_version(server, version) {
-    console.log(server, version);
 
     let myTimeout = setTimeout(() => {
       this.loader.hide();
@@ -469,10 +461,42 @@ export class ReserveSwitchComponent implements OnInit {
   //     }
   //   );
   // }
+  closeModalDialog(resObj) {
+    this.isModalOpen = false;
+    this.modalInputData = '';
+    let performOperation = resObj['proceed'];
 
+    if (performOperation && this.typeOfOperation == 'Release') {
+      this.callReleaseAPI();
+    }
+  }
+
+  callReleaseAPI() {
+    let req = {
+      "login": this.auth.data,
+      'request_id': this.request_id,
+      'status': 'RELEASED',
+      'instance_type': this.order_details['instance_type'],
+    }
+    this.api.releaseReq(req).subscribe(
+      res => {
+        if (res['job']) {
+          this.api.errorToast("Released successfully");
+          this._location.back();
+        }
+      },
+      err => {
+        this.api.errorToast(this.api.commonError);
+      }
+    );
+  }
   release() {
-    // release by pm 
-    bootbox.confirm({
+
+    this.isModalOpen = true;
+    this.modalInputData = this.request_id;
+    this.typeOfOperation = 'Release';
+
+    /* bootbox.confirm({
       message: "Are you sure, You want to release this request?",
       buttons: {
         confirm: {
@@ -485,10 +509,9 @@ export class ReserveSwitchComponent implements OnInit {
         }
       },
       callback: (result) => {
-        // console.log('This was logged in the callback: ' + result);
         if (result) {
           let req = {
-            "login": this.auth.data, // {"user_name":"Sam","user_id":"Sam","job":true,"project_id":["NextGen"],"role":"PM"},
+            "login": this.auth.data,
             'request_id': this.request_id,
             'status': 'RELEASED',
             'instance_type': 'Physical'
@@ -507,7 +530,7 @@ export class ReserveSwitchComponent implements OnInit {
         }
 
       }
-    });
+    }); */
 
   }
 
@@ -521,28 +544,6 @@ export class ReserveSwitchComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.sub) this.sub.unsubscribe();
-  }
-
-  icons() {
-
-    // .next-collapse:after {
-    // //   /* symbol for "opening" panels */
-    // //   font-family: 'Glyphicons Halflings';
-    // //   /* essential for enabling glyphicon */
-    // //   content: "\e114";
-    // //   /* adjust as needed, taken from bootstrap.css */
-    // //   float: right;
-    // //   /* adjust as needed */
-    // //   color: white;
-    // //   /* adjust as needed */
-    // // }
-
-    // // .next-collapse .collapsed:after{
-    // // /* symbol for "collapsed" panels */
-    // // content: "\e080";
-    // // /* adjust as needed, taken from bootstrap.css */
-    // // }
-
   }
 
 }

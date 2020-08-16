@@ -6,9 +6,9 @@ import { WebService } from '../../../../services/web.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Location } from '@angular/common';
 import * as moment from 'moment';
-// import * as $ from 'jquery';
+import * as $ from 'jquery';
 declare var bootbox;
-declare var $;
+
 
 
 // we use this page for lm approval, admin provision and pm cancel request funtionalities
@@ -16,13 +16,26 @@ declare var $;
 @Component({
   selector: 'app-lm-req-processing',
   templateUrl: './lm-req-processing.component.html',
-  styleUrls: ['./lm-req-processing.component.css']
+  styleUrls: ['./lm-req-processing.component.scss']
 })
 export class LmReqProcessingComponent implements OnInit {
   sub: any;
   request_id: any;
   Object = Object;
   edit_response: any;
+  isModalOpen;
+  modalInputData;
+  typeOfOperation;
+  hardwareRows = ['mac_address', 'RAM', 'location', 'model', 'status']
+  hoverDisplayNames = {
+    'hardware': {
+      'mac_address': 'Serial No',
+      'RAM': 'Ram Size',
+      'location': 'Location',
+      'model': 'Brand',
+      'status': 'Status'
+    }
+  }
 
   pending = [
     {
@@ -108,7 +121,7 @@ export class LmReqProcessingComponent implements OnInit {
   ngOnInit() {
     this.edit_response = null;
     this.login_data = JSON.parse(this.auth.data);
-    // console.log(this.auth.data)
+    this.webService.currentTab = 'ReservationList';
     setTimeout(() => {
       this.load_sw_update_modal()
     }, 1000);
@@ -121,11 +134,18 @@ export class LmReqProcessingComponent implements OnInit {
         this.request_id && this.getReq_data_lm(this.request_id);
       });
   }
+  getHoverDisplayNames(keyName, tab) {
+    if (this.hoverDisplayNames[tab][keyName]) {
+      return this.hoverDisplayNames[tab][keyName];
+    } else {
+      return keyName;
+    }
+  }
 
   async getReq_data_lm(request_id) {
     try {
       localStorage.setItem('multiple_http_', 'true');
-      let data1 = { 'project_id': JSON.parse(this.auth.data)['project_id'], 'action': 'read', 'request_id': request_id }; // {'project_id': ['NextGen', 'IoT'], 'action': 'read', 'request_id': request_id}
+      let data1 = { 'project_id': this.login_data['project_id'], 'action': 'read', 'request_id': request_id }; // {'project_id': ['NextGen', 'IoT'], 'action': 'read', 'request_id': request_id}
       let data2 = { "action": "read", "request_id": request_id }; // {"action":"read","request_id":"req_0102"}
       this.loader.show();
       let sec_1 = await this.api.getReq_data1_lm(data1).toPromise();
@@ -140,7 +160,6 @@ export class LmReqProcessingComponent implements OnInit {
         project_budget = await this.api.projectInfo({ 'action': 'read', login: JSON.parse(localStorage.getItem('data')) }).toPromise();
       this.loader.hide();
       localStorage.setItem('multiple_http_', '');
-      console.log({ sec_1, sec_2, server_details, req_price, project_budget, server_details_user });
 
       // to add user added details to a server
       let sec_2_n = [];
@@ -162,7 +181,6 @@ export class LmReqProcessingComponent implements OnInit {
       sec_2_n.map((item) => {
         server_details && server_details['server_details'].map((item2) => {
           let item3 = { ...item2 };
-          console.log({ item3 })
           if (this.pm_can_edit)
             item.extra_tools = item3.softwares;
           if (item.service_id == item2.server_id) {
@@ -173,7 +191,7 @@ export class LmReqProcessingComponent implements OnInit {
               //   item.extra_tools = { ...JSON.parse(item3.softwares) };
               item.server_details.softwares = Object.values(JSON.parse(item.server_details.softwares)['tools']).join(", ");
             }
-            if (item.extra_tools && JSON.parse(item.extra_tools)) {
+            if (item.extra_tools && item.extra_tools != "NA" && JSON.parse(item.extra_tools)) {
               item.extra_tools = JSON.parse(item.extra_tools);
               item.extra_tools_user = { ...item.extra_tools };
             }
@@ -187,17 +205,17 @@ export class LmReqProcessingComponent implements OnInit {
       this.order_details['expired'] = moment().isAfter(moment(this.order_details.end_date, "MM/DD/YYYY"), 'day')
       this.order_details.servers_list = sec_2_n_;
 
+      console.log("hi  server_details", this.order_details.servers_list, this.order_details)
+
       if (this.login_data.role.toLowerCase() != "pm")
         this.order_details.budget = project_budget['request'][0];
       // this.order_details.price = 9999999;
-      console.log(this.order_details)
       if (this.order_details.instance_type.toLowerCase() != 'switch')
         this.loadOSnApps_4pm(this.order_details);
       //  }, 100);
 
 
     } catch (err) {
-      console.log({ err });
       this.loader.hide();
       localStorage.setItem('multiple_http_', '');
     }
@@ -208,33 +226,24 @@ export class LmReqProcessingComponent implements OnInit {
   }
 
   reject() {
-    bootbox.prompt({
-      title: "Reason for Rejection",
-      inputType: 'textarea',
-      buttons: {
-        confirm: {
-          label: 'Reject',
-          className: 'btn-success yes-btn'
-        },
-        cancel: {
-          label: 'Cancel',
-          className: 'btn-danger no-btn'
+    /*   bootbox.prompt({
+        title: "Reason for Rejection",
+        inputType: 'textarea',
+        callback: (result) => {
+          if (result) {
+            this.ProvisionReject(result);
+          }
         }
-      },
-      callback: (result) => {
-        console.log(result);
-        if (result) // return "ok";
-          this.ProvisionReject(result)
-        // else alert("")
-      }
-    });
+      }); */
+    this.isModalOpen = true;
+    this.modalInputData = this.request_id;
+    this.typeOfOperation = 'Reject';
   }
 
   ApproveRequest() {
     var status;
     var day = new Date();
     var today = ("0" + (day.getMonth() + 1)).slice(-2) + "/" + ("0" + day.getDate()).slice(-2) + "/" + day.getFullYear();
-    //console.log("today " + today);
 
     // var startdate: any = JSON.parse(this.auth.orderData);
     // console.log("start date " + startdate[0].start_date);
@@ -244,13 +253,12 @@ export class LmReqProcessingComponent implements OnInit {
     status = isSwitch && isSwitch.length ? "PROVISIONED" : "APPROVED";
 
     var data = JSON.stringify({ "login": this.auth.data, "action": "update", "request_id": this.request_id, "status": status })
-    // console.log(data, this.order_details);
+
     // return '';
     this.webService.RequestData(data).subscribe(res => {
       var response: any = res;
-      //console.log(response);
       if (response.job == true) {
-        this.bootAlert("Submitted successfully")
+        // this.bootAlert("Submitted successfully")
         this.webService.message = "Submitted successfully";
         this._location.back();
         // this.submitResult()
@@ -272,42 +280,28 @@ export class LmReqProcessingComponent implements OnInit {
 
   ProvisionReject(reason) {
 
+
     var data = JSON.stringify({
       "login": this.auth.data, "action": "update",
       "request_id": this.request_id, "status": "REJECTED", "reason": reason
     })
-    //console.log(data)
+
     this.webService.RequestData(data).subscribe(res => {
       var response: any = res;
-      // console.log(res);
       if (response.job = true) {
         //this.dialogRef.close();
-        this.bootAlert("Rejected Successfully")
+        // this.bootAlert("Rejected Successfully")
         this.webService.message = "Rejected Successfully";
         this._location.back();
-        // this.submitResult()
-        //setTimeout(() => {
-        // console.log("jsajsdj")
-
-        //window.location.href="/AdminDashboard"
-        //this.router.navigate(['/AdminDashboard']);
-        //    },3000)
       }
       else {
         this.bootAlert("Something went wrong! Please try again.")
         this.webService.message = "Submitted Failed";
-        // this.dialogRef.close();
-        // this.submitResult()
-        // setTimeout(() => {
-        //   this.router.navigate(['/AdminDashboard']);
-        //  window.location.href="/AdminDashboard"
-        //  },3000)
       }
-    })
+    });
   }
 
   provision() {
-    //console.log(this.order_details);
     let status = "ALLOCATED";
     if (moment(this.order_details.start_date, "MM/DD/YYYY").isSame(moment(), 'day')) {
       status = 'PROVISIONED';
@@ -334,12 +328,11 @@ export class LmReqProcessingComponent implements OnInit {
 
 
     var data = JSON.stringify({ "login": this.auth.data, "action": "update", "request_id": this.request_id, "status": status })
-    //console.log(status, data)
     this.webService.RequestData(data).subscribe(res => {
       var response: any = res;
-      // console.log(response);
       if (response.job == true) {
-        this.bootAlert("Provisioned successfully", '/AdminDashboard/orders');
+        //this.bootAlert("Provisioned successfully", '/home/AdminDashboard/orders');
+        this.router.navigate(['/home/AdminDashboard/orders']);
         this.webService.message = "Provisioned successfully"
         // this.submitResult()
         setTimeout(() => {
@@ -367,8 +360,10 @@ export class LmReqProcessingComponent implements OnInit {
   // pm functions 
 
   pmCancelReq() {
-    // let data = {"login":"{\"user_name\":\"Sam\",\"user_id\":\"Sam\",\"job\":true,\"project_id\":[\"NextGen\"],\"role\":\"PM\"}","status":"DELETED","action":"cancel","request_id":"req_0119"}
-    bootbox.confirm({
+    this.isModalOpen = true;
+    this.modalInputData = this.request_id;
+    this.typeOfOperation = 'Cancel';
+    /* bootbox.confirm({
       message: "Are you sure, You want to cancel this request?",
       buttons: {
         confirm: {
@@ -381,7 +376,6 @@ export class LmReqProcessingComponent implements OnInit {
         }
       },
       callback: (result) => {
-        // console.log('This was logged in the callback: ' + result);
         if (result) {
           let data = JSON.stringify({
             login: this.auth.data,
@@ -391,19 +385,17 @@ export class LmReqProcessingComponent implements OnInit {
           });
           this.api.cancelReq(data).subscribe(
             res => {
-              // console.log({ res });
               if (res['job'])
                 this.bootAlert("Request Cancelled.", "back");
             },
             err => {
-              //console.log({ err });
               this.bootAlert("Something went wrong. Please try again")
             }
           );
         }
 
       }
-    });
+    }); */
   }
 
   pmEdit(value) {
@@ -417,7 +409,6 @@ export class LmReqProcessingComponent implements OnInit {
   pmEditSubmit() {
     let new_change = false
     let req = {};
-    //console.log(this.order_details);
     this.order_details.servers_list.map((server) => {
       let install = {};
       server.custom_data && server.custom_data.apps && server.custom_data.apps.map((app) => {
@@ -432,10 +423,8 @@ export class LmReqProcessingComponent implements OnInit {
       };
     })
 
-    //console.log({ req });
     Object.values(req).map((item) => {
       Object.values(item).map((it) => {
-        // console.log(it)
         if (Object.keys(it).length) {
           new_change = true;
         }
@@ -447,12 +436,11 @@ export class LmReqProcessingComponent implements OnInit {
       return false;
     }
 
-    console.log({ req });
-    // return false;
+
 
     this.api.configure(req).subscribe(
       res => {
-        // console.log({ res })
+
         // this.showResultPm(res);
         if (res) {
           let new_res = {};
@@ -465,19 +453,16 @@ export class LmReqProcessingComponent implements OnInit {
           })
 
           this.edit_response = new_res;
-          // console.log(new_res);
           setTimeout(() => {
             this.load_sw_update_modal();
             //  this.ngOnInit();
           }, 100);
           this.api.successToast(`Req: ${this.request_id} services has been updated, Check for request changes.`)
         } else {
-          console.log("no response ");
           this.api.errorToast(`Something went wrong in updating req:  ${this.request_id}. Please try again.`)
         }
       },
       err => {
-        // console.log({ err })
         // let res = {
         //   serv_4022: {
         //     install: {
@@ -526,21 +511,23 @@ export class LmReqProcessingComponent implements OnInit {
         // this.os_list = res['catalogue'].filter((item) => item.service_type == 'bare_metal_os');
         const apps_list = res['catalogue'].filter((item) => item.service_type == 'bare_metal_software');
         orderData.servers_list.map((item) => {
-          //console.log({ apps_list })
           item['custom_data'] = {};
           item['custom_data_temp'] = {};
           item['edit_modal_enable'] = false;
           // item['os_to_select'] = [...this.os_list].map((item) => { return { ...item } });
           item['app_to_select'] = apps_list.map((app) => {
             app = { ...app };
-
             // Object.values(item.server_details_user.software.tools).map((installed_sw) => {
-            Object.values(item.extra_tools.tools).map((installed_sw) => {
-              // console.log(app.versions, installed_sw)
-              if (app.versions == installed_sw) {
-                app['installed'] = true
+            if (item.extra_tools != 'NA' && item.extra_tools) {
+              if (item.extra_tools.tools) {
+                Object.values(item.extra_tools.tools).map((installed_sw) => {
+                  if (app.versions == installed_sw) {
+                    app['installed'] = true
+                  }
+                });
               }
-            })
+            }
+
 
             return { ...app }
           });
@@ -600,13 +587,10 @@ export class LmReqProcessingComponent implements OnInit {
       server['custom_data_temp']['apps_temp'] = this.modal_data.list.filter((item) => item.checked).map((item) => item.service_id)// .map((item) => item.servie_id);
     }
 
-    //console.log(this.selected_list)
-
   }
 
 
   cancelOnUninstallModal(server) {
-    console.log(server)
     let uninstall_temp = [...server['custom_data_temp']['uninstall_list_temp'] || []];
     let install_temp = [...server['custom_data_temp']['apps_temp'] || []];
 
@@ -626,16 +610,70 @@ export class LmReqProcessingComponent implements OnInit {
   }
 
   submitOnUninstallModal(server) {
-    console.log(server);
     server['custom_data_temp'] = {};
     server['custom_data']['apps'] = server.app_to_select.filter((item) => !item.installed && item.checked)
     server['custom_data']['uninstall_list'] = server.app_to_select.filter((item) => item.installed && item.user_uninstall)
   }
 
+  closeModalDialog(resObj) {
+    this.isModalOpen = false;
+    this.modalInputData = '';
+    let performOperation = resObj['proceed'];
 
+    if (performOperation && this.typeOfOperation == 'Release') {
+      this.callReleaseAPI();
+    } else if (performOperation && this.typeOfOperation == 'Reject') {
+      let reason = resObj['formObj'];
+      this.ProvisionReject(reason['reason']);
+    } else if (performOperation && this.typeOfOperation == 'Cancel') {
+      this.cancelRequest();
+    }
+  }
+
+  cancelRequest() {
+    let data = JSON.stringify({
+      login: this.auth.data,
+      "status": "DELETED",
+      "action": "cancel",
+      "request_id": this.request_id
+    });
+    this.api.cancelReq(data).subscribe(
+      res => {
+        if (res['job'])
+          this._location.back();
+      },
+      err => {
+
+      }
+    );
+  }
+
+  callReleaseAPI() {
+
+    let req = {
+      "login": this.auth.data,
+      'request_id': this.request_id,
+      'status': 'RELEASED',
+      'instance_type': this.order_details['instance_type'],
+    }
+    this.api.releaseReq(req).subscribe(
+      res => {
+        if (res['job']) {
+          this.api.successToast("Released successfully");
+          this._location.back();
+        }
+      },
+      err => {
+        this.api.errorToast(this.api.commonError);
+      }
+    );
+  }
   release() {
     // release by pm 
-    bootbox.confirm({
+    this.isModalOpen = true;
+    this.modalInputData = this.request_id;
+    this.typeOfOperation = 'Release';
+    /* bootbox.confirm({
       message: "Are you sure, You want to release this request?",
       buttons: {
         confirm: {
@@ -648,10 +686,10 @@ export class LmReqProcessingComponent implements OnInit {
         }
       },
       callback: (result) => {
-        // console.log('This was logged in the callback: ' + result);
+        console.log('This was logged in the callback: ' + result);
         if (result) {
           let req = {
-            "login": this.auth.data, // {"user_name":"Sam","user_id":"Sam","job":true,"project_id":["NextGen"],"role":"PM"},
+            "login": this.auth.data,
             'request_id': this.request_id,
             'status': 'RELEASED',
             'instance_type': 'Physical'
@@ -670,7 +708,7 @@ export class LmReqProcessingComponent implements OnInit {
         }
 
       }
-    });
+    }); */
 
   }
 

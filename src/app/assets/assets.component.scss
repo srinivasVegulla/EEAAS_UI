@@ -1,0 +1,160 @@
+.assetsComponent{
+    padding: 15px;
+    height: 100%;
+}
+.assetHeading{
+    height: 50px;
+    line-height: 50px;
+}
+.assetTableBodyHeading {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}
+.assetTableBody {
+    background-color: #ffffff;
+    height: calc(100vh - 165px);
+    overflow: auto;
+}
+.assetDetailBody {
+    height: calc(100vh - 165px);
+    overflow: auto;
+}
+.editBtn {
+    background-color: #072f61;
+    margin: 4px 10px;
+    color: #ffffff;
+    padding: 5px 15px;
+    line-height: 32px;
+    height: 32px;
+    border-radius: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.crtBtn {
+    background-color: #072f61;
+    margin: 0 10px;
+    color: #ffffff;
+    padding: 5px 15px;
+    line-height: 25px;
+    border-radius: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.cancelBtn {
+    background-color: black;
+}
+.disabledBtn {
+    background-color: #555d6a;
+    cursor: not-allowed;
+}
+
+.inputFilter {
+    width: 80%;
+}
+.errorFont {
+    color: red;
+}
+
+.assetFilterClose {
+    background-color: transparent;
+    border : 0px;
+    margin : 0 5px;
+}
+
+.hover-row:hover{
+    background-color: #d6e8f1!important;
+}
+.displayBlock {
+    display: block;
+}
+.headingText {
+    font-weight: 600;
+    font-size: 16px;
+    padding: 0 5px;
+}
+.assetContainer {
+    margin: 0 0 15px 0;
+}
+
+
+.crtHeading {
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+}
+
+.assetDetailHeadingContainer {
+    height: 40px;
+    line-height: 40px;
+    background-color: #555d6a;
+    color: #ffffff;
+}
+.assetDetailHeading {
+    font-size: 16px;
+    padding: 0 10px;
+}
+.adjustEditIconAlignment {
+    padding: 8px 0;
+}
+
+.detailBodyContainer {
+    height: auto;
+    word-break: break-word;
+    width: 100%;
+    background-color: #ffffff;
+}
+.usageBody {
+    width: 100%;
+    padding: 15px 0;
+    background-color: #ffffff;
+    height: 100%;
+    min-height: 100px;
+}
+.usageHeading {
+    height: 40px;
+    line-height: 40px;
+}
+.iconHeight {
+    height: 40px;
+}
+.backArrowAlignment {
+    position: relative;
+    top: 7px;
+}
+.xyz{
+    padding: 5px 0;
+}
+
+.drpDwnBtn {
+    background-color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    text-align: left;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.openDropdown {
+    display: block !important;
+}
+.dropDownItem {
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.dropdown-menu {
+    width: 100%;
+}
+.dropdown-toggle::after {
+    float: right;
+    position: relative;
+    top: 7px;
+}
+.inputHeight {
+    font-size: 16px;
+}

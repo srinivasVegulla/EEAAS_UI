@@ -450,7 +450,7 @@ export class myPopup {
 @Component({
   selector: 'app-admin-request-list',
   templateUrl: './admin-request-list.component.html',
-  styleUrls: ['./admin-request-list.component.css']
+  styleUrls: ['./admin-request-list.component.scss']
 })
 export class AdminRequestListComponent implements OnInit {
 
@@ -469,8 +469,8 @@ export class AdminRequestListComponent implements OnInit {
   tab;
   public tableData: any = [];
   public tableData1: any = [];
-  @ViewChild(MatPaginator, {static: false}) public paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) public paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   JSON = JSON;
 
   ngOnInit() {
@@ -479,8 +479,8 @@ export class AdminRequestListComponent implements OnInit {
 
 
     this.requestListData();
-    this.paginator._intl.itemsPerPageLabel = 'Show';
-    this.webService.Dashboard = false;
+    //this.paginator._intl.itemsPerPageLabel = 'Show';
+    /* this.webService.Dashboard = false;
     this.webService.orders = true;
     this.webService.assurance = false;
     this.webService.Dashboard = false;
@@ -497,7 +497,8 @@ export class AdminRequestListComponent implements OnInit {
     this.webService.catalogue = false;
     this.webService.calendar = false;
     this.webService.holidays = false;
-
+    this.webService.Assets = false; */
+    this.webService.currentTab = 'orders';
 
   }
   applyFilter(filterValue: string) {
@@ -571,7 +572,7 @@ export class AdminRequestListComponent implements OnInit {
           item.expired = moment(moment().format('MM/DD/YYYY'), "MM/DD/YYYY").isAfter(moment(item.end_date, "MM/DD/YYYY").format("MM/DD/YYYY"));
       });
       // this.displayedColumns=["sNo","request_id","project_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["sNo", "request_id", "service_type", "project_name", "start_date", "end_date", , "price", "status"];
+      this.displayedColumns = ["sNo", "request_id", "service_type", "project_name", "start_date", "end_date", "price", "status"];
 
       this.lmtab("APPROVED", 1);
 
@@ -706,12 +707,11 @@ export class AdminRequestListComponent implements OnInit {
   }
 
   getDetails_more(row) {
-    console.log(row);
     if (JSON.parse(this.auth.data).role == 'LM')
-      this.router.navigate(['/lmdashboard/lm-req-processing'], { queryParams: { request_id: row.request_id } });
+      this.router.navigate(['/home/lmdashboard/lm-req-processing'], { queryParams: { request_id: row.request_id } });
     if (JSON.parse(this.auth.data).role.toLowerCase() == 'admin')
       // this.viewRequest(row.sNo)
-      this.router.navigate(['/AdminDashboard/lm-req-processing'], { queryParams: { request_id: row.request_id } });
+      this.router.navigate(['/home/AdminDashboard/lm-req-processing'], { queryParams: { request_id: row.request_id } });
   }
 
 

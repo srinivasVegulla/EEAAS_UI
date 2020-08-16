@@ -1,0 +1,37 @@
+<div class="sideMenu">
+    <ul>
+        <li *ngFor="let link of links">
+            <div routerLink="{{link?.linkUrl}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                [ngClass]="{'active': link?.compare == webService?.currentTab, 'dropdown': link?.isDropdownLISTAvailable}"
+                *ngIf="!link?.isDropdownLISTAvailable">
+                <a>
+                    <span class="icon"><img src="{{link?.imgSrc}}" width="28px" id="logo" /></span>
+                    <span class="nav-text"><br />
+                        {{link?.displayName}}
+                    </span>
+                    <!-- <span class="nav-text"><br />
+                        1 - {{link?.compare}}
+                    </span>
+                    <span class="nav-text"><br />
+                        2 - {{webService?.currentTab}}
+                    </span> -->
+                </a>
+            </div>
+            <div [ngClass]="{'active': link?.compare == webService.currentTab, 'dropdown drpDwn': link?.isDropdownLISTAvailable}"
+                *ngIf="link?.isDropdownLISTAvailable">
+                <a>
+                    <span class="icon"><img src="{{link?.imgSrc}}" width="28px" id="logo" /></span>
+                    <span class="nav-text"><br />
+                        {{link?.displayName}}
+                    </span>
+                    <i class="right" *ngIf="link?.isDropdownLISTAvailable"></i>
+                </a>
+                <ul class="dropdown-menu" *ngIf="link?.isDropdownLISTAvailable">
+                    <li routerLink="{{subLink?.linkUrl}}" *ngFor="let subLink of link?.dropDownList" class="dropCell">
+                        <a routerLink="{{subLink?.linkUrl}}">{{subLink?.displayName}}</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>

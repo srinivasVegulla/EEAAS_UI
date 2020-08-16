@@ -1,0 +1,78 @@
+
+.containerBoxPie {
+    background-color: #d7d9ee;
+    height: 190px;
+    width: 100%;
+}
+.containerBargraph {
+    background-color: #d7d9ee;
+    height: 255px;
+    width: 100%;
+}
+.marginBtm {
+    margin-bottom: 10px;
+}
+.tableContainerBox {
+    background-color: #d7d9ee;
+    border: 1px solid rgb(116, 114, 114);
+    height: 320px;
+    width: 100%; 
+}
+.tableTabsContainer {
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.tabElement {
+    text-align: center;
+    background-color: grey;
+    border: 1px solid rgb(116, 114, 114);
+}
+.currentTab {
+    border: none;
+    background-color: #d7d9ee;
+}
+.tableBody {
+    height: 250px;
+}
+.headerRow{
+    padding: 7px 0;
+    border-bottom: 1px solid rgb(116, 114, 114);
+    font-weight: bold;
+    font-size: 16px;
+}
+.bodyRow {
+    padding: 7px 0;
+    border-bottom: 1px solid rgb(116, 114, 114);
+}
+.tableFooter {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.onlineOfflinePadding {
+    padding: 15px 0;
+    text-align: center;
+}
+.onlineOfflineContainer {
+    margin: 10px auto;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+}
+.online {
+    background-color: #007bff;
+}
+.offline {
+    background-color: grey;
+}
+/* #d7d9ee */

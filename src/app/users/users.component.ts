@@ -75,7 +75,7 @@ import { successPopup } from '../admin-request-list/admin-request-list.component
 
  
     `,
-    styles:[`
+  styles: [`
   mat-row:nth-child(even){
     background-color:white;
     }
@@ -115,96 +115,96 @@ mat-row:nth-child(odd){
 
 
 export class myAddPopup {
- 
-  public role:any=[];
-   userName:any="";
-   userId:any="";
-   searchRole:any="";
-   password1:any="";
-  tableData:any=[];
+
+  public role: any = [];
+  userName: any = "";
+  userId: any = "";
+  searchRole: any = "";
+  password1: any = "";
+  tableData: any = [];
   displayedColumns: string[];
   dataSource;
-  constructor(public auth:AuthService, private dialogRef: MatDialogRef<successPopup>, private webService :WebService,public mydialogRef: MatDialogRef<myAddPopup>, @Inject(MAT_DIALOG_DATA) public data: any,public dialog: MatDialog,private router:Router){
-// this.orderData=data;
-// console.log(this.orderData);
+  constructor(public auth: AuthService, private dialogRef: MatDialogRef<successPopup>, private webService: WebService, public mydialogRef: MatDialogRef<myAddPopup>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private router: Router) {
+    // this.orderData=data;
+    // console.log(this.orderData);
   }
-  
-         addUser(formData){
-  console.log(formData)
-  let userData=formData.form.value;
-    var data={
-              "action":"create",
-              "role":userData.role,
-              "user_id":userData.id,
-              "user_name":userData.name,
-              "password":userData.password
+
+  addUser(formData) {
+    console.log(formData)
+    let userData = formData.form.value;
+    var data = {
+      "action": "create",
+      "role": userData.role,
+      "user_id": userData.id,
+      "user_name": userData.name,
+      "password": userData.password
     }
     // var userObj=new UsersComponent(this.dialog,this.auth,this.webService);
- 
+
     this.webService.setUsersInfo(data).subscribe(res => {
-      console.log("data",res);
+      console.log("data", res);
       this.dialog.closeAll()
-     // this.router.navigate([`/AdminDashboard/lab1`])
+      // this.router.navigate([`/AdminDashboard/lab1`])
       //this.router.navigate([`/DesignerDashboard`])
       let dialogRef = this.dialog.open(successPopup, {
         height: '100px',
         width: '400px'
-        })
-        setTimeout(() => {
+      })
+      setTimeout(() => {
 
-          dialogRef.close()
-          
-         },3000)
+        dialogRef.close()
+
+      }, 3000)
 
     })
-     
-    
-   // userObj.usersData();
-          
-         }
 
- cancel(){
-  this.dialog.closeAll()
-      //  console.log("rejected")
-      //  this.mydialogRef.close()
 
-      // let dialogRef = this.dialog.open(submitPopup, {
-      //   height: '250px',
-      //   width: '400px',
-      //  // data:this.auth.orderData
-      //   })
+    // userObj.usersData();
 
-        // setTimeout(() => {
+  }
 
-        //   dialogRef.close()
-        // },1000)
-    }
-    ngOnInit() {
+  cancel() {
+    this.dialog.closeAll()
+    //  console.log("rejected")
+    //  this.mydialogRef.close()
 
-   //   this.requestServiceData();
-      // $("#suc").hide();
-      // $("#fai").hide();
+    // let dialogRef = this.dialog.open(submitPopup, {
+    //   height: '250px',
+    //   width: '400px',
+    //  // data:this.auth.orderData
+    //   })
 
-    }
+    // setTimeout(() => {
+
+    //   dialogRef.close()
+    // },1000)
+  }
+  ngOnInit() {
+
+    //   this.requestServiceData();
+    // $("#suc").hide();
+    // $("#fai").hide();
+
+  }
 }
 
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.scss']
 })
 
 export class UsersComponent implements OnInit {
 
 
   listOfUsers: any;
-  constructor( public dialog: MatDialog, private auth: AuthService, private webService: WebService) { }
+  constructor(public dialog: MatDialog, private auth: AuthService, private webService: WebService) { }
   public tableData: any = [];
   displayedColumns: string[]
   dataSource;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -214,26 +214,26 @@ export class UsersComponent implements OnInit {
     }
   }
 
-   openDialog() {
-     let dialogRef = this.dialog.open(myAddPopup, {
-       width: '800px',
-       height: '200px',
-   });
+  openDialog() {
+    let dialogRef = this.dialog.open(myAddPopup, {
+      width: '800px',
+      height: '200px',
+    });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       //  console.log(result);
       // // this.dialogResult = result;
       // if(result){
-        this.usersData();
-     // }
-     });
-   }
-   dsData;
-   deleteUser(rowData){
-   
-      var deleteData={"user_id":[rowData.userId], "action": "delete"}
-  console.log(rowData)
-      this.webService.setUsersInfo(deleteData).subscribe(res => {
+      this.usersData();
+      // }
+    });
+  }
+  dsData;
+  deleteUser(rowData) {
+
+    var deleteData = { "user_id": [rowData.userId], "action": "delete" }
+    console.log(rowData)
+    this.webService.setUsersInfo(deleteData).subscribe(res => {
       console.log(res)
       //////////////////////////
       this.dsData = this.dataSource.data;
@@ -242,13 +242,13 @@ export class UsersComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       //////////////////////////////
       this.usersData();
-      });
-   
-   }
+    });
+
+  }
   // getFilteredData(){
   //   console.log(this.webService.todayDateReservation)
   //   console.log(this.webService.lastDateReservation)
-    
+
   //   let stDate = new Date(this.webService.todayDateReservation);
   //   let enDate = new Date(this.webService.lastDateReservation);
   //   var data = {
@@ -262,25 +262,25 @@ export class UsersComponent implements OnInit {
 
 
   usersData() {
-    
+
     var data = {
-                "action": "custom"
-                }
+      "action": "custom"
+    }
     //JSON.parse(this.auth.data);
-  //  data.action = "read";
+    //  data.action = "read";
 
     this.webService.getUsersInfo(data).subscribe(res => {
-      this.tableData=[];
+      this.tableData = [];
       var response: any = res;
       this.listOfUsers = response.data;
-      console.log(this.listOfUsers);
-    //  this.listOfUsers.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
-      this.displayedColumns = ["userId", "userName", "role", "actions"];      
+      console.log("hi this.listOfUsers", this.listOfUsers);
+      //  this.listOfUsers.sort((a, b) => a.serial_no.localeCompare(b.serial_no));
+      this.displayedColumns = ["userId", "userName", "role", "actions"];
       // this.displayedColumns = ["name", "status", "model"];
       var len = this.listOfUsers.length;
       var j = 0;
       // for (var i = len - 1; i >= 0; i--) {
-        for(var i=0;i<len;i++){
+      for (var i = 0; i < len; i++) {
         // console.log(JSON.parse(this.listOfUsers[i].configurations.replace(/'/g, '"'))); 
 
         // var inventoryData=JSON.parse(this.listOfUsers[i].configurations.replace(/'/g, '"')); 
@@ -288,10 +288,10 @@ export class UsersComponent implements OnInit {
 
         this.tableData.push(
           {
-            "userId":  this.listOfUsers[i][0],
+            "userId": this.listOfUsers[i][0],
             "userName": this.listOfUsers[i][2],
             "role": this.listOfUsers[i][3]
-            
+
           })
         j = j + 1;
       }
@@ -303,22 +303,11 @@ export class UsersComponent implements OnInit {
       this.dataSource.sort = this.sort;
     })
   }
-  
+
   ngOnInit() {
 
     this.usersData();
-    this.paginator._intl.itemsPerPageLabel = 'Show';
-    this.webService.Dashboard=false;
-    this.webService.devices=false;
-   this.webService.orders=false;
-this.webService.labs=false;
-this.webService.reports=false;
-    this.webService.Inventory  =true;
-   this.webService.catalogue = false;
-   this.webService.calendar=false;
-this.webService.holidays=false;
-
-    // this.webService.myService = true;
+    this.webService.currentTab = 'Inventory';
   }
 
 

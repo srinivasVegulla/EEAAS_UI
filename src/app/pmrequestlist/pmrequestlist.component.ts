@@ -35,11 +35,11 @@ import { successPopup } from '../admin-request-list/admin-request-list.component
 `]
 })
 export class cancelPopup {
-  constructor(private dialogRef: MatDialogRef<orderPopup>,private webService: WebService) {
+  constructor(private dialogRef: MatDialogRef<orderPopup>, private webService: WebService) {
 
   }
   ngOnInit() {
-     
+
 
   }
 }
@@ -54,12 +54,9 @@ export class cancelPopup {
 </button></div>
   <div class="panel-body" style="padding:10px">
   <p>Are you sure you want to delete this Request?</p>
-  <div class="row" style="    text-align: right;
-  
-  margin-top: 33px;
-  margin-right: 10px;">
-  <button mat-raised-button class="cancel" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61" (click)="cancle()" [mat-dialog-close]="false" >No</button>
-  <button mat-raised-button class="pro"  style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61" (click)="submit()" [mat-dialog-close]="true">Yes</button>
+  <div class="customRow" >
+  <button mat-raised-button class="cancel btnMargin" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"  [mat-dialog-close]="false" >No</button>
+  <button mat-raised-button class="pro btnMargin"  style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61" [mat-dialog-close]="true">Yes</button>
 
 </div>
   </div>
@@ -329,16 +326,16 @@ export class orderPopup {
 @Component({
   selector: 'app-pmrequestlist',
   templateUrl: './pmrequestlist.component.html',
-  styleUrls: ['./pmrequestlist.component.css']
+  styleUrls: ['./pmrequestlist.component.scss']
 })
 export class PmrequestlistComponent implements OnInit {
   listOfRequests: any;
-  constructor(public dialogRef: MatDialogRef<orderPopup>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog,public dialogRef1: MatDialogRef<cancelPopup>, private auth: AuthService, private webService: WebService) { }
+  constructor(public dialogRef: MatDialogRef<orderPopup>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, public dialogRef1: MatDialogRef<cancelPopup>, private auth: AuthService, private webService: WebService) { }
   public tableData: any = [];
   displayedColumns: string[]
   dataSource;
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -348,7 +345,7 @@ export class PmrequestlistComponent implements OnInit {
     }
   }
   requestListData() {
-this.tableData.length=0;
+    this.tableData.length = 0;
     var data = JSON.parse(this.auth.data);
     data.action = "read";
 
@@ -357,16 +354,16 @@ this.tableData.length=0;
       this.listOfRequests = response.request;
       this.listOfRequests.sort((a, b) => a.request_id.localeCompare(b.request_id));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["sNo", "request_id", "project_name", "admin_name", "start_date", "end_date", "status", "price","cancel"];
+      this.displayedColumns = ["sNo", "request_id", "project_name", "admin_name", "start_date", "end_date", "status", "price", "cancel"];
       var len = this.listOfRequests.length;
       var j = 0;
       for (var i = len - 1; i >= 0; i--) {
 
 
-console.log(this.listOfRequests[i].start_date)
-var date: any =new Date(this.listOfRequests[i].start_date)
-date=date.setDate( date.getDate() + 1 );
-console.log(new Date(date))
+        console.log(this.listOfRequests[i].start_date)
+        var date: any = new Date(this.listOfRequests[i].start_date)
+        date = date.setDate(date.getDate() + 1);
+        console.log(new Date(date))
         this.tableData.push(
           {
             "sNo": "0" + (j + 1),
@@ -379,7 +376,8 @@ console.log(new Date(date))
             "end_date": this.listOfRequests[i].end_date,
             "status": this.listOfRequests[i].status,
             "price": this.listOfRequests[i].price,
-            "cancel": ( this.listOfRequests[i].status=='REJECTED') || ( this.listOfRequests[i].status=='CANCELLED')|| ( this.listOfRequests[i].status=='DELETED') || (new Date(date) < new Date())          })
+            "cancel": (this.listOfRequests[i].status == 'REJECTED') || (this.listOfRequests[i].status == 'CANCELLED') || (this.listOfRequests[i].status == 'DELETED') || (new Date(date) < new Date())
+          })
         j = j + 1;
       }
       console.log(this.tableData)
@@ -412,82 +410,84 @@ console.log(new Date(date))
 
   }
   extendRequest(rowData) {
-    console.log(rowData); 
-    
+    console.log(rowData);
+
     var date1 = new Date(rowData.end_date);
     var date2 = new Date();
     console.log(date1);
     console.log(date2);
-    if(date2<date1){
+    if (date2 < date1) {
       var timeDiff = Math.abs(date1.getTime() - date2.getTime());
-      var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24)); 
-      if(diffDays >=1 ){
+      var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+      if (diffDays >= 1) {
         let dialogRef = this.dialog.open(ExtendPopupComponent, {
           height: '260px',
           width: '500px',
           data: rowData.request_id
         })
         console.log(diffDays);
-      }else{
+      } else {
         alert("You can only extend before 24 hours of the end time")
       }
-      
-    }else{
+
+    } else {
       alert("not allowed")
     }
-   
-    
-   
+
+
+
   }
-  cancelRequest(rowData){
+  cancelRequest(rowData) {
     console.log("cancel")
-    
-    
+
+
     var reqData = { "request_id": rowData.request_id, "action": "cancel" };
     console.log(reqData)
 
     var reqDataJSON = JSON.stringify(reqData);
     //this.webService.RequestData(reqDataJSON).subscribe(res => {
-      //var response: any = res
-      //console.log(response)
-       let dialogRef = this.dialog.open(cancelPopup, {
-         height: '170px',
-         width: '400px',
-        //  data: response.request
+    //var response: any = res
+    //console.log(response)
+    let dialogRef = this.dialog.open(cancelPopup, {
+      height: '170px',
+      width: '400px',
+      //  data: response.request
     })
-       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed1');
-console.log(result);
-if(result){
-this.webService.RequestData(reqDataJSON).subscribe(res => {
-console.log(res)
-var resp:any=res;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed1');
+      console.log(result);
+      if (result) {
+        this.webService.RequestData(reqDataJSON).subscribe(res => {
+          console.log(res)
+          var resp: any = res;
 
-if(resp.job){
- this.requestListData()
+          if (resp.job) {
+            this.requestListData()
 
-}
-})
-}
-     //   this.requestListData()
-     })
-   // })
+          }
+        })
+      }
+      //   this.requestListData()
+    })
+    // })
 
   }
   ngOnInit() {
 
     this.requestListData();
-    this.paginator._intl.itemsPerPageLabel = 'Show';
+    //this.paginator._intl.itemsPerPageLabel = 'Show';
 
-    this.webService.Dashboard  =false;
+    /* this.webService.Dashboard  =false;
     this.webService.ReservationSystem  =false;
     this.webService.myService  =false;
   
     this.webService.Inventory  =false;
   
     this.webService.devices  =false;
-    this.webService.ReservationList  =true;
-    
-  
+    this.webService.ReservationList  =true; */
+
+    this.webService.currentTab = 'orders';
+
+
   }
 }

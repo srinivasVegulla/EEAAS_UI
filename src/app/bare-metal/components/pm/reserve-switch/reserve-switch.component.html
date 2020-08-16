@@ -1,33 +1,15 @@
-<!-- Latest compiled and minified Bootstrap CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
-<!-- 
-
-<div class="container">
-  <div class="row">
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-    <div class="col">col</div>
-  </div>
-  <div class="row">
-    <div class="col-8">col-8</div>
-    <div class="col-4">col-4</div>
-  </div>
-</div> -->
-
 <div class="overflow-auto">
 
-  <div class="row" style="padding-top: 10px; margin-left: 10px; margin-right: 10px;">
+  <div class="customRow easHeading">
     <div class="col-md-6">
-      <h4 class="black" *ngIf="!req_submitted">CONFIGURE SWITCH(ES)</h4>
-      <h4 *ngIf="req_submitted">Request has been submitted successfully.</h4>
+      <div class="black" *ngIf="!req_submitted">CONFIGURE SWITCH(ES)</div>
+      <div *ngIf="req_submitted">Request has been submitted successfully.</div>
     </div>
     <div class="col-md-6">
       <div style="float: right;">
-        <button class="btn" style="background-color: #313944; color: white;" (click)="back()">CANCEL</button>
-        <button [disabled]="order_details.expired" class="btn btn-primary" (click)="release()">RELEASE</button>
-
-        <!-- <button class="btn btn-primary" (click)=" reserve()">Submit Request</button> -->
+        <button class="easSecondaryBtn easButton" (click)="back()">CANCEL</button>
+        <button [disabled]="order_details.expired" class="easButton"
+          [ngClass]="{'disabledBtn' : order_details.expired }" (click)="release()">RELEASE</button>
       </div>
     </div>
   </div>
@@ -377,3 +359,8 @@
     </div>
   </div>
 </div>
+
+<div class="modal-background" *ngIf="isModalOpen"></div>
+<app-request-modal-popup *ngIf="isModalOpen" [inputData]="modalInputData" [type]="typeOfOperation"
+  (requestModalDialogClose)="closeModalDialog($event)">
+</app-request-modal-popup>

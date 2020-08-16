@@ -1,0 +1,48 @@
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    /* essential for enabling glyphicon */
+    content: "\e114";
+    /* adjust as needed, taken from bootstrap.css */
+    float: right;
+    /* adjust as needed */
+    color: white;
+    /* adjust as needed */
+}
+
+.panel-heading .accordion-toggle.collapsed::after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+    /* adjust as needed, taken from bootstrap.css */
+}
+
+.item-title {
+    color: white !important;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
+.container {
+    overflow-y: auto !important;
+}
+
+.form-width {
+    width: 25%;
+}
+
+.server-detail {
+    border-collapse: unset;
+    background-color: lightgray;
+}
+.display-size{
+    display: inline !important;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+.mat-input-element:disabled {
+    color:black;
+}
+
+button {
+    margin-right: 5px;
+}
