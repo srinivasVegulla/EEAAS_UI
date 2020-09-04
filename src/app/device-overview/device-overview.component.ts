@@ -30,8 +30,8 @@ export class DeviceOverviewComponent implements OnInit {
     this.getRecentActivityPie();
     this.getBarChart();
     this.getStackedBarChart();
-
   }
+
   getDeviceOverViewPie() {
     let chart = am4core.create(
       "chartdivPie",
@@ -41,7 +41,7 @@ export class DeviceOverviewComponent implements OnInit {
     chart.data = [{
       "status": "Available",
       "quantity": 6,
-      "color": 'green'
+      "color": '#32CD32'
     }, {
       "status": "Reserved",
       "quantity": 14,
@@ -79,15 +79,15 @@ export class DeviceOverviewComponent implements OnInit {
     requestPieChart.data = [{
       "status": "Pending",
       "quantity": 50,
-      "color": 'skyblue'
+      "color": '#6794dc'
     }, {
       "status": "Approved",
       "quantity": 20,
-      "color": 'green'
+      "color": '#32CD32'
     }, {
       "status": "Rejected",
       "quantity": 10,
-      "color": 'red'
+      "color": '#d65db1'
     }];
 
     let pieSeries = requestPieChart.series.push(new am4charts.PieSeries3D());
@@ -117,32 +117,28 @@ export class DeviceOverviewComponent implements OnInit {
     let barChart = am4core.create("chartdivBar", am4charts.XYChart);
     barChart.data = [{
       "device": "BootLoader",
-      "utilization": 8,
-      "nonUtilized": 92,
+      "utilization": 15,
+      "nonUtilized": 85,
     }, {
-      "device": "CanOE",
-      "utilization": 13,
-      "nonUtilized": 87,
+      "device": "CANOE_1",
+      "utilization": 24,
+      "nonUtilized": 76,
     }, {
-      "device": "Webcam",
-      "utilization": 19,
-      "nonUtilized": 81,
+      "device": "CANOE_2",
+      "utilization": 32,
+      "nonUtilized": 68,
     }, {
       "device": "Energia",
-      "utilization": 25,
-      "nonUtilized": 75,
+      "utilization": 40,
+      "nonUtilized": 60,
     }, {
       "device": "Arduino",
-      "utilization": 31,
-      "nonUtilized": 69,
+      "utilization": 51,
+      "nonUtilized": 49,
     }, {
       "device": "Canape",
-      "utilization": 36,
-      "nonUtilized": 64,
-    }, {
-      "device": "Moto G7",
-      "utilization": 42,
-      "nonUtilized": 58,
+      "utilization": 58,
+      "nonUtilized": 42,
     }];
 
     // Create axes
@@ -159,8 +155,8 @@ export class DeviceOverviewComponent implements OnInit {
     valueAxis.max = 100;
     valueAxis.title.text = "Utilization %";
 
-    createSeries("utilization", "Utilization", true, "#8B4513");
-    createSeries("nonUtilized", "Non Utilization", true, "grey");
+    createSeries("utilization", "Utilization", true, "#d65db1");
+    createSeries("nonUtilized", "Non Utilization", true);
 
     function createSeries(field, name, stacked, color?) {
       let series = barChart.series.push(new am4charts.ColumnSeries());
@@ -174,7 +170,12 @@ export class DeviceOverviewComponent implements OnInit {
       series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]%";
       series.stacked = stacked;
 
-      series.columns.template.width = am4core.percent(30);
+      series.columns.template.width = am4core.percent(60);
+      let bullet = series.bullets.push(new am4charts.LabelBullet());
+
+      bullet.label.text = "[bold]{valueY}";
+      bullet.label.fontSize = 12;
+      bullet.locationY = 0.5;
     }
 
     // Add legend
@@ -217,8 +218,8 @@ export class DeviceOverviewComponent implements OnInit {
     valueAxis.min = 0;
     valueAxis.title.text = "Time (In Hours)";
 
-    createSeries("requestTime", "Request Time", false, "#8B4513");
-    createSeries("availableTime", "Available Time", false, '#696969');
+    createSeries("requestTime", "Request Time", false, "#d65db1");
+    createSeries("availableTime", "Available Time", false);
 
     function createSeries(field, name, stacked, color?) {
       let series = stackedBarChart.series.push(new am4charts.ColumnSeries());
@@ -232,8 +233,19 @@ export class DeviceOverviewComponent implements OnInit {
       series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]Hrs";
       series.stacked = stacked;
 
-      series.columns.template.width = am4core.percent(30);
+      series.columns.template.width = am4core.percent(60);
+
+      let bullet = series.bullets.push(new am4charts.LabelBullet());
+
+      bullet.label.text = "[bold]{valueY}";
+      bullet.label.fontSize = 12;
+      bullet.label.dy = -10;
+      //  valueLabel.labels.template.radius = am4core.percent(-40);
+      // valueLabel.label.fill = am4core.color("white");
     }
+
+
+
 
     // Add legend
     // chart.legend = new am4charts.Legend();
@@ -245,40 +257,40 @@ export class DeviceOverviewComponent implements OnInit {
   tableDataHigh = [{
     "deviceName": "CanOe",
     "deviceFeature": "Data",
-    "idleHrs": "20"
+    "idleHrs": "95"
   }, {
     "deviceName": "Canape",
     "deviceFeature": "Data",
-    "idleHrs": "24"
+    "idleHrs": "74"
   }, {
     "deviceName": "Energia",
     "deviceFeature": "Data",
-    "idleHrs": "34"
+    "idleHrs": "65"
   }, {
     "deviceName": "Rasberry_Pi",
     "deviceFeature": "Data",
-    "idleHrs": "12"
+    "idleHrs": "55"
   }, {
     "deviceName": "CanOe 4",
     "deviceFeature": "Data",
-    "idleHrs": "67"
+    "idleHrs": "39"
   }, {
     "deviceName": "Canlyzer",
     "deviceFeature": "Data",
-    "idleHrs": "62"
+    "idleHrs": "31"
   }, {
     "deviceName": "WebCam",
     "deviceFeature": "Data",
-    "idleHrs": "36"
+    "idleHrs": "26"
   }, {
     "deviceName": "CanOe 4",
     "deviceFeature": "Data",
-    "idleHrs": "15"
+    "idleHrs": "20"
   }];
   tableDataLow = [{
     "deviceName": "Arduino",
     "deviceFeature": "Data",
-    "idleHrs": "39"
+    "idleHrs": "67"
   }, {
     "deviceName": "Boot Loader",
     "deviceFeature": "Data",
@@ -286,7 +298,7 @@ export class DeviceOverviewComponent implements OnInit {
   }, {
     "deviceName": "CanOe 2",
     "deviceFeature": "Data",
-    "idleHrs": "12"
+    "idleHrs": "22"
   }];
 
   tableData = this.tableDataLow;

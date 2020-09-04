@@ -10,9 +10,9 @@ export class AppComponent {
   bal: boolean = false;
   constructor(private auth: AuthService) {
     //   localStorage.clear();
-   /*  $(function () {
+    /* $(function () {
       $('[data-toggle="popover"]').popover()
-    }) */
+    })  */
   }
 
 }

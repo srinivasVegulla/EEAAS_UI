@@ -201,8 +201,6 @@ export class ApiService {
 
     getReq_data2_lm(data) {
         return this.http.post(`${this.API}/requests`, data); //https://10.138.77.48:12399/requests
-
-
     }
 
     projectInfo(data) {

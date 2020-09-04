@@ -43,7 +43,9 @@ export class MyReservationsComponent implements OnInit {
         let user_data = JSON.parse(localStorage.getItem('data'));
 
 
-        res['request'] = res['request'].filter((item) => item.pm_id.toLowerCase() == user_data.user_id.toLowerCase()).map((item) => {
+        res['request'] = res['request'].filter((item) => {
+          return (item.pm_id.toLowerCase() == user_data.user_id.toLowerCase() && !(item.instance_type == 'aws' || item.instance_type == 'vm'))
+        }).map((item) => {
           item.expired = moment().isAfter(moment(item.end_date, "MM/DD/YYYY"), 'day');
           return item;
         });
@@ -87,7 +89,6 @@ export class MyReservationsComponent implements OnInit {
         server_d = await this.api.getReq_data2_lm({ "action": "read", "request_id": data.request_id }).toPromise();
         // console.log({ server_d })
         if (server_d['request'][0].service_name.toLowerCase().replace(/ /g, "").includes("switch")) {
-          console.log("this is switch");
           this.router.navigate(['/home/dashboard/reserve-switch'], { queryParams: { request_id: data.request_id } });
         } else {
 

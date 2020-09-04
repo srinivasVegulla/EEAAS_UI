@@ -14,7 +14,12 @@ html, body { height: 100vh; overflow: hidden; }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
-
+.widgetTitle {
+  font-size: 16px;
+  padding: 0 5px;
+  height: 40px;
+  line-height: 40px;
+}
 
 menu {
   padding-left: 0px;
@@ -70,7 +75,7 @@ text {
 .right-inner-addon i {
   position: absolute;
   right: 0px;
-  padding: 10px 12px;
+  padding: 2px 10px;
   pointer-events: none;
 }
 

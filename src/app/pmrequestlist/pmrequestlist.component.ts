@@ -18,12 +18,11 @@ import { successPopup } from '../admin-request-list/admin-request-list.component
 </button></div>
   <div class="panel-body" style="padding:10px">
   <p>Are you sure you want to cancel the Request?</p>
-  <div class="row" style="    text-align: right;
-  
+  <div class="customRow" style="text-align: right;
   margin-top: 33px;
   margin-right: 10px;">
-  <button mat-raised-button class="cancel" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61"  [mat-dialog-close]="false" >No</button>
-  <button mat-raised-button class="pro"  style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61" [mat-dialog-close]="true">Yes</button>
+  <button mat-raised-button class="cancel" style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61; margin: 0 5px"  [mat-dialog-close]="false" >No</button>
+  <button mat-raised-button class="pro"  style="border-radius:6px;background:#ffffff;z-index:4;font-weight:bold;color:#072f61; margin: 0 5px" [mat-dialog-close]="true">Yes</button>
 
 </div>
   </div>
@@ -112,7 +111,7 @@ export class submitPopup {
   selector: 'orderPopup',
   template: ` 
   
-  <div class="panel panel-default" style="border-color:#232730;background-color:#232720;height:100%;margin-bottom:0px">
+  <div class="panel panel-default" style="border-color:#232730;background-color:#ffffff;height:100%;margin-bottom:0px">
   <div class="panel-heading"><h4 class="text-left">Order Summary</h4>
   
   <button type="button" mat-dialog-close class="text-right close" style="opacity:1.2;margin-top:-30px;outline:none;color:white">
@@ -138,8 +137,8 @@ export class submitPopup {
   <p>{{orderData[0].project_name}}</p>
   </div>
   <div class="col-md-2">
-  <h5 style="font-weight: bold">Instance Type</h5>
-  <p>{{orderData[0].instance_type}}</p>
+  <h5 style="font-weight: bold">Platform</h5>
+  <p>{{orderData[0].instance_type | uppercase }}</p>
   </div>
   </div>
   <div class="row">
@@ -158,7 +157,7 @@ export class submitPopup {
   </div>
   <div class="col-md-2">
   <h5 style="font-weight: bold"> Status </h5>
-  <p [ngStyle]="{'color': orderData[0].status === 'APPROVED' ? 'lightgreen':( orderData[0].status === 'REJECTED' ? '#e5cb14' : 'black')}">{{orderData[0].status}}</p>
+  <p [ngStyle]="{'color': orderData[0].status === 'APPROVED' ? 'green':( orderData[0].status === 'REJECTED' ? '#e5cb14' : 'black')}">{{orderData[0].status}}</p>
   </div>
   </div>
   <hr>
@@ -180,7 +179,7 @@ export class submitPopup {
      
       <ng-container matColumnDef="service_name">
         <mat-header-cell *matHeaderCellDef> Service Name</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.service_name}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.service_name | uppercase}} </mat-cell>
       </ng-container>
   
      
@@ -192,7 +191,7 @@ export class submitPopup {
     </mat-table></div>
   </div>
   </div>
-  <div style="float:left;margin:10px;">
+  <div style="float:left;margin:10px;" *ngIf="orderData[0].instance_type != 'aws'">
 
   <button mat-raised-button class="cancel" color="primary" (click)="deleteRequest()" [disabled]='orderData[0].status!="REQUESTED" ' style="background-color:#ffffff;color:#072f61">Delete Request</button></div>
   </div>
@@ -352,21 +351,26 @@ export class PmrequestlistComponent implements OnInit {
     this.webService.RequestData(data).subscribe(res => {
       var response: any = res;
       this.listOfRequests = response.request;
+      this.listOfRequests = this.listOfRequests.filter((item) => {
+        return (item.instance_type == 'aws' || item.instance_type == 'vm')
+      })
+      console.log("hi 1111  fffffffffff", this.listOfRequests)
       this.listOfRequests.sort((a, b) => a.request_id.localeCompare(b.request_id));
       //this.displayedColumns=["sNo","request_id","project_name","pm_name","admin_name","location_id","start_date","end_date","status","price"];
-      this.displayedColumns = ["sNo", "request_id", "project_name", "admin_name", "start_date", "end_date", "status", "price", "cancel"];
+      this.displayedColumns = ["instance_type", "request_id", "project_name", "admin_name", "start_date", "end_date", "status", "price", "cancel"];
       var len = this.listOfRequests.length;
       var j = 0;
+      /* console.log("hi 1111  fffffffffff", this.listOfRequests)
+      this.listOfRequests = this.listOfRequests.filter((item) => {
+        return (item.instance_type == 'aws' || item.instance_type == 'vm')
+      })
+      console.log("hi fffffffffff", this.listOfRequests) */
       for (var i = len - 1; i >= 0; i--) {
-
-
-        console.log(this.listOfRequests[i].start_date)
         var date: any = new Date(this.listOfRequests[i].start_date)
         date = date.setDate(date.getDate() + 1);
-        console.log(new Date(date))
         this.tableData.push(
           {
-            "sNo": "0" + (j + 1),
+            "instance_type": this.listOfRequests[i].instance_type,
             "request_id": this.listOfRequests[i].request_id,
             "project_name": this.listOfRequests[i].project_name,
             "pm_name": this.listOfRequests[i].pm_name,
@@ -407,7 +411,6 @@ export class PmrequestlistComponent implements OnInit {
         this.requestListData()
       })
     })
-
   }
   extendRequest(rowData) {
     console.log(rowData);
@@ -486,7 +489,7 @@ export class PmrequestlistComponent implements OnInit {
     this.webService.devices  =false;
     this.webService.ReservationList  =true; */
 
-    this.webService.currentTab = 'orders';
+    this.webService.currentTab = 'ReservationList';
 
 
   }

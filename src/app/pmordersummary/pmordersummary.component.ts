@@ -40,27 +40,20 @@ export class PmordersummaryComponent implements OnInit {
     this.webService.getServiceData(data).subscribe(res => {
       this.catalogueData = res;
 
-      console.log(this.catalogueData)
+      console.log("hi dataa", this.catalogueData)
       console.log(this.projectInfo)
       //var setDob = this.DatePipe.transform(this.projectInfo.endDate, 'MM/dd/yyyy');
 
       // for(var i=0;i<this.catalogueData.catalogue.length;i++){
       this.catalogueData.catalogue.forEach(catalogueData => {
         for (var j = 0; j < this.projectInfo.imageType.length; j++) {
-
-
-          if (this.projectInfo.imageType[j].toLowerCase() == catalogueData.service_name.toLowerCase() && this.projectInfo.platform == catalogueData.image_type) {
-            this.tableInfo.push(catalogueData)
-
-
+          if (this.projectInfo.imageType[j].toLowerCase() == catalogueData.service_name.toLowerCase() && this.projectInfo.platform.toLowerCase() == catalogueData.image_type.toLowerCase()) {
+            this.tableInfo.push(catalogueData);
           }
         }
       })
-      console.log(this.tableInfo);
-      console.log("projectInfo.platform" + this.projectInfo.platform);
       // if (this.projectInfo.platform != 'physical') {
       for (var k = 0; k < this.tableInfo.length; k++) {
-        console.log(this.tableInfo[k])
         if (this.projectInfo.platform == 'vm') {
           this.displayedColumns = ['serviceName', 'serviceType', 'No_ofInstances', 'ram', 'cpu', 'hardDisk', 'pricePerDay', 'duration', 'totalprice'];
           this.webService.services.push(JSON.stringify({
@@ -71,10 +64,17 @@ export class PmordersummaryComponent implements OnInit {
         else {
           this.displayedColumns = ['serviceName', 'serviceType', 'No_ofInstances', 'pricePerDay', 'duration', 'totalprice'];
           //this.services={"service_type":this.tableInfo[k].service_type,"service_id":this.tableInfo[k].service_id}
-          this.webService.services.push(JSON.stringify({
-            "service_type": this.tableInfo[k].service_type, "service_id": this.tableInfo[k].service_id,
-            "ram": "2", "cpu": "1", "hdd": "20"
-          }));
+          if (this.projectInfo.platform == 'aws') {
+            this.webService.services.push(JSON.stringify({
+              "service_type": this.tableInfo[k].service_type, "service_id": this.tableInfo[k].service_id,
+            }));
+          } else {
+            this.webService.services.push(JSON.stringify({
+              "service_type": this.tableInfo[k].service_type, "service_id": this.tableInfo[k].service_id,
+              "ram": "2", "cpu": "1", "hdd": "20"
+            }));
+          }
+
         }
         if (this.tableInfo[k].service_type == "VDE") {
           this.tableData.push({
@@ -106,7 +106,6 @@ export class PmordersummaryComponent implements OnInit {
       // }
       for (let m = 0; m < this.selectedBareMetalJSON.length; m++) {
         this.platform = "physical";
-        console.log(this.selectedBareMetalJSON[m])
 
         this.displayedColumns = ['serviceName', 'serviceType', 'No_ofInstances', 'pricePerDay', 'duration', 'totalprice'];
 
@@ -126,8 +125,6 @@ export class PmordersummaryComponent implements OnInit {
       }
 
       this.dataSource = new MatTableDataSource(this.tableData);
-      console.log(this.tableData);
-      console.log(this.dataSource);
     });
   }
   // bareMetalData(){
@@ -152,16 +149,16 @@ export class PmordersummaryComponent implements OnInit {
   cancelRequest() {
     //  this.webService.imageArray.length=0;
     if (this.platform == "physical") {
-      this.router.navigate(['/dashboard/reservationSystem']);
+      this.router.navigate(['home/dashboard/reservationSystem']);
     } else {
-      this.router.navigate(['/dashboard/Myservices/NewRequest']);
+      this.router.navigate(['home/dashboard/Myservices/NewRequest']);
     }
   }
   submit() {
     var projectData = JSON.parse(this.webService.project_Info);
-    console.log(projectData)
-    console.log(this.webService.imageArray)
-    console.log(this.webService.services)
+    /*  console.log(projectData)
+     console.log(this.webService.imageArray)
+     console.log(this.webService.services) */
     var data = {
       "order_details": {
         "project_name": JSON.parse(this.auth.projectName),
@@ -181,13 +178,13 @@ export class PmordersummaryComponent implements OnInit {
       "action": "create",
       "login": JSON.parse(this.auth.data)
     }
-    console.log(data)
+    console.log("hi sending data", data)
     this.webService.saveRequestData(data).subscribe(resp => {
-      console.log(resp, 'res')
+
       var res: any = resp;
       var response = res;
 
-      console.log(response)
+      console.log("hi rescived", response)
       if (response.job == true) {
         this.webService.message = "Submitted Successfully"
 
@@ -197,7 +194,7 @@ export class PmordersummaryComponent implements OnInit {
         })
         setTimeout(() => {
           //  window.location.reload();
-          this.router.navigate(['/dashboard/Myservices/RequestList']);
+          this.router.navigate(['home/dashboard/Myservices/RequestList']);
           dialogRef.close()
         }, 3000)
         console.log(response);
@@ -211,7 +208,7 @@ export class PmordersummaryComponent implements OnInit {
 
         setTimeout(() => {
           //  window.location.reload();
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['home/dashboard']);
           dialogRef.close()
         }, 3000)
         console.log(response);
@@ -231,7 +228,7 @@ export class PmordersummaryComponent implements OnInit {
     this.webService.todayDateReservation = null;
     this.webService.lastDateReservation = null;
 
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['home/dashboard']);
 
 
   }

@@ -1,5 +1,23 @@
-<div style="overflow: auto !important">
+<!-- <div class="dashboardhead">
+  <h5 class="dashboardBody_Heading">
+    <span *ngIf="auth.role == 'PM'">
+      <span routerLink="/home/dashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/dashboard/Myservices/RequestList">VM Reservations</span>
+    </span>
 
+    <span *ngIf="auth.role == 'Admin'">
+      <span routerLink="/home/AdminDashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/AdminDashboard/catalogue">Catalogue</span>
+
+    </span>
+    <span *ngIf="auth.role == 'LM'">
+      <span routerLink="/home/lmdashboard">Dashboard</span>/
+      <span style="font-weight: bold;" routerLink="/home/lmdashboard/catalogue">Catalogue</span>
+    </span>
+  </h5>
+</div> -->
+<div style="overflow: auto !important">
+  <div class="widgetTitle">HARDWARE RESERVATIONS</div>
   <div class="panel">
     <!-- Default panel contents -->
     <div class="panel-heading">PENDING REQUESTS

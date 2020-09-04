@@ -97,7 +97,6 @@ var routes: Routes = [
           { path: 'Myservices/NewRequest', component: NewRequestComponent },
           { path: 'Myservices/NewRequest/service', component: PmphysicalserviceComponent },
           { path: 'Myservices/RequestList', component: PmrequestlistComponent },
-          { path: 'Myservices/RequestList', component: PmrequestlistComponent },
           { path: 'orderList', component: PmordersummaryComponent },
           { path: 'reservationSystem', component: ReservationSystemComponent },
           { path: 'inventory', component: CatalogueComponent },

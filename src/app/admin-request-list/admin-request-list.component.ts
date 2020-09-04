@@ -566,6 +566,9 @@ export class AdminRequestListComponent implements OnInit {
       // this.lm_req_history = this.listOfRequests.filter((item) => item.status == "APPROVED");
       // this.dataSource_history_lm = new MatTableDataSource(this.lm_req_history);
       console.log(this.listOfRequests);
+      this.listOfRequests = this.listOfRequests.filter((res)=>{
+        return (res.instance_type == 'aws' || res.instance_type == 'vm') ? false : true;
+      })
       this.listOfRequests && this.listOfRequests.map((item) => {
         item.instance_type = item.instance_type && item.instance_type.toLowerCase() == "physical" ? "Server" : item.instance_type;
         if (!['RELEASED', 'CANCELLED'].includes(item.status.toUpperCase()))
@@ -721,12 +724,12 @@ export class AdminRequestListComponent implements OnInit {
     this.pageIndex = 0;
     // console.log(tab, number)
     let status = '';
-    if (this.tab == 2)
-      status = JSON.parse(this.auth.data).role.toLowerCase() == 'admin' ? 'PROVISIONED, IN PROGRESS, RELEASED' : 'APPROVED, REJECTED'
-    else
+    if (this.tab == 2){
+      status = JSON.parse(this.auth.data).role.toLowerCase() == 'admin' ? 'PROVISIONED, IN PROGRESS, RELEASED' : 'APPROVED, REJECTED';
+    } else {
       status = JSON.parse(this.auth.data).role.toLowerCase() == 'admin' ? 'APPROVED' : 'REQUESTED';
-
-
+    }
+      
     // let data_ = this.listOfRequests.filter((item) => {
     //   if (tab == "PROVISIONED") {
     //     if (item.status == tab || item.status == "IN PROGRESS") return true;

@@ -25,7 +25,7 @@ export class NewRequestComponent implements OnInit {
   panelOpenState = true;
   expandedHeight = 10;
   delivary_locations: any = ["System Optimized", "Hyderabad", "Bangalore", "New Delhi"]
-  platform_name = ["Container", "Virtual Machine"];
+  platform_name = ["Openstack", "Kubernetes", "AWS"];
   lineManger: any;
   admin: any;
   list: any;
@@ -43,16 +43,20 @@ export class NewRequestComponent implements OnInit {
   project_names: any = this.userData.project_id;
   enddateVal;
   startdateVal;
+  currentPlatForm;
+  currentTab = 'DeveloperWs';
   //name;
   constructor(public mySelect: MatSelect, public dialog: MatDialog, public cdr: ChangeDetectorRef, private auth: AuthService, private webService: WebService, private router: Router, private DatePipe: DatePipe) { }
+
   userList(p_name) {
-    console.log(p_name)
+    console.log("hi project name", p_name)
     this.auth.setProjectName(p_name);
     var userData: any = JSON.parse(this.auth.data)
     var data = { "login": userData, "action": "read", "status": "UNREAD", "project_id": JSON.parse(this.auth.projectName) };
-    console.log(data)
+    console.log("hi sending data", data)
     this.webService.getProjectInfo(data).subscribe(res => {
       var response: any = res
+      console.log("hi received data", response)
       this.webService.lineManger = response.request[0].lm_id
       this.webService.admin = response.request[0].admin_id
     })
@@ -71,54 +75,51 @@ export class NewRequestComponent implements OnInit {
     })
   }
 
+  changePlatform(platForm) {
+    this.currentPlatForm = platForm;
+    this.currentTab = 'DeveloperWs';
+    //To remove ticks for all selected values
+    $("input[type=checkbox]").prop("checked", false).change();
+    this.imageArray = [];
+  }
+
+  changeTab(tab){
+    this.currentTab = tab;
+  }
+
   saveProjectInformation(img_name) {
     console.log("img_name" + img_name)
 
     // setTimeout(()=>{
 
     // if($("#"+img_name.toString().replace(/ +/g, "")).prop('checked')){
-    this.imageArray.push(img_name);
-    console.log(this.imageArray)
-
-    // }
-    // }
-    // ,1000)
+    var index = this.imageArray.indexOf(img_name);
+    if(index > -1) {
+      this.imageArray.splice(index, 1);
+    } else {
+      this.imageArray.push(img_name);
+    }
+    console.log("hi vegu saveProjectInformation", this.imageArray)
   }
-  check() {
-    console.log("check")
-
-    // $('input[type="checkbox"]').on('change', function () {
-
-    //   $('input[name="' + this.name + '"]').not(this).prop('checked', false);
-    // });
-  }
-
+  
   submit() {
-    console.log(this.bareMetalData)
     this.webService.setBareMetalData(this.bareMetalData)
-
-    console.log("submit")
     var platform: any;
-    console.log(this.webService.selectedPlatform);
-    if (this.webService.selectedPlatform == "Container") {
+    if (this.webService.selectedPlatform == "Openstack") {
       platform = "container"
     }
-    else if (this.webService.selectedPlatform == "Virtual Machine") {
+    else if (this.webService.selectedPlatform == "Kubernetes") {
       platform = "vm"
     }
     else if (this.webService.selectedPlatform == "Physical") {
       platform = "physical"
     }
-    this.webService.imageArray = [];
-    for (var i = 0; i < this.imageArray.length; i++) {
-      console.log("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase())
-      console.log($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked'))
-      if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked')) {
-        this.webService.imageArray.push(this.imageArray[i]);
-      }
+    else if (this.webService.selectedPlatform == "AWS") {
+      platform = "aws"
     }
-    this.webService.imageArray = Array.from(new Set(this.webService.imageArray));
-    console.log(this.webService.imageArray)
+    this.webService.imageArray = [];
+    
+    this.webService.imageArray = this.imageArray;
 
     var one_day = 1000 * 60 * 60 * 24;
 
@@ -142,7 +143,7 @@ export class NewRequestComponent implements OnInit {
     //  var info={"projectName": this.webService.selectedProject,"users":this.webService.selectedUserList,
     //  "startDate":this.webService.todayDate,"endDate":this.webService.lastDate,"delivarLocation": this.webService.selectedDelivaryLocation,
     //  "platform":platform,"lineManger":this.webService.lineManger,"admin":this.webService.admin,"imageType":this.webService.imageArray,"duration":this.duration};
-    console.log("Platform" + platform);
+
     var info = {
       "projectName": this.webService.selectedProject, "users": this.webService.selectedUserList,
       "startDate": this.startdateVal, "endDate": this.enddateVal, "delivaryLocation": this.webService.selectedDelivaryLocation,
@@ -150,14 +151,12 @@ export class NewRequestComponent implements OnInit {
       "imageType": this.webService.imageArray, "duration": this.duration
     };
 
-    var res = this.webService.setProjectInfo(info)
+    var res = this.webService.setProjectInfo(info);
     if (res) {
-      this.router.navigate(['/dashboard/orderList']);
+      this.router.navigate(['home/dashboard/orderList']);
     }
-
-
-
   }
+
   checkAllUsers(checked) {
     if (checked) {
       this.webService.selectedUserList = this.webService.userslist;
@@ -386,7 +385,7 @@ export class NewRequestComponent implements OnInit {
     this.webService.projInfoOpened = true;
   }
   opensubtype() {
-    if (this.webService.selectedPlatform == 'Container') {
+    if (this.webService.selectedPlatform == 'Openstack') {
       $('#Analytics').show();
       $('#MLDL').show();
     }
@@ -398,7 +397,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   openToggle() {
-    if (this.webService.selectedPlatform == 'Container') {
+    if (this.webService.selectedPlatform == 'Openstack') {
       $('#Analytics').show();
       $('#MLDL').show();
     }
@@ -467,7 +466,7 @@ export class NewRequestComponent implements OnInit {
   //       $("#"+id).prop('checked', true);
   //     }
   // }
-  checkButton(list) {
+  /* checkButton(list) {
     console.log(list)
     $('input:checkbox').prop('type', 'radio');
     this.webService.imageArray.length = 0
@@ -476,21 +475,15 @@ export class NewRequestComponent implements OnInit {
 
       $("#" + list[i].toString().replace(/ +/g, "")).prop('checked', true);
       console.log($("#" + list[i].toString().replace(/ +/g, "")).prop('checked'))
-      // list[i] = list[i].charAt(0).toUpperCase() + list[i].substr(1);;
     }
     for (var i = 0; i < list.length; i++) {
 
       if ($("#" + list[i].toString().replace(/ +/g, "")).prop('checked')) {
         this.webService.imageArray.push(list[i]);
-
-
-
       }
     }
-
     this.cdr.detectChanges()
-
-  }
+  } */
   cancle() {
     this.webService.selectedProject = null;
     //    this.webService.selectedUserList = null;
@@ -499,11 +492,12 @@ export class NewRequestComponent implements OnInit {
 
     this.webService.todayDate = null;
     this.webService.lastDate = null;
+    this.webService.selectedPlatform = null;
     this.router.navigate(['/home/dashboard']);
   }
   disablecheck() {
 
-    console.log(this.imageArray.length)
+    console.log("hi vegu ", this.webService)
     for (var i = 0; i < this.imageArray.length; i++) {
       if ($("#" + this.imageArray[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked')) {
 
@@ -514,7 +508,7 @@ export class NewRequestComponent implements OnInit {
   }
   radioCheck(list) {
 
-    console.log(this.webService.imageArray.length)
+    console.log("hi radio check",this.webService.imageArray.length)
     for (var i = 0; i < list.length; i++) {
 
       $("#" + list[i].toString().replace(/ +/g, "").replace(/[-.]/g, '').toLowerCase()).prop('checked', true);
@@ -528,7 +522,7 @@ export class NewRequestComponent implements OnInit {
 
   viewService(serviceId) {
     this.webService.physicalServiceId = serviceId;
-    this.router.navigate(['/dashboard/Myservices/NewRequest/service']);
+    this.router.navigate(['home/dashboard/Myservices/NewRequest/service']);
   }
 
 
@@ -542,6 +536,14 @@ export class NewRequestComponent implements OnInit {
    
      this.webService.devices  =false;
      this.webService.ReservationList  =false; */
+    this.webService.selectedProject = null;
+    //    this.webService.selectedUserList = null;
+    this.webService.lineManger = null;
+    this.webService.admin = null;
+
+    this.webService.todayDate = null;
+    this.webService.lastDate = null;
+    this.webService.selectedPlatform = null;
     this.webService.currentTab = 'myService';
     this.cdr.detectChanges()
     this.reservationSystemData();

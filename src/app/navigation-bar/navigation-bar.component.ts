@@ -38,6 +38,39 @@ export class NavigationBarComponent implements OnInit {
         "dropDownList": []
       },
       {
+        "linkUrl": "/home/dashboard/Myservices/NewRequest",
+        "compare": "myService",
+        "displayName": "VM reservation",
+        "imgSrc": "./assets/images/services.png",
+        "isDropdownLISTAvailable": false,
+        "dropDownList": []
+      },
+      {
+        "linkUrl": "",
+        "compare": "ReservationList",
+        "displayName": " My Reservations",
+        "imgSrc": "./assets/images/orders.png",
+        "isDropdownLISTAvailable": true,
+        "dropDownList": [
+          {
+            "linkUrl": "/home/dashboard/my-reservations",
+            "displayName": "HARDWARE RESERVATION"
+          },
+          {
+            "linkUrl": "/home/dashboard/Myservices/RequestList",
+            "displayName": "VM RESERVATION"
+          },
+        ]
+      },
+      {
+        "linkUrl": "/home/dashboard/inventory",
+        "compare": "devices",
+        "displayName": "Catalogue",
+        "imgSrc": "./assets/images/devices.png",
+        "isDropdownLISTAvailable": false,
+        "dropDownList": []
+      },
+      {
         "linkUrl": "",
         "compare": "labs",
         "displayName": "Labs",
@@ -54,30 +87,6 @@ export class NavigationBarComponent implements OnInit {
           },
         ]
       },
-      {
-        "linkUrl": "/home/dashboard/inventory",
-        "compare": "devices",
-        "displayName": "Catalogue",
-        "imgSrc": "./assets/images/devices.png",
-        "isDropdownLISTAvailable": false,
-        "dropDownList": []
-      },
-      {
-        "linkUrl": "/home/dashboard/Myservices/NewRequest",
-        "compare": "myService",
-        "displayName": "VM reservation",
-        "imgSrc": "./assets/images/services.png",
-        "isDropdownLISTAvailable": false,
-        "dropDownList": []
-      },
-      {
-        "linkUrl": "/home/dashboard/my-reservations",
-        "compare": "ReservationList",
-        "displayName": " My Reservations",
-        "imgSrc": "./assets/images/orders.png",
-        "isDropdownLISTAvailable": false,
-        "dropDownList": []
-      }
     ],
     "Admin": [
       {

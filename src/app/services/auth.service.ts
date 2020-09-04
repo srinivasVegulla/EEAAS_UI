@@ -23,7 +23,6 @@ export class AuthService {
   }
 
   get name() {
-    console.log("hi vegu")
     return localStorage.getItem(this.NAME_KEY);
 
   }
@@ -100,7 +99,7 @@ export class AuthService {
   }
   authenticate(res) {
     var response = res;
-console.log("hiiiiiiiiiiiiiiii",response )
+    console.log("hiiiiiiiiiiiiiiii", response)
     //  localStorage.setItem(this.EEaaS_user,response.user_name);
 
 
